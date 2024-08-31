@@ -5571,7 +5571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c08ad309baaa843a0292942823cd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Beatmap: {fileID: 11400000, guid: 7aaf6c8e37b6fb94e9ae84177d148548, type: 2}
+  Beatmap: {fileID: 11400000, guid: 16412aa00cbcfcb40803efa02c4f5807, type: 2}
   _hitSoundSource: {fileID: 1412987841}
   _musicSource: {fileID: 709541451}
 --- !u!4 &816189178

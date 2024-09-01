@@ -5316,7 +5316,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 8f2b805686d4f73479c71a4ff62d830a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5574,6 +5574,12 @@ MonoBehaviour:
   Beatmap: {fileID: 11400000, guid: 16412aa00cbcfcb40803efa02c4f5807, type: 2}
   _hitSoundSource: {fileID: 1412987841}
   _musicSource: {fileID: 709541451}
+  _metronome:
+    MetronomeClip: {fileID: 8300000, guid: cb9bc9adbbac9d4439fa812dcacd1659, type: 3}
+    TriggerFire: 0
+    Trigger:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!4 &816189178
 Transform:
   m_ObjectHideFlags: 0

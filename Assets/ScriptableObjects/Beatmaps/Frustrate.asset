@@ -18,16 +18,76 @@ MonoBehaviour:
   _bpm: 126
   _offset: 0
   _difficulty: 8
-  _intervals:
-  - _stepsPerBeat: 1
-    hitClip: {fileID: 8300000, guid: cb9bc9adbbac9d4439fa812dcacd1659, type: 3}
-    triggerFire: 1
-    trigger:
-      m_PersistentCalls:
-        m_Calls: []
-  - _stepsPerBeat: 2
-    hitClip: {fileID: 8300000, guid: 1a45e82f1144e734498eeffb2046a86f, type: 3}
-    triggerFire: 0
-    trigger:
-      m_PersistentCalls:
-        m_Calls: []
+  Sections:
+  - Name: All Song
+    IsKiai: 0
+    SubSections:
+    - Name: Section 1
+      IsKiai: 0
+      SubSections: []
+      Measures:
+      - Name: Measure 1
+        LengthInBeats: 4
+        Notes:
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 0
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 1
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 2
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 3
+          GlobalOffset: 0
+      - Name: Measure 2
+        LengthInBeats: 4
+        Notes:
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 0
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 1
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 2
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 3
+          GlobalOffset: 0
+    - Name: Section 2
+      IsKiai: 0
+      SubSections: []
+      Measures:
+      - Name: Measure 3
+        LengthInBeats: 4
+        Notes:
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 0
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 1
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 2
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 3
+          GlobalOffset: 0
+      - Name: Measure 4
+        LengthInBeats: 4
+        Notes:
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 0
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 1
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 2.5
+          GlobalOffset: 0
+        - CustomClip: {fileID: 0}
+          PositionInMeasure: 3
+          GlobalOffset: 0
+    Measures: []

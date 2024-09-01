@@ -15,23 +15,29 @@ public class BeatmapManager : MonoBehaviour
 	[Header("SOURCES")]
 	[SerializeField] private AudioSource _hitSoundSource;
 	[SerializeField] private AudioSource _musicSource;
-	private Interval[] _intervals;
+	[SerializeField] private Metronome _metronome;
 
 	void Start()
 	{
 		if (Instance != null) throw new Exception("Two instances of BeatmapManager exist at the same time");
 		Instance = this;
 
-		_intervals = Beatmap.Intervals;
-
 		_musicSource.clip = Beatmap.Audio;
 		StartCoroutine(WaitBeforeStart());
+
+		Beatmap.InitNotes();
+		foreach(Note lNote in Beatmap.AllNotes)
+		{
+			Debug.Log(lNote.GlobalOffset);
+		}
 	}
+
 	private IEnumerator WaitBeforeStart()
 	{
 		yield return new WaitForSecondsRealtime(5);
 		StartCoroutine(MusicCoroutine());
 	}
+
 	private IEnumerator MusicCoroutine()
 	{
 		_musicSource.Play();
@@ -39,70 +45,39 @@ public class BeatmapManager : MonoBehaviour
 		if (Beatmap.Offset > 0) yield return new WaitForSecondsRealtime(Beatmap.Offset / 1000);
 
 		// Play the first Hit Sound
-		PlayHitSound(_intervals[0].hitClip);
-
-		bool lBeatPlayed;
-		Interval lI;
+		PlayHitSound(_metronome.MetronomeClip);
 
 		// Play beats
+		bool lBeatPlayed;
 		while (_musicSource.isPlaying)
 		{
 			lBeatPlayed = false;
 
-			for (int i = 0; i < _intervals.Length; i++)
+			float sampledTime = (_musicSource.timeSamples / (_musicSource.clip.frequency * _metronome.GetIntervalLength(Beatmap.Bpm)));
+
+			if (_metronome.CheckForNewInterval(sampledTime, lBeatPlayed))
 			{
-				lI = _intervals[i];
-				float sampledTime = (_musicSource.timeSamples / (_musicSource.clip.frequency * lI.GetIntervalLength(Beatmap.Bpm)));
-
-				if(lI.CheckForNewInterval(sampledTime, lBeatPlayed))
+				if (_metronome.MetronomeClip && !lBeatPlayed)
 				{
-					if (lI.hitClip && !lBeatPlayed)
-					{
-						if(lI.triggerFire) ON_TriggerNote.Invoke();
+					if (_metronome.TriggerFire) ON_TriggerNote.Invoke();
 
-						PlayHitSound(lI.hitClip);
-						lBeatPlayed = true;
-					}
+					PlayHitSound(_metronome.MetronomeClip);
+					lBeatPlayed = true;
 				}
 			}
 
 			yield return new WaitForEndOfFrame();
 		}
 	}
+
 	public void PlayHitSound(AudioClip hitClip)
 	{
 		_hitSoundSource.PlayOneShot(hitClip);
 		Debug.Log(hitClip.name);
 	}
+
 	private void OnDestroy()
 	{
 		if (Instance == this) Instance = null;
 	}
-}
-
-[System.Serializable]
-public class Interval
-{
-	[SerializeField] private float _stepsPerBeat;
-	public AudioClip hitClip;
-	public bool triggerFire;
-	public UnityEvent trigger = new UnityEvent();
-
-	private int _lastInterval;
-
-	public void Init(float pStepsPerBeat)
-	{
-		_stepsPerBeat = pStepsPerBeat;
-	}
-	public float GetIntervalLength(float pBpm) { return 60f / (pBpm * _stepsPerBeat); }
-	public bool CheckForNewInterval(float interval, bool lBeatPlayed)
-	{
-		if (Mathf.FloorToInt(interval) != _lastInterval)
-		{
-			_lastInterval = Mathf.FloorToInt(interval);
-			if (!lBeatPlayed) trigger.Invoke();
-			return true;
-		}
-		return false;
-	}	
 }

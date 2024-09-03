@@ -8,8 +8,9 @@ public class BeatmapSO : ScriptableObject
 	[SerializeField] protected string _name;
 	[SerializeField] protected string _artist;
 	[SerializeField] protected AudioClip _audio;
+    [SerializeField] protected AudioClip _defaultHitSound;
 
-	[Space]
+    [Space]
 	[Header("SETTINGS")]
 	[SerializeField] protected float _bpm;
 	[SerializeField] protected int _offset;
@@ -23,6 +24,7 @@ public class BeatmapSO : ScriptableObject
 	public string Name => _name;
 	public string Artist => _artist;
 	public AudioClip Audio => _audio;
+    public AudioClip DefaultHitSound => _defaultHitSound;
 	public float Bpm => _bpm;
 	public int Offset => _offset;
 	public float Difficulty => _difficulty;
@@ -65,6 +67,6 @@ public class BeatmapSO : ScriptableObject
         // Sort the notes
         allNotes.Sort(delegate (Note n1, Note n2) { return n1.GlobalOffset.CompareTo(n2.GlobalOffset); });
 
-        _allNotes =  allNotes;
+        _allNotes = allNotes;
     }
 }

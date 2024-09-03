@@ -10,15 +10,18 @@ public class BeatmapManager : MonoBehaviour
 
 	public static UnityEvent ON_TriggerNote = new UnityEvent();
 
+	public static float SampledTime;
+
 	public BeatmapSO Beatmap;
 
 	[Header("SOURCES")]
 	[SerializeField] private AudioSource _hitSoundSource;
 	[SerializeField] private AudioSource _musicSource;
 	[SerializeField] private Metronome _metronome;
+	[Space]
+	[SerializeField] private int _preBeats = 3;
 
-	void Start()
-	{
+	void Start() {
 		if (Instance != null) throw new Exception("Two instances of BeatmapManager exist at the same time");
 		Instance = this;
 
@@ -26,39 +29,50 @@ public class BeatmapManager : MonoBehaviour
 		StartCoroutine(WaitBeforeStart());
 
 		Beatmap.InitNotes();
-		foreach(Note lNote in Beatmap.AllNotes)
-		{
-			Debug.Log(lNote.GlobalOffset);
-		}
 	}
 
-	private IEnumerator WaitBeforeStart()
-	{
-		yield return new WaitForSecondsRealtime(5);
+	private IEnumerator WaitBeforeStart() {
+
+		SampledTime = -_preBeats - 1;
+		int lLastPrebeat = 0;
+
+		BeatDisplay.ON_SongStart.Invoke(Beatmap.AllNotes, _preBeats - 1);
+
+		while (Mathf.FloorToInt(SampledTime) < 0) {
+			// Countdown
+			if (Mathf.FloorToInt(SampledTime) >= lLastPrebeat) {
+				lLastPrebeat = Mathf.FloorToInt(SampledTime);
+			}
+			// Play the metronome sound
+			if (_metronome.CheckForNewInterval(SampledTime, false) && _metronome.MetronomeClip) {
+				PlayHitSound(_metronome.MetronomeClip);
+			}
+
+			SampledTime += Time.deltaTime / (_metronome.GetIntervalLength(Beatmap.Bpm));
+
+			yield return new WaitForEndOfFrame();
+		}
+
 		StartCoroutine(MusicCoroutine());
 	}
 
-	private IEnumerator MusicCoroutine()
-	{
+	private IEnumerator MusicCoroutine() {
 		_musicSource.Play();
-		// Wait for the beatmap offset
-		if (Beatmap.Offset > 0) yield return new WaitForSecondsRealtime(Beatmap.Offset / 1000);
 
 		// Play the first Hit Sound
 		PlayHitSound(_metronome.MetronomeClip);
+		SampledTime = 0;
 
 		// Play beats
 		bool lBeatPlayed;
-		while (_musicSource.isPlaying)
-		{
+		while (_musicSource.isPlaying) {
 			lBeatPlayed = false;
 
-			float sampledTime = (_musicSource.timeSamples / (_musicSource.clip.frequency * _metronome.GetIntervalLength(Beatmap.Bpm)));
+			SampledTime = _musicSource.timeSamples / (_musicSource.clip.frequency * _metronome.GetIntervalLength(Beatmap.Bpm));
 
-			if (_metronome.CheckForNewInterval(sampledTime, lBeatPlayed))
-			{
-				if (_metronome.MetronomeClip && !lBeatPlayed)
-				{
+			// Check for the metronome
+			if (_metronome.CheckForNewInterval(SampledTime, lBeatPlayed)) {
+				if (_metronome.MetronomeClip && !lBeatPlayed) {
 					if (_metronome.TriggerFire) ON_TriggerNote.Invoke();
 
 					PlayHitSound(_metronome.MetronomeClip);
@@ -66,18 +80,31 @@ public class BeatmapManager : MonoBehaviour
 				}
 			}
 
+			// Check for the notes
+			CheckForNote(SampledTime);
+
 			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	public void PlayHitSound(AudioClip hitClip)
-	{
-		_hitSoundSource.PlayOneShot(hitClip);
-		Debug.Log(hitClip.name);
+	private void CheckForNote(float pSampledTime) {
+		if (Beatmap.AllNotes.Count == 0) {
+			Debug.LogWarning("SONG ENDED");
+			return;
+		}
+		else if (Beatmap.AllNotes[0].GlobalOffset <= pSampledTime) {
+			ON_TriggerNote.Invoke();
+			if (Beatmap.AllNotes[0].CustomClip) PlayHitSound(Beatmap.AllNotes[0].CustomClip);
+			else PlayHitSound(Beatmap.DefaultHitSound);
+			Beatmap.AllNotes.RemoveAt(0);
+		}
 	}
 
-	private void OnDestroy()
-	{
+	public void PlayHitSound(AudioClip hitClip) {
+		_hitSoundSource.PlayOneShot(hitClip);
+	}
+
+	private void OnDestroy() {
 		if (Instance == this) Instance = null;
 	}
 }

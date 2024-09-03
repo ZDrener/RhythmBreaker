@@ -20,4 +20,8 @@ public class Metronome
 		}
 		return false;
 	}
+
+	public void ResetMetronome() {
+		_lastInterval = default;
+	}
 }

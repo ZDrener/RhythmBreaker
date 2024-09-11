@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: Frustrate
   _artist: Blacklolita
   _audio: {fileID: 8300000, guid: 8f2b805686d4f73479c71a4ff62d830a, type: 3}
-  _defaultHitSound: {fileID: 8300000, guid: cb9bc9adbbac9d4439fa812dcacd1659, type: 3}
+  _defaultHitSound: {fileID: 0}
   _bpm: 126
   _offset: 0
   _difficulty: 8

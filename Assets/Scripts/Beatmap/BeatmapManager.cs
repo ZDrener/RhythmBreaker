@@ -26,17 +26,23 @@ public class BeatmapManager : MonoBehaviour
 		Instance = this;
 
 		_musicSource.clip = Beatmap.Audio;
-		StartCoroutine(WaitBeforeStart());
+		StartCoroutine(WaitForLoad());
 
 		Beatmap.InitNotes();
+		BeatDisplay.ON_InitBeatmap.Invoke(Beatmap.AllNotes);
 	}
 
-	private IEnumerator WaitBeforeStart() {
+	private IEnumerator WaitForLoad() {
+		yield return new WaitForSeconds(3);
+		StartCoroutine(Countdown());
+	}
+
+	private IEnumerator Countdown() {
 
 		SampledTime = -_preBeats - 1;
 		int lLastPrebeat = 0;
 
-		BeatDisplay.ON_SongStart.Invoke(Beatmap.AllNotes, _preBeats - 1);
+		BeatDisplay.ON_SongStart.Invoke(_preBeats - 1);
 
 		while (Mathf.FloorToInt(SampledTime) < 0) {
 			// Countdown
@@ -88,14 +94,24 @@ public class BeatmapManager : MonoBehaviour
 	}
 
 	private void CheckForNote(float pSampledTime) {
+		// Stop if there is no more notes
 		if (Beatmap.AllNotes.Count == 0) {
 			Debug.LogWarning("SONG ENDED");
 			return;
 		}
+		// Check for a note
 		else if (Beatmap.AllNotes[0].GlobalOffset <= pSampledTime) {
 			ON_TriggerNote.Invoke();
+
+			// Play hit sound
 			if (Beatmap.AllNotes[0].CustomClip) PlayHitSound(Beatmap.AllNotes[0].CustomClip);
 			else PlayHitSound(Beatmap.DefaultHitSound);
+
+			// Play VFX
+			if (PlayerInputManager.MainFireKeyHold || PlayerInputManager.SecondaryFireKeyHold) {
+				BeatDisplay.ON_NoteHit.Invoke(Beatmap.AllNotes[0].GlobalOffset);
+			}
+
 			Beatmap.AllNotes.RemoveAt(0);
 		}
 	}

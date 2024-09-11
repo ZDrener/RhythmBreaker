@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac4d0dc4547e424e801570404072c48, type: 3}
+  m_Name: BladeStats
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 1160703423890156761, guid: 822d7d415a4073a4cb562ae114fbcc8c, type: 3}
+  _muzzlePrefab: {fileID: 0}
+  _damagePerfect: 500
+  _damageGreat: 200
+  _damageOk: 100
+  _range: 0
+  _piercing: 0
+  _lifetime: 0
+  _speed: 0

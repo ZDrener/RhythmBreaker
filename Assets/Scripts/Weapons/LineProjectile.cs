@@ -22,13 +22,14 @@ public class LineProjectile : Projectile
 	[SerializeField] protected GameObject _impactPrefab;
 	[Space]
 	[SerializeField] protected WeaponStatSO _stats;
+	[SerializeField] protected LayerMask _layerMask;
 
 	public override void ProjectileInit(Color pColor)
 	{
 		base.ProjectileInit(pColor);
 
 		// Init Lines
-		RaycastHit2D[] lHits = Physics2D.RaycastAll(transform.position, transform.right, _stats.range);
+		RaycastHit2D[] lHits = Physics2D.RaycastAll(transform.position, transform.right, _stats.range, _layerMask);
 		Vector3 lEndPoint;
 
 		// Pierce through all targets
@@ -39,7 +40,6 @@ public class LineProjectile : Projectile
 		{
 			Array.Sort(lHits, (x, y) => x.distance.CompareTo(y.distance));
 			lEndPoint = transform.InverseTransformPoint(lHits[_stats.piercing].point);
-			Debug.DrawLine(transform.position, lHits[_stats.piercing].point, Color.green, 2);
 		}
 
 		// Set Lines colors and positions
@@ -48,12 +48,19 @@ public class LineProjectile : Projectile
 		// Create Impacts
 		GameObject lImpact;
 		ParticleRecolor lPr;
+		DemoDummy lEnemy;
 		for (int i = 0; i < Mathf.Min(lHits.Length, _stats.piercing + 1); i++)
 		{
 			lImpact = Instantiate(_impactPrefab);
 			lImpact.transform.position = lHits[i].point;
 			lImpact.transform.rotation = transform.rotation;
-			if(lImpact.TryGetComponent(out lPr)) lPr.InitRecolor(pColor);			
+			if(lImpact.TryGetComponent(out lPr)) lPr.InitRecolor(pColor);
+
+			// Deal damage
+
+			if (lHits[i].collider.gameObject.TryGetComponent(out lEnemy)) {
+				lEnemy.Damage(1);
+			}
 		}
 
 		// On end init

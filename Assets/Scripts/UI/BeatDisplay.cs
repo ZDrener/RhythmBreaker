@@ -7,7 +7,7 @@ using static UnityEngine.ParticleSystem;
 
 public class BeatDisplay : MonoBehaviour
 {
-	public static UnityEvent<List<Note>> ON_InitBeatmap = new UnityEvent<List<Note>>();
+	public static UnityEvent<List<float>> ON_InitBeatmap = new UnityEvent<List<float>>();
 	public static UnityEvent<float> ON_SongStart = new UnityEvent<float>();
 	public static UnityEvent<float> ON_NoteHit = new UnityEvent<float>();
 
@@ -17,7 +17,7 @@ public class BeatDisplay : MonoBehaviour
 	[SerializeField] private List<NoteColors> _noteColors;
 	[SerializeField] private ParticleSystem _noteHitMainFx;
 
-	private List<Note> _notesToPreview = new List<Note>();
+	private List<float> _notesToPreview = new List<float>();
 	private float _offset;
 	private bool _songStarted;
 
@@ -27,11 +27,9 @@ public class BeatDisplay : MonoBehaviour
 		ON_NoteHit.AddListener(CreateHitFx);
 	}
 
-	private void InitNotes(List<Note> pNotes) {
-		Debug.Log($"pNotes.Count = {pNotes.Count}");
-		foreach (Note lNote in pNotes) {
-			_notesToPreview.Add(lNote.CopyNote());
-			Debug.Log("ADDED NOTE");
+	private void InitNotes(List<float> pNotes) {
+		foreach (float lNote in pNotes) {
+			_notesToPreview.Add(lNote);
 		}
 	}
 
@@ -69,8 +67,8 @@ public class BeatDisplay : MonoBehaviour
 
 	private void CheckForPreview() {
 		if (_notesToPreview.Count == 0) return;
-		else if (_notesToPreview[0].GlobalOffset <= BeatmapManager.SampledTime + _offset) {
-			DisplayNotePreview(_notesToPreview[0].GlobalOffset);
+		else if (_notesToPreview[0] <= BeatmapManager.SampledTime + _offset) {
+			DisplayNotePreview(_notesToPreview[0]);
 			_notesToPreview.RemoveAt(0);
 		}
 	}

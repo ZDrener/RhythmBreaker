@@ -1,0 +1,326 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78672ca31cb5204daa31db654c5654f, type: 3}
+  m_Name: Level Up
+  m_EditorClassIdentifier: 
+  _name: 
+  _artist: 
+  _audio: {fileID: 8300000, guid: 89b1b0ede49c90f4d8c2789c69b6e2d4, type: 3}
+  _defaultHitSound: {fileID: 0}
+  _bpm: 122
+  _offset: 0
+  _difficulty: 0
+  Sections:
+  - Name: Intro
+    IsKiai: 0
+    SubSections: []
+    Measures:
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 3
+  - Name: Part 1
+    IsKiai: 0
+    SubSections: []
+    Measures:
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes:
+      - 0
+      - 1
+      - 2
+      - 2.5
+      - 3
+    - Name: 
+      LengthInBeats: 4
+      Notes: []
+  - Name: Drop
+    IsKiai: 0
+    SubSections:
+    - Name: Part 1
+      IsKiai: 0
+      SubSections: []
+      Measures:
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 2
+        - 3
+    - Name: Part 2
+      IsKiai: 0
+      SubSections: []
+      Measures:
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 1.5
+        - 1.75
+        - 2.25
+        - 2.5
+        - 3
+        - 3.5
+      - Name: 
+        LengthInBeats: 4
+        Notes:
+        - 0
+        - 1
+        - 2
+        - 3
+    Measures: []

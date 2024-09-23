@@ -44,7 +44,7 @@ public class PlayerHands : MonoBehaviour
 
 	protected virtual void AimAtCursor(float pRatio) {
 		// Calculate target
-		Vector3 lDirection = _camera.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+		Vector3 lDirection = CursorAim.Target - transform.position;
 		float lAngle = Mathf.Atan2(lDirection.y, lDirection.x) * Mathf.Rad2Deg;
 		Quaternion lEndRotation = Quaternion.Euler(Vector3.forward * lAngle);
 
@@ -60,7 +60,8 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void FireMain() {
-		if (PlayerInputManager.MainFireKeyHold) {
+		if ((PlayerInputManager.MainFireKeyHold && PlayerInputManager.LastWeaponInput == "Fire1") ||
+			(PlayerInputManager.MainFireKeyHold && ! PlayerInputManager.SecondaryFireKeyHold)) {
 			_mainWeapon.gameObject.SetActive(true);
 			_lastUsedWeapon = _mainWeapon;
 			_mainWeapon.sortingGroup.sortingOrder = 1;
@@ -71,7 +72,8 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void FireSecondary() {
-		if (PlayerInputManager.SecondaryFireKeyHold) {
+		if ((PlayerInputManager.SecondaryFireKeyHold && PlayerInputManager.LastWeaponInput == "Fire2") ||
+			(PlayerInputManager.SecondaryFireKeyHold && !PlayerInputManager.MainFireKeyHold)) {
 			_secondaryWeapon.gameObject.SetActive(true);
 			_lastUsedWeapon = _secondaryWeapon;
 			_secondaryWeapon.sortingGroup.sortingOrder = 1;

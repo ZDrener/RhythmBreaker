@@ -42,6 +42,7 @@ public class BeatmapManager : MonoBehaviour
 		SampledTime = -_preBeats - 1;
 		int lLastPrebeat = 0;
 
+		AnimatorSpeedScaler.ON_SetAnimatorSpeedScales.Invoke(Beatmap.Bpm);
 		BeatDisplay.ON_SongStart.Invoke(_preBeats - 1);
 
 		while (Mathf.FloorToInt(SampledTime) < 0) {
@@ -81,6 +82,7 @@ public class BeatmapManager : MonoBehaviour
 				if (_metronome.MetronomeClip && !lBeatPlayed) {
 					if (_metronome.TriggerFire) ON_TriggerNote.Invoke();
 
+					Metronome.Trigger.Invoke();
 					PlayHitSound(_metronome.MetronomeClip);
 					lBeatPlayed = true;
 				}
@@ -100,16 +102,15 @@ public class BeatmapManager : MonoBehaviour
 			return;
 		}
 		// Check for a note
-		else if (Beatmap.AllNotes[0].GlobalOffset <= pSampledTime) {
+		else if (Beatmap.AllNotes[0] <= pSampledTime) {
 			ON_TriggerNote.Invoke();
 
 			// Play hit sound
-			if (Beatmap.AllNotes[0].CustomClip) PlayHitSound(Beatmap.AllNotes[0].CustomClip);
-			else PlayHitSound(Beatmap.DefaultHitSound);
+			if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
 
 			// Play VFX
 			if (PlayerInputManager.MainFireKeyHold || PlayerInputManager.SecondaryFireKeyHold) {
-				BeatDisplay.ON_NoteHit.Invoke(Beatmap.AllNotes[0].GlobalOffset);
+				BeatDisplay.ON_NoteHit.Invoke(Beatmap.AllNotes[0]);
 			}
 
 			Beatmap.AllNotes.RemoveAt(0);
@@ -117,7 +118,7 @@ public class BeatmapManager : MonoBehaviour
 	}
 
 	public void PlayHitSound(AudioClip hitClip) {
-		_hitSoundSource.PlayOneShot(hitClip);
+		if (hitClip) _hitSoundSource.PlayOneShot(hitClip);
 	}
 
 	private void OnDestroy() {

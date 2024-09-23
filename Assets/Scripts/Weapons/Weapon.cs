@@ -13,9 +13,10 @@ public class Weapon : MonoBehaviour
 	[SerializeField] protected SpriteRenderer _weaponSprite;
 	[SerializeField] protected AudioClip[] _audioClips;
 	public SortingGroup sortingGroup;
+	[Space]
+	[SerializeField] protected Animator _animator;
+	[SerializeField] protected AudioSource _audioSource;
 	protected Color _color;
-	protected Animator _animator;
-	protected AudioSource _audioSource;
 
 	#region MAIN / SECONDARY
 	public bool isMainWeapon {
@@ -37,11 +38,6 @@ public class Weapon : MonoBehaviour
 	}
 	protected bool _isSecondaryWeapon;
 	#endregion
-
-	protected virtual void Start() {
-		_animator = transform.GetComponent<Animator>();
-		_audioSource = transform.GetComponent<AudioSource>();
-	}
 
 	public virtual void SetWeaponColor(Color pColor) {
 		_color = _weaponSprite.color = pColor;
@@ -65,8 +61,8 @@ public class Weapon : MonoBehaviour
 		}
 
 		// Sound
-		_audioSource.pitch = UnityEngine.Random.Range(.7f, 1);
-		_audioSource.volume = UnityEngine.Random.Range(.7f, 1);
+		//_audioSource.pitch = UnityEngine.Random.Range(.7f, 1);
+		//_audioSource.volume = UnityEngine.Random.Range(.9f, 1);
 		_audioSource.PlayOneShot(_audioClips[UnityEngine.Random.Range(0, _audioClips.Length - 1)]);
 	}
 

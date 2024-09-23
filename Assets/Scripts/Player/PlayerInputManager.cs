@@ -6,15 +6,16 @@ using UnityEngine.Events;
 public class PlayerInputManager : MonoBehaviour
 {
 	// Events
-	public static UnityEvent<Vector2> ON_Movement = new UnityEvent<Vector2>();
 	public static UnityEvent ON_DashKeyPressed = new UnityEvent();
 	public static UnityEvent ON_MainFireKeyPressed = new UnityEvent();
 	public static UnityEvent ON_SecondaryFireKeyPressed = new UnityEvent();
 
 	// Bools (for buffering)
+	public static Vector2 MovementInput;
 	public static bool MainFireKeyHold;
 	public static bool SecondaryFireKeyHold;
-	public static bool DashFireKeyHold;
+	public static bool DashKeyHold;
+	public static string LastWeaponInput;
 
 	// Singleton
 	public static PlayerInputManager Instance;
@@ -26,16 +27,23 @@ public class PlayerInputManager : MonoBehaviour
 
 	// Update is called once per frame
 	void Update() {
-		if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
-			ON_Movement.Invoke(Input.GetAxis("Horizontal") * Vector2.right + Input.GetAxis("Vertical") * Vector2.up);
+		MovementInput = Input.GetAxis("Horizontal") * Vector2.right + Input.GetAxis("Vertical") * Vector2.up;
+		
+		if (Input.GetButtonDown("Dash")) {
+			ON_DashKeyPressed.Invoke();
 		}
-		if (Input.GetKeyDown(KeyCode.Space)) ON_DashKeyPressed.Invoke();
-		if (Input.GetMouseButtonDown(0)) ON_MainFireKeyPressed.Invoke();
-		if (Input.GetMouseButtonDown(1)) ON_SecondaryFireKeyPressed.Invoke();
+		if (Input.GetButtonDown("Fire1")) {
+			ON_MainFireKeyPressed.Invoke();
+			LastWeaponInput = "Fire1";
+		}
+		if (Input.GetButtonDown("Fire2")) {
+			ON_SecondaryFireKeyPressed.Invoke();
+			LastWeaponInput = "Fire2";
+		}
 
-		MainFireKeyHold = Input.GetMouseButton(0);
-		SecondaryFireKeyHold = Input.GetMouseButton(1);
-		DashFireKeyHold = Input.GetKey(KeyCode.Space);
+		MainFireKeyHold = Input.GetButton("Fire1");
+		SecondaryFireKeyHold = Input.GetButton("Fire2");
+		DashKeyHold = Input.GetButton("Dash");
 	}
 
 	private void OnDestroy() {

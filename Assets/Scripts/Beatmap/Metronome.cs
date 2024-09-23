@@ -6,7 +6,7 @@ public class Metronome
 {
 	public AudioClip MetronomeClip;
 	public bool TriggerFire;
-	public UnityEvent Trigger = new UnityEvent();
+	public static UnityEvent Trigger = new UnityEvent();
 
 	private int _lastInterval;
 	public float GetIntervalLength(float pBpm) { return 60f / (pBpm); }

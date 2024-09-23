@@ -423,3 +423,6 @@ MonoBehaviour:
     colorIDs: 00000000
   _impactPrefab: {fileID: 6093280496446778974, guid: e86fb0fb101132d4cb4acebba58fd708, type: 3}
   _stats: {fileID: 11400000, guid: cac9f9cbb9d88854c98a9926a5f45d92, type: 2}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64

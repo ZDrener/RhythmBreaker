@@ -308,7 +308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6151642949211984235}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.25, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -511,7 +511,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 279d60ec57accbe489a3d041bd3f1df5, type: 3}
   - {fileID: 8300000, guid: 1696ee9b536d9d74bac2f4e1fd0bb126, type: 3}
   sortingGroup: {fileID: 222038683301421756}
+  _animator: {fileID: 0}
+  _audioSource: {fileID: 0}
   _rotater: {fileID: 4740745385070503576}
+  _trail: {fileID: 0}
 --- !u!95 &732245809839562814
 Animator:
   serializedVersion: 4

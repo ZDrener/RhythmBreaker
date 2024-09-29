@@ -16,9 +16,10 @@ MonoBehaviour:
   _artist: 
   _audio: {fileID: 8300000, guid: 89b1b0ede49c90f4d8c2789c69b6e2d4, type: 3}
   _defaultHitSound: {fileID: 0}
+  _missHitSound: {fileID: 8300000, guid: 93d3e4ee21bbe8245b06a34d7b0dad52, type: 3}
   _bpm: 122
   _offset: 0
-  _difficulty: 0
+  _difficulty: 3.35
   Sections:
   - Name: Intro
     IsKiai: 0

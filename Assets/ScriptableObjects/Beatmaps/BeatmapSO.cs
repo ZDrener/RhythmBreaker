@@ -9,6 +9,7 @@ public class BeatmapSO : ScriptableObject
 	[SerializeField] protected string _artist;
 	[SerializeField] protected AudioClip _audio;
 	[SerializeField] protected AudioClip _defaultHitSound;
+	[SerializeField] protected AudioClip _missHitSound;
 
 	[Space]
 	[Header("SETTINGS")]
@@ -25,6 +26,7 @@ public class BeatmapSO : ScriptableObject
 	public string Artist => _artist;
 	public AudioClip Audio => _audio;
 	public AudioClip DefaultHitSound => _defaultHitSound;
+	public AudioClip MissHitSound => _missHitSound;
 	public float Bpm => _bpm;
 	public int Offset => _offset;
 	public float Difficulty => _difficulty;

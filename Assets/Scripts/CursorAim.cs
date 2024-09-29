@@ -32,9 +32,7 @@ public class CursorAim : MonoBehaviour
 				return Vector3.Distance(transform.position, n1.transform.position).CompareTo(Vector3.Distance(transform.position, n2.transform.position));
 			});
 			Target = _enemiesInRange[0].transform.position;
-		}
-
-		
+		}	
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision) {

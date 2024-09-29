@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,14 @@ public class PlayerInputManager : MonoBehaviour
 
 	// Bools (for buffering)
 	public static Vector2 MovementInput;
-	public static bool MainFireKeyHold;
-	public static bool SecondaryFireKeyHold;
+	public static bool MainFireKeyInput;
+	public static bool SecondaryFireKeyInput;
 	public static bool DashKeyHold;
 	public static string LastWeaponInput;
+
+	// Mobile inputs shit
+	private Vector2 touchStartPos;  // To track where the touch begins
+	private bool isTouching = false; // To track if the user is dragging
 
 	// Singleton
 	public static PlayerInputManager Instance;
@@ -27,8 +32,75 @@ public class PlayerInputManager : MonoBehaviour
 
 	// Update is called once per frame
 	void Update() {
+		if (DebugGameMode.Instance.MobileInputs) HandleMobileInput();
+		else HandlePCInput();
+	}
+
+    private void HandleMobileInput() {
+        // Handle Touch Input
+        foreach (Touch touch in Input.touches) {
+            // Check if the touch is on the left side of the screen for movement
+            if (touch.position.x < Screen.width / 2) {
+                if (touch.phase == TouchPhase.Began) {
+                    // Start tracking the touch
+                    touchStartPos = touch.position;
+                    isTouching = true;
+                }
+                else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
+                    if (isTouching) {
+                        // Calculate movement direction based on difference
+                        Vector2 touchCurrentPos = touch.position;
+                        Vector2 direction = (touchCurrentPos - touchStartPos).normalized;  // Normalized for direction
+
+                        // Update movement input
+                        MovementInput = direction;
+
+                        // Visualize with Debug.DrawLine
+                        Debug.DrawLine(Camera.main.ScreenToWorldPoint(touchStartPos),
+                                       Camera.main.ScreenToWorldPoint(touchCurrentPos),
+                                       Color.red);
+                    }
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) {
+                    // Reset movement when touch is released
+                    MovementInput = Vector2.zero;
+                    isTouching = false;
+                }
+            }
+
+            // Right half of the screen for firing
+            if (touch.position.x > Screen.width / 2) {
+                if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Stationary) {
+                    if (touch.position.y > Screen.height / 2) {
+                        // Top right half - Main Weapon
+                        ON_MainFireKeyPressed.Invoke();
+                        LastWeaponInput = "Fire1";
+                        MainFireKeyInput = true;
+                    }
+                    else {
+                        // Bottom right half - Secondary Weapon
+                        ON_SecondaryFireKeyPressed.Invoke();
+                        LastWeaponInput = "Fire2";
+                        SecondaryFireKeyInput = true;
+                    }
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) {
+                    // Reset firing inputs when touch is released
+                    if (touch.position.y > Screen.height / 2) {
+                        // Reset MainFire input
+                        MainFireKeyInput = false;
+                    }
+                    else {
+                        // Reset SecondaryFire input
+                        SecondaryFireKeyInput = false;
+                    }
+                }
+            }
+        }
+    }
+private void HandlePCInput() {
 		MovementInput = Input.GetAxis("Horizontal") * Vector2.right + Input.GetAxis("Vertical") * Vector2.up;
-		
+
 		if (Input.GetButtonDown("Dash")) {
 			ON_DashKeyPressed.Invoke();
 		}
@@ -41,9 +113,18 @@ public class PlayerInputManager : MonoBehaviour
 			LastWeaponInput = "Fire2";
 		}
 
-		MainFireKeyHold = Input.GetButton("Fire1");
-		SecondaryFireKeyHold = Input.GetButton("Fire2");
-		DashKeyHold = Input.GetButton("Dash");
+		// Hold Gamemode
+		if (DebugGameMode.Instance.AllowHold) {
+			MainFireKeyInput = Input.GetButton("Fire1");
+			SecondaryFireKeyInput = Input.GetButton("Fire2");
+			DashKeyHold = Input.GetButton("Dash");
+		}
+		// Press Gamemode
+		else {
+			MainFireKeyInput = Input.GetButtonDown("Fire1");
+			SecondaryFireKeyInput = Input.GetButtonDown("Fire2");
+			DashKeyHold = Input.GetButtonDown("Dash");
+		}
 	}
 
 	private void OnDestroy() {

@@ -20,6 +20,9 @@ public class BeatmapManager : MonoBehaviour
 	[SerializeField] private Metronome _metronome;
 	[Space]
 	[SerializeField] private int _preBeats = 3;
+	[Space]
+	[Header("INPUT BUFFER")]
+	public float InputBufferWindow = 0.2f; // Adjust this value as needed
 
 	void Start() {
 		if (Instance != null) throw new Exception("Two instances of BeatmapManager exist at the same time");
@@ -96,26 +99,40 @@ public class BeatmapManager : MonoBehaviour
 	}
 
 	private void CheckForNote(float pSampledTime) {
-		// Stop if there is no more notes
+		// Stop if there are no more notes
 		if (Beatmap.AllNotes.Count == 0) {
 			Debug.LogWarning("SONG ENDED");
 			return;
 		}
-		// Check for a note
-		else if (Beatmap.AllNotes[0] <= pSampledTime) {
+
+		float noteTime = Beatmap.AllNotes[0];
+		float timeDifference = Mathf.Abs(noteTime - pSampledTime);
+
+		bool pCondition = DebugGameMode.Instance.AllowHold ?
+			noteTime <= pSampledTime :
+			timeDifference <= InputBufferWindow;
+
+
+		// Check if the note is within the buffer window and if the player pressed it
+		if (pCondition && (PlayerInputManager.MainFireKeyInput || PlayerInputManager.SecondaryFireKeyInput)) {
 			ON_TriggerNote.Invoke();
 
 			// Play hit sound
 			if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
 
-			// Play VFX
-			if (PlayerInputManager.MainFireKeyHold || PlayerInputManager.SecondaryFireKeyHold) {
-				BeatDisplay.ON_NoteHit.Invoke(Beatmap.AllNotes[0]);
-			}
+			// Fire the weapon if the player is holding the fire key			
+			BeatDisplay.ON_NoteHit.Invoke(noteTime);
 
+			// Remove the note from the list once it's hit
 			Beatmap.AllNotes.RemoveAt(0);
 		}
+		// Destroy note on fail
+		else if (noteTime - pSampledTime < -InputBufferWindow) {
+			Beatmap.AllNotes.RemoveAt(0);
+			if (Beatmap.MissHitSound) PlayHitSound(Beatmap.MissHitSound);
+		}
 	}
+
 
 	public void PlayHitSound(AudioClip hitClip) {
 		if (hitClip) _hitSoundSource.PlayOneShot(hitClip);

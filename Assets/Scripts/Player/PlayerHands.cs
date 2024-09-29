@@ -37,31 +37,30 @@ public class PlayerHands : MonoBehaviour
 		BeatmapManager.ON_TriggerNote.AddListener(FireSecondary);
 	}
 
-
-	protected void Update() {
-		AimAtCursor(_weaponSmoothRotation);
-	}
-
 	protected virtual void AimAtCursor(float pRatio) {
 		// Calculate target
-		Vector3 lDirection = CursorAim.Target - transform.position;
-		float lAngle = Mathf.Atan2(lDirection.y, lDirection.x) * Mathf.Rad2Deg;
-		Quaternion lEndRotation = Quaternion.Euler(Vector3.forward * lAngle);
+		DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
 
-		if (_lastUsedWeapon) {
-			// Rotate weapon towards target
-			_lastUsedWeapon.transform.rotation = Quaternion.Lerp(_lastUsedWeapon.transform.rotation, lEndRotation, pRatio);
+		if (lTarget) {
+			Vector3 lDirection = lTarget.transform.position - transform.position;
+			float lAngle = Mathf.Atan2(lDirection.y, lDirection.x) * Mathf.Rad2Deg;
+			Quaternion lEndRotation = Quaternion.Euler(Vector3.forward * lAngle);
 
-			// Flip Sprites
-			bool lDotPositive = (Vector3.Dot(Vector3.right, Vector3.Normalize(lDirection))) > 0;
-			_lastUsedWeapon.transform.localScale = lDotPositive ? Vector3.one : new Vector3(1, -1, 1);
-			_bodySprite.flipX = !lDotPositive;
-		}
+			if (_lastUsedWeapon) {
+				// Rotate weapon towards target
+				_lastUsedWeapon.transform.rotation = Quaternion.Lerp(_lastUsedWeapon.transform.rotation, lEndRotation, pRatio);
+
+				// Flip Sprites
+				bool lDotPositive = (Vector3.Dot(Vector3.right, Vector3.Normalize(lDirection))) > 0;
+				_lastUsedWeapon.transform.localScale = lDotPositive ? Vector3.one : new Vector3(1, -1, 1);
+				_bodySprite.flipX = !lDotPositive;
+			}
+		}		
 	}
 
 	protected virtual void FireMain() {
-		if ((PlayerInputManager.MainFireKeyHold && PlayerInputManager.LastWeaponInput == "Fire1") ||
-			(PlayerInputManager.MainFireKeyHold && ! PlayerInputManager.SecondaryFireKeyHold)) {
+		if ((PlayerInputManager.MainFireKeyInput && PlayerInputManager.LastWeaponInput == "Fire1") ||
+			(PlayerInputManager.MainFireKeyInput && ! PlayerInputManager.SecondaryFireKeyInput)) {
 			_mainWeapon.gameObject.SetActive(true);
 			_lastUsedWeapon = _mainWeapon;
 			_mainWeapon.sortingGroup.sortingOrder = 1;
@@ -72,8 +71,8 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void FireSecondary() {
-		if ((PlayerInputManager.SecondaryFireKeyHold && PlayerInputManager.LastWeaponInput == "Fire2") ||
-			(PlayerInputManager.SecondaryFireKeyHold && !PlayerInputManager.MainFireKeyHold)) {
+		if ((PlayerInputManager.SecondaryFireKeyInput && PlayerInputManager.LastWeaponInput == "Fire2") ||
+			(PlayerInputManager.SecondaryFireKeyInput && !PlayerInputManager.MainFireKeyInput)) {
 			_secondaryWeapon.gameObject.SetActive(true);
 			_lastUsedWeapon = _secondaryWeapon;
 			_secondaryWeapon.sortingGroup.sortingOrder = 1;

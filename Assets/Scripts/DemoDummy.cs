@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class DemoDummy : MonoBehaviour
 {
+	public static List<DemoDummy> DummyList = new List<DemoDummy>();
+
 	[Space]
 	[Header("STATS")]
 	[SerializeField] protected int _maxHealth;
@@ -25,6 +28,21 @@ public class DemoDummy : MonoBehaviour
 
 	public void Start() {
 		Respawn();
+		DummyList.Add(this);
+	}
+
+	public static DemoDummy GetClosestDummy(Vector3 pPosition) {
+		DemoDummy Target;
+		// Set target
+		if (DummyList.Count == 0) Target = null;
+		else {
+			DummyList.Sort(delegate (DemoDummy n1, DemoDummy n2) {
+				return Vector3.Distance(pPosition, n1.transform.position).CompareTo(Vector3.Distance(pPosition, n2.transform.position));
+			});
+			Target = DummyList[0];
+		}
+
+		return Target;
 	}
 
 	public void Damage(int pDamage) {

@@ -15,7 +15,6 @@ public class BeatDisplay : MonoBehaviour
 	[SerializeField] private RectTransform _container;
 	[Space]
 	[SerializeField] private List<NoteColors> _noteColors;
-	[SerializeField] private ParticleSystem _noteHitMainFx;
 
 	private List<float> _notesToPreview = new List<float>();
 	private float _offset;
@@ -24,7 +23,6 @@ public class BeatDisplay : MonoBehaviour
 	private void Awake() {
 		ON_InitBeatmap.AddListener(InitNotes);
 		ON_SongStart.AddListener(InitPreview);
-		ON_NoteHit.AddListener(CreateHitFx);
 	}
 
 	private void InitNotes(List<float> pNotes) {
@@ -71,17 +69,6 @@ public class BeatDisplay : MonoBehaviour
 			DisplayNotePreview(_notesToPreview[0]);
 			_notesToPreview.RemoveAt(0);
 		}
-	}
-
-	private void CreateHitFx(float pOffset) {
-		Color lColor = GetNoteColor(pOffset);
-		MainModule lMainFx = _noteHitMainFx.main;
-
-		Color lFaded = lColor;
-		lFaded.a = .1f;
-		lMainFx.startColor = lFaded;
-
-		_noteHitMainFx.Play();
 	}
 }
 

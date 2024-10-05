@@ -10,7 +10,7 @@ public class NotePreview : MonoBehaviour
     private Color _color;
     private int _segments = 32; // Number of segments to define the circle shape
     private float _startRadius = 1500; // Starting radius of the circle
-    private float _endRadius = 200; // Final radius of the circle
+    private float _endRadius = 150; // Final radius of the circle
 
     public void Init(Vector3 pStartScale, float pBeatOffset, Color pColor) {
         _startScale = pStartScale;
@@ -31,7 +31,7 @@ public class NotePreview : MonoBehaviour
 
         // Update circle size and color over time
         UpdateCircle(currentRadius);
-        _lineRenderer.startColor = new Color(_color.r, _color.g, _color.b, Mathf.Clamp(_completionRatio * 3, 0, _color.a));
+        _lineRenderer.startColor = new Color(_color.r, _color.g, _color.b, Mathf.Lerp(0, .5f, _completionRatio));
         _lineRenderer.endColor = _lineRenderer.startColor;
 
         if (BeatmapManager.SampledTime > _startSampledTime + _offset) {

@@ -34,10 +34,9 @@ public class PlayerHands : MonoBehaviour
 		//PlayerInputManager.ON_MainFireKeyPressed.AddListener(FireMain);
 		//PlayerInputManager.ON_SecondaryFireKeyPressed.AddListener(FireSecondary);
 		BeatmapManager.ON_TriggerNote.AddListener(FireMain);
-		BeatmapManager.ON_TriggerNote.AddListener(FireSecondary);
 	}
 
-	protected virtual void AimAtCursor(float pRatio) {
+	protected virtual void AimAtCursor() {
 		// Calculate target
 		DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
 
@@ -48,37 +47,31 @@ public class PlayerHands : MonoBehaviour
 
 			if (_lastUsedWeapon) {
 				// Rotate weapon towards target
-				_lastUsedWeapon.transform.rotation = Quaternion.Lerp(_lastUsedWeapon.transform.rotation, lEndRotation, pRatio);
+				_lastUsedWeapon.transform.rotation = lEndRotation;
 
 				// Flip Sprites
 				bool lDotPositive = (Vector3.Dot(Vector3.right, Vector3.Normalize(lDirection))) > 0;
 				_lastUsedWeapon.transform.localScale = lDotPositive ? Vector3.one : new Vector3(1, -1, 1);
 				_bodySprite.flipX = !lDotPositive;
 			}
-		}		
+		}
 	}
 
 	protected virtual void FireMain() {
-		if ((PlayerInputManager.MainFireKeyInput && PlayerInputManager.LastWeaponInput == "Fire1") ||
-			(PlayerInputManager.MainFireKeyInput && ! PlayerInputManager.SecondaryFireKeyInput)) {
-			_mainWeapon.gameObject.SetActive(true);
-			_lastUsedWeapon = _mainWeapon;
-			_mainWeapon.sortingGroup.sortingOrder = 1;
-			_secondaryWeapon.sortingGroup.sortingOrder = 0;
-			AimAtCursor(1);
-			_mainWeapon.Fire();
-		}
+		_mainWeapon.gameObject.SetActive(true);
+		_lastUsedWeapon = _mainWeapon;
+		_mainWeapon.sortingGroup.sortingOrder = 1;
+		_secondaryWeapon.sortingGroup.sortingOrder = 0;
+		AimAtCursor();
+		_mainWeapon.Fire();
 	}
 
 	protected virtual void FireSecondary() {
-		if ((PlayerInputManager.SecondaryFireKeyInput && PlayerInputManager.LastWeaponInput == "Fire2") ||
-			(PlayerInputManager.SecondaryFireKeyInput && !PlayerInputManager.MainFireKeyInput)) {
-			_secondaryWeapon.gameObject.SetActive(true);
-			_lastUsedWeapon = _secondaryWeapon;
-			_secondaryWeapon.sortingGroup.sortingOrder = 1;
-			_mainWeapon.sortingGroup.sortingOrder = 0;
-			AimAtCursor(1);
-			_secondaryWeapon.Fire();
-		}
+		_secondaryWeapon.gameObject.SetActive(true);
+		_lastUsedWeapon = _secondaryWeapon;
+		_secondaryWeapon.sortingGroup.sortingOrder = 1;
+		_mainWeapon.sortingGroup.sortingOrder = 0;
+		AimAtCursor();
+		_secondaryWeapon.Fire();
 	}
 }

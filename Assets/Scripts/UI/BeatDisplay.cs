@@ -14,6 +14,10 @@ public class BeatDisplay : MonoBehaviour
 	[SerializeField] private GameObject _notePrefab;
 	[SerializeField] private RectTransform _container;
 	[Space]
+	[SerializeField] private LineRenderer _lineRenderer;
+	[SerializeField] private int _segments = 32; // Number of segments to define the circle shape
+	[SerializeField] private float _endRadius = 200;
+	[Space]
 	[SerializeField] private List<NoteColors> _noteColors;
 
 	private List<float> _notesToPreview = new List<float>();
@@ -23,6 +27,20 @@ public class BeatDisplay : MonoBehaviour
 	private void Awake() {
 		ON_InitBeatmap.AddListener(InitNotes);
 		ON_SongStart.AddListener(InitPreview);
+	}
+
+	private void Start() {
+		// Initialize the LineRenderer properties
+		_lineRenderer.positionCount = _segments + 1; // +1 to close the circle
+		_lineRenderer.useWorldSpace = false;
+
+		float angle = 0f;
+		for (int i = 0; i <= _segments; i++) {
+			float x = Mathf.Cos(Mathf.Deg2Rad * angle) * _endRadius;
+			float y = Mathf.Sin(Mathf.Deg2Rad * angle) * _endRadius;
+			_lineRenderer.SetPosition(i, new Vector3(x, y, 0f));
+			angle += 360f / _segments;
+		}
 	}
 
 	private void InitNotes(List<float> pNotes) {
@@ -46,12 +64,7 @@ public class BeatDisplay : MonoBehaviour
 
 		// Note right
 		NotePreview lNote = Instantiate(_notePrefab).GetComponent<NotePreview>();
-		lNote.Init(new Vector2(_container.rect.xMax, _container.rect.y + _container.rect.height / 2), _offset, lColor);
-		lNote.transform.SetParent(_container, false);
-
-		// Note Left
-		lNote = Instantiate(_notePrefab).GetComponent<NotePreview>();
-		lNote.Init(new Vector2(_container.rect.xMin, _container.rect.y + _container.rect.height / 2), _offset, lColor);
+		lNote.Init(Vector3.one, _offset, lColor);
 		lNote.transform.SetParent(_container, false);
 	}
 

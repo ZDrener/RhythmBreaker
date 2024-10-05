@@ -21,20 +21,12 @@ public class Weapon : MonoBehaviour
 	#region MAIN / SECONDARY
 	public bool isMainWeapon {
 		get { return _isMainWeapon; }
-		set {
-			_isMainWeapon = value;
-			if (value) PlayerInputManager.ON_MainFireKeyPressed.AddListener(Fire);
-			else PlayerInputManager.ON_MainFireKeyPressed.AddListener(Fire);
-		}
+		set { _isMainWeapon = value; }
 	}
 	protected bool _isMainWeapon;
 	public bool isSecondaryWeapon {
 		get { return _isSecondaryWeapon; }
-		set {
-			_isSecondaryWeapon = value;
-			if (value) PlayerInputManager.ON_MainFireKeyPressed.AddListener(Fire);
-			else PlayerInputManager.ON_MainFireKeyPressed.AddListener(Fire);
-		}
+		set { _isSecondaryWeapon = value; }
 	}
 	protected bool _isSecondaryWeapon;
 	#endregion

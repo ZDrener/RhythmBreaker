@@ -114,7 +114,7 @@ public class BeatmapManager : MonoBehaviour
 
 
 		// Check if the note is within the buffer window and if the player pressed it
-		if (pCondition && (PlayerInputManager.MainFireKeyInput || PlayerInputManager.SecondaryFireKeyInput)) {
+		if (pCondition && (PlayerInputManager.AttackInput)) {
 			ON_TriggerNote.Invoke();
 
 			// Play hit sound
@@ -122,6 +122,9 @@ public class BeatmapManager : MonoBehaviour
 
 			// Fire the weapon if the player is holding the fire key			
 			BeatDisplay.ON_NoteHit.Invoke(noteTime);
+
+			// Add a bar to the accuracy display
+			AccuracyDisplay.DisplayAccuracyEvent.Invoke((noteTime - pSampledTime) / InputBufferWindow);
 
 			// Remove the note from the list once it's hit
 			Beatmap.AllNotes.RemoveAt(0);

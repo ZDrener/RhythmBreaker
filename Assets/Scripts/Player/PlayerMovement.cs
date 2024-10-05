@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 	[HideInInspector] public Vector2 Direction { get; protected set; }
 
 	protected virtual void Start() {
-		PlayerInputManager.ON_DashKeyPressed.AddListener(DashBegin);
+		
 	}
 
 	protected virtual void Update() {
@@ -31,9 +31,6 @@ public class PlayerMovement : MonoBehaviour
 	protected virtual void Move() {
 		// Cancel movement if the player is dashing
 		if (_isDashing) return;
-
-		// Input direction
-		Direction = PlayerInputManager.MovementInput;
 
 		// If there's input, accelerate towards the desired direction
 		if (Direction.magnitude > 0) {

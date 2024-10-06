@@ -5,7 +5,6 @@ using UnityEngine.Events;
 public class Metronome
 {
 	public AudioClip MetronomeClip;
-	public bool TriggerFire;
 	public static UnityEvent Trigger = new UnityEvent();
 
 	private int _lastInterval;

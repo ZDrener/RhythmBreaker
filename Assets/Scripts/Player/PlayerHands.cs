@@ -18,6 +18,7 @@ public class PlayerHands : MonoBehaviour
 	[Header("OTHERS")]
 	[SerializeField] protected Camera _camera;
 	[SerializeField] protected float _weaponSmoothRotation = .5f;
+	[SerializeField] float _secondaryWeaponRange = 2;
 
 	protected Weapon _lastUsedWeapon;
 
@@ -33,7 +34,7 @@ public class PlayerHands : MonoBehaviour
 
 		//PlayerInputManager.ON_MainFireKeyPressed.AddListener(FireMain);
 		//PlayerInputManager.ON_SecondaryFireKeyPressed.AddListener(FireSecondary);
-		BeatmapManager.ON_TriggerNote.AddListener(FireMain);
+		BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
 	}
 
 	protected virtual void AimAtCursor() {
@@ -55,6 +56,12 @@ public class PlayerHands : MonoBehaviour
 				_bodySprite.flipX = !lDotPositive;
 			}
 		}
+	}
+
+	protected virtual void OrderFire() {
+		DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
+		if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
+		else FireMain();
 	}
 
 	protected virtual void FireMain() {

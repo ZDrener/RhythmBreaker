@@ -17,8 +17,6 @@ public class AccuracyDisplay : MonoBehaviour
 	}
 
 	private void AddIndicator(float pAcc) {
-		Debug.Log($"Accuracy = {pAcc}");
-
 		AccuracyIndicator lIndicator = Instantiate(_AccuracyIndicator, _container, false).GetComponent<AccuracyIndicator>(); ;
 		lIndicator.transform.localPosition = Vector3.left * pAcc * 150;
 		lIndicator.image.color = _gradient.Evaluate(Mathf.Abs(pAcc));

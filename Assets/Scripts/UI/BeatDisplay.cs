@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.ParticleSystem;
 
 public class BeatDisplay : MonoBehaviour
 {
 	public static UnityEvent<List<float>> ON_InitBeatmap = new UnityEvent<List<float>>();
 	public static UnityEvent<float> ON_SongStart = new UnityEvent<float>();
-	public static UnityEvent<float> ON_NoteHit = new UnityEvent<float>();
 
 	[SerializeField] private GameObject _notePrefab;
 	[SerializeField] private RectTransform _container;

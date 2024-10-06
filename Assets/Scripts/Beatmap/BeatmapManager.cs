@@ -83,7 +83,6 @@ public class BeatmapManager : MonoBehaviour
 			// Check for the metronome
 			if (_metronome.CheckForNewInterval(SampledTime, lBeatPlayed)) {
 				if (_metronome.MetronomeClip && !lBeatPlayed) {
-					if (_metronome.TriggerFire) ON_TriggerNote.Invoke();
 
 					Metronome.Trigger.Invoke();
 					PlayHitSound(_metronome.MetronomeClip);
@@ -114,14 +113,12 @@ public class BeatmapManager : MonoBehaviour
 
 
 		// Check if the note is within the buffer window and if the player pressed it
-		if (pCondition && (PlayerInputManager.AttackInput)) {
+		if (pCondition && PlayerInputManager.AttackInput) {
+
 			ON_TriggerNote.Invoke();
 
 			// Play hit sound
 			if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
-
-			// Fire the weapon if the player is holding the fire key			
-			BeatDisplay.ON_NoteHit.Invoke(noteTime);
 
 			// Add a bar to the accuracy display
 			AccuracyDisplay.DisplayAccuracyEvent.Invoke((noteTime - pSampledTime) / InputBufferWindow);

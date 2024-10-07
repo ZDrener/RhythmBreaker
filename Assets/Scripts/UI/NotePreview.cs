@@ -3,6 +3,7 @@
 public class NotePreview : MonoBehaviour
 {
     [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private AnimationCurve _approachCurve;
     private Vector3 _startScale;
     private float _offset;
     private float _startSampledTime;
@@ -27,11 +28,11 @@ public class NotePreview : MonoBehaviour
 
     private void Update() {
         _completionRatio = (BeatmapManager.SampledTime - _startSampledTime) / _offset;
-        float currentRadius = Mathf.Lerp(_startRadius, _endRadius, _completionRatio);
+        float currentRadius = Mathf.Lerp(_startRadius, _endRadius, _approachCurve.Evaluate(_completionRatio));
 
         // Update circle size and color over time
         UpdateCircle(currentRadius);
-        _lineRenderer.startColor = new Color(_color.r, _color.g, _color.b, Mathf.Lerp(0, .5f, _completionRatio));
+        _lineRenderer.startColor = new Color(_color.r, _color.g, _color.b, Mathf.Lerp(0, .35f, _approachCurve.Evaluate(_completionRatio)));
         _lineRenderer.endColor = _lineRenderer.startColor;
 
         if (BeatmapManager.SampledTime > _startSampledTime + _offset) {

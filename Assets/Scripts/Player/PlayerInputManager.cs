@@ -37,10 +37,12 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     private void HandleMobile() {
+        Touch lTouch;
         for (int i = Input.touchCount - 1; i >= 0; i--) {
-            if (Input.GetTouch(i).phase == TouchPhase.Began) {
+            lTouch = Input.GetTouch(i);
+            if (lTouch.phase == TouchPhase.Began || lTouch.phase == TouchPhase.Moved || lTouch.phase == TouchPhase.Stationary) {
                 AttackInput = true;
-                _touchStartPos = Utils.ScreenToWorld(_mainCamera, Input.GetTouch(i).position); // Record the starting position of the touch
+                _touchStartPos = Utils.ScreenToWorld(_mainCamera, lTouch.position); // Record the starting position of the touch
                 _touchStartTime = Time.time; // Record the starting time of the touch
                 return;
             }
@@ -48,7 +50,7 @@ public class PlayerInputManager : MonoBehaviour
         AttackInput = false;
     }
 
-    protected virtual void AllowDash() {
+    protected virtual void AllowDash(NoteType pType) {
         _canDash = true;
         StartCoroutine(DashCoroutine());
     }

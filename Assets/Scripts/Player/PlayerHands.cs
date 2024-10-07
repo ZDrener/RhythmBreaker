@@ -58,10 +58,13 @@ public class PlayerHands : MonoBehaviour
 		}
 	}
 
-	protected virtual void OrderFire() {
-		DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
-		if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
-		else FireMain();
+	protected virtual void OrderFire(NoteType pType) {
+		//DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
+		//if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
+		//else FireMain();
+
+		if (pType == NoteType.Red) FireMain();
+		else if (pType == NoteType.Blue) FireSecondary();
 	}
 
 	protected virtual void FireMain() {

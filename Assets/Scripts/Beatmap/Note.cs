@@ -7,14 +7,23 @@ using UnityEngine;
 public class Note
 {
 	public float PositionInMeasure;
-	[HideInInspector] public AudioClip CustomClip;
+	public NoteType _noteType;
 	[HideInInspector] public float GlobalOffset;
 
 	public Note CopyNote() {
 		Note lNote = new Note();
 		lNote.PositionInMeasure = PositionInMeasure;
-		lNote.CustomClip = CustomClip;
+		lNote._noteType = _noteType;
 		lNote.GlobalOffset = GlobalOffset;
 		return lNote;
-	}
+	}	
 }
+
+[Serializable]
+public enum NoteType {
+	Blue,
+	Red,
+	Yellow
+}
+
+

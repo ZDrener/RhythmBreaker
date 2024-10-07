@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class BeatDisplay : MonoBehaviour
 {
-	public static UnityEvent<List<float>> ON_InitBeatmap = new UnityEvent<List<float>>();
+	public static UnityEvent<List<Note>> ON_InitBeatmap = new UnityEvent<List<Note>>();
 	public static UnityEvent<float> ON_SongStart = new UnityEvent<float>();
 
 	[SerializeField] private GameObject _notePrefab;
@@ -18,7 +18,7 @@ public class BeatDisplay : MonoBehaviour
 	[Space]
 	[SerializeField] private List<NoteColors> _noteColors;
 
-	private List<float> _notesToPreview = new List<float>();
+	private List<Note> _notesToPreview = new List<Note>();
 	private float _offset;
 	private bool _songStarted;
 
@@ -41,8 +41,8 @@ public class BeatDisplay : MonoBehaviour
 		}
 	}
 
-	private void InitNotes(List<float> pNotes) {
-		foreach (float lNote in pNotes) {
+	private void InitNotes(List<Note> pNotes) {
+		foreach (Note lNote in pNotes) {
 			_notesToPreview.Add(lNote);
 		}
 	}
@@ -56,9 +56,9 @@ public class BeatDisplay : MonoBehaviour
 		_songStarted = true;
 	}
 
-	private void DisplayNotePreview(float pOffset) {
+	private void DisplayNotePreview(float pOffset, NoteType pType) {
 
-		Color lColor = GetNoteColor(pOffset);
+		Color lColor = GetNoteColor(pType);
 
 		// Note right
 		NotePreview lNote = Instantiate(_notePrefab).GetComponent<NotePreview>();
@@ -66,18 +66,18 @@ public class BeatDisplay : MonoBehaviour
 		lNote.transform.SetParent(_container, false);
 	}
 
-	private Color GetNoteColor(float pOffset) {
+	private Color GetNoteColor(NoteType pType) {
 		Color lColor = Color.white;
 		for (int i = 0; i < _noteColors.Count; i++) {
-			if (pOffset % _noteColors[i].Offset == 0) lColor = _noteColors[i].Color;
+			if (pType == _noteColors[i].Type) lColor = _noteColors[i].Color;
 		}
 		return lColor;
 	}
 
 	private void CheckForPreview() {
 		if (_notesToPreview.Count == 0) return;
-		else if (_notesToPreview[0] <= BeatmapManager.SampledTime + _offset) {
-			DisplayNotePreview(_notesToPreview[0]);
+		else if (_notesToPreview[0].GlobalOffset <= BeatmapManager.SampledTime + _offset) {
+			DisplayNotePreview(_notesToPreview[0].GlobalOffset, _notesToPreview[0]._noteType);
 			_notesToPreview.RemoveAt(0);
 		}
 	}
@@ -86,6 +86,6 @@ public class BeatDisplay : MonoBehaviour
 [Serializable]
 public class NoteColors
 {
-	public float Offset;
+	public NoteType Type;
 	public Color Color;
 }

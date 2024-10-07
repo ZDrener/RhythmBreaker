@@ -8,7 +8,7 @@ public class BeatmapManager : MonoBehaviour
 {
 	public static BeatmapManager Instance;
 
-	public static UnityEvent ON_TriggerNote = new UnityEvent();
+	public static UnityEvent<NoteType> ON_TriggerNote = new UnityEvent<NoteType>();
 
 	public static float SampledTime;
 
@@ -104,18 +104,19 @@ public class BeatmapManager : MonoBehaviour
 			return;
 		}
 
-		float noteTime = Beatmap.AllNotes[0];
-		float timeDifference = Mathf.Abs(noteTime - pSampledTime);
+		Note lNote = Beatmap.AllNotes[0];
+		float noteTime = lNote.GlobalOffset;
+		float timeDifference = noteTime - pSampledTime;
 
 		bool pCondition = DebugGameMode.Instance.AllowHold ?
 			noteTime <= pSampledTime :
-			timeDifference <= InputBufferWindow;
+			(noteTime <= pSampledTime) && (noteTime + InputBufferWindow >= pSampledTime);
 
 
 		// Check if the note is within the buffer window and if the player pressed it
 		if (pCondition && PlayerInputManager.AttackInput) {
 
-			ON_TriggerNote.Invoke();
+			ON_TriggerNote.Invoke(lNote._noteType);
 
 			// Play hit sound
 			if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);

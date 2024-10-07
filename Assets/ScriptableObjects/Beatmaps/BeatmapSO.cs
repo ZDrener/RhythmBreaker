@@ -20,7 +20,7 @@ public class BeatmapSO : ScriptableObject
 	[Space]
 	[Header("CHARTING")]
 	[SerializeField] protected List<Section> Sections;
-	protected List<float> _allNotes;
+	protected List<Note> _allNotes;
 
 	public string Name => _name;
 	public string Artist => _artist;
@@ -30,20 +30,23 @@ public class BeatmapSO : ScriptableObject
 	public float Bpm => _bpm;
 	public int Offset => _offset;
 	public float Difficulty => _difficulty;
-	public List<float> AllNotes => _allNotes;
+	public List<Note> AllNotes => _allNotes;
 
 	public void InitNotes()
 	{
-		List<float> allNotes = new List<float>();
+		List<Note> allNotes = new List<Note>();
 		float globalOffset = 0f;
 
 		// Function to process a section
 		void ProcessSection(Section section, ref float currentGlobalOffset)
 		{
-			foreach (var measure in section.Measures)
+			foreach (Measure measure in section.Measures)
 			{
 				// For each note in the measure, calculate its GlobalOffset and add it to the list
-				foreach (var note in measure.Notes)	allNotes.Add(note + currentGlobalOffset);				
+				foreach (Note note in measure.Notes) {
+					note.GlobalOffset = note.PositionInMeasure + currentGlobalOffset;
+					allNotes.Add(note.CopyNote());
+				}
 
 				// Update the currentGlobalOffset by adding the length of the current measure
 				currentGlobalOffset += measure.LengthInBeats;
@@ -63,7 +66,7 @@ public class BeatmapSO : ScriptableObject
 		}
 
 		// Sort the notes
-		allNotes.Sort(delegate (float n1, float n2) { return n1.CompareTo(n2); });
+		allNotes.Sort(delegate (Note n1, Note n2) { return n1.GlobalOffset.CompareTo(n2.GlobalOffset); });
 
 		_allNotes = allNotes;
 	}

@@ -48,10 +48,10 @@ public class PlayerInputManager : MonoBehaviour
                     AttackInput = true;
 
                     // Determine if the cursor is in red or blue
-                    if ((lTouch.position.y <= _mainCamera.scaledPixelHeight / 2) || Vector2.Dot(Vector2.down, lTouch.deltaPosition.normalized) > 0.8f) {
+                    if ((lTouch.position.y <= _mainCamera.scaledPixelHeight / 2) || (Vector2.Dot(Vector2.down, lTouch.deltaPosition.normalized) > 0.8f) && lTouch.deltaPosition.magnitude >= 5) {
                         AttackType = NoteType.Red;
                     }
-                    if ((lTouch.position.y >= _mainCamera.scaledPixelHeight / 2) || Vector2.Dot(Vector2.up, lTouch.deltaPosition.normalized) > 0.8f) {
+                    if ((lTouch.position.y >= _mainCamera.scaledPixelHeight / 2) || ((Vector2.Dot(Vector2.up, lTouch.deltaPosition.normalized) > 0.8f) && lTouch.deltaPosition.magnitude >= 5)) {
                         AttackType = NoteType.Blue;
                     }
                 }

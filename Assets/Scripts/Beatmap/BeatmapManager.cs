@@ -114,7 +114,7 @@ public class BeatmapManager : MonoBehaviour
 
 
 		// Check if the note is within the buffer window and if the player pressed it
-		if (pCondition && PlayerInputManager.AttackInput) {
+		if (pCondition && PlayerInputManager.AttackInput && lNote._noteType == PlayerInputManager.AttackType) {
 
 			ON_TriggerNote.Invoke(lNote._noteType);
 

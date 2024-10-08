@@ -7,14 +7,16 @@ using UnityEngine.Events;
 public class PlayerInputManager : MonoBehaviour
 {
     public static UnityEvent<Vector2> ON_DashInput = new UnityEvent<Vector2>();
+	public static Vector2 DirectionInput;
     public static bool AttackInput;
     public static NoteType AttackType;
     public static Vector2 DashDirection;
     public static string LastWeaponInput;
     [SerializeField] private float _minSwipeDistance = .2f;
     [SerializeField] private float _maxSwipeTime = .1f;
+    [SerializeField] private VariableJoystick _joystick;
 
-    private Camera _mainCamera;
+	private Camera _mainCamera;
     private bool _canDash = true;
     private Vector2 _touchStartPos;
     private float _touchStartTime;
@@ -24,7 +26,7 @@ public class PlayerInputManager : MonoBehaviour
 
     protected virtual void Awake() {
         // Singleton Setup
-        if (Instance != null) throw new System.Exception("Two instances of a singleton exist at the same time. Go fix it dumbass.");
+        if (Instance != null) throw new Exception("Two instances of a singleton exist at the same time. Go fix it dumbass.");
         Instance = this;
     }
 
@@ -33,10 +35,11 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     protected virtual void Update() {
-        HandleMobile();
+        HandleMobileTouch();
+		DirectionInput = _joystick.Direction;
     }
 
-    private void HandleMobile() {
+    private void HandleMobileTouch() {
         Touch lTouch;
         // For every finger on screen
         for (int i = Input.touchCount - 1; i >= 0; i--) {

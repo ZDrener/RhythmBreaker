@@ -63,9 +63,9 @@ public class PlayerHands : MonoBehaviour
 		//if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
 		//else FireMain();
 
-		if (pType == NoteType.Red) FireMain();
-		else if (pType == NoteType.Blue) FireSecondary();
-	}
+		if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
+		else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
+    }
 
 	protected virtual void FireMain() {
 		_mainWeapon.gameObject.SetActive(true);

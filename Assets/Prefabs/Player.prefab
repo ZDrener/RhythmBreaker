@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1798923224669293936}
   - component: {fileID: 7712954403027614758}
   - component: {fileID: 499710583}
-  m_Layer: 0
+  - component: {fileID: 6298072289206404031}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,9 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae61c8caa50a734e85a79d1bd90d37a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 10
-  _acceleration: 100
-  _friction: 100
   _dashDistance: 6
   _dashDuration: 0.25
   _dashCurve:
@@ -103,6 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb07ef5948700fa4c954d1db38b1c66a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _minSwipeDistance: 0.2
+  _maxSwipeTime: 0.1
+  _joystick: {fileID: 0}
 --- !u!114 &499710583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +116,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2389129b0b2c6148b5e6cd9f8095277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &6298072289206404031
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503466113768072550}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2095909336383359159
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5875214751438771802}
   - component: {fileID: 5573781040714431299}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,6 +179,7 @@ MonoBehaviour:
   _bodySprite: {fileID: 1721410481041458539}
   _camera: {fileID: 0}
   _weaponSmoothRotation: 0.5
+  _secondaryWeaponRange: 2
 --- !u!1 &6519824446481834155
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +191,7 @@ GameObject:
   - component: {fileID: 4551378482913748356}
   - component: {fileID: 3610065023162026386}
   - component: {fileID: 832353863511989149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DashTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4988,7 +5003,7 @@ GameObject:
   - component: {fileID: 3524290444659706066}
   - component: {fileID: 5101798803005464849}
   - component: {fileID: 1515867093676713859}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5140,7 +5155,7 @@ GameObject:
   - component: {fileID: 1721410481041458539}
   - component: {fileID: 724672373}
   - component: {fileID: 5893556873931702514}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5260,7 +5275,7 @@ GameObject:
   - component: {fileID: 2369141304549988979}
   - component: {fileID: 8819541475547843671}
   - component: {fileID: 6635553823709940536}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DashRings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10068,6 +10083,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3204197058014049421}
     m_Modifications:
+    - target: {fileID: 105833988263100661, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 582371333179424357, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263098077582738233, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226948301191558366, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6054639336235590531, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -10112,9 +10143,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6151642949211984235, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7313034228934024270, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7827675818946532322, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
       propertyPath: m_Name
       value: Blade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827675818946532322, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8668361566279041684, guid: f1932bc6aa129d44bb1a616df0dc49d6, type: 3}
       propertyPath: _trail
@@ -10200,9 +10243,25 @@ PrefabInstance:
       propertyPath: _audioClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: cb9bc9adbbac9d4439fa812dcacd1659, type: 3}
+    - target: {fileID: 3767108609817134066, guid: 3a8a0a0c77d91d84598d49e1f160b316, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4786069557754058206, guid: 3a8a0a0c77d91d84598d49e1f160b316, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5082135440924195768, guid: 3a8a0a0c77d91d84598d49e1f160b316, type: 3}
       propertyPath: m_Name
       value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 5082135440924195768, guid: 3a8a0a0c77d91d84598d49e1f160b316, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293525737417831412, guid: 3a8a0a0c77d91d84598d49e1f160b316, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8266188521414301165, guid: 3a8a0a0c77d91d84598d49e1f160b316, type: 3}
       propertyPath: m_RootOrder

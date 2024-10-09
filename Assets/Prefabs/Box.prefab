@@ -433,6 +433,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 4
+  _attackRateRange: {x: 1, y: 3}
+  _projectilePrefab: {fileID: 8359058598341790087, guid: 7ffd534c8bec7c444bef5774feb3bf6f, type: 3}
   _lifeBar: {fileID: 4443095568454281859}
   _lifeBar2: {fileID: 4443095568432059859}
   _spawnRect:
@@ -444,6 +446,8 @@ MonoBehaviour:
   _lifeBar2DecreaseForce: 1
   _spriteRenderer: {fileID: 4443095569802303671}
   _HitHueChangeDuration: 1
+  ChangePosOnFirstSpawn: 1
+  ChangePosOnRespawn: 0
 --- !u!114 &6163524919453767985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,6 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6283dfc7def498448f6d13b3c1bb2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
 --- !u!1 &4443095570245798907
 GameObject:
   m_ObjectHideFlags: 0

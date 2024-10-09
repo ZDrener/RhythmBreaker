@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class BeatmapManager : MonoBehaviour
 {
@@ -23,16 +24,36 @@ public class BeatmapManager : MonoBehaviour
 	[Space]
 	[Header("INPUT BUFFER")]
 	public float InputBufferWindow = 0.2f; // Adjust this value as needed
+	[Header("STUFF")]
+	[SerializeField] protected GameObject _restartPrefab;
 
-	void Start() {
+	public delegate void SimpleEvent();
+	public static event SimpleEvent SongStartEvent;
+
+    private void Awake()
+    {
+		Player.PlayerDeathEvent += StopSong;
+    }
+
+    void Start() {
 		if (Instance != null) throw new Exception("Two instances of BeatmapManager exist at the same time");
 		Instance = this;
 
-		_musicSource.clip = Beatmap.Audio;
-		StartCoroutine(WaitForLoad());
+    }
+	
+	public void StartSong()
+    {
+        _musicSource.clip = Beatmap.Audio;
+        StartCoroutine(WaitForLoad());
 
-		Beatmap.InitNotes();
-		BeatDisplay.ON_InitBeatmap.Invoke(Beatmap.AllNotes);
+        Beatmap.InitNotes();
+        BeatDisplay.ON_InitBeatmap.Invoke(Beatmap.AllNotes);
+    }
+
+	private void StopSong()
+	{
+		_musicSource.Stop();
+		Instantiate(_restartPrefab);
 	}
 
 	private IEnumerator WaitForLoad() {
@@ -68,9 +89,10 @@ public class BeatmapManager : MonoBehaviour
 
 	private IEnumerator MusicCoroutine() {
 		_musicSource.Play();
+		SongStartEvent?.Invoke();
 
-		// Play the first Hit Sound
-		PlayHitSound(_metronome.MetronomeClip);
+        // Play the first Hit Sound
+        PlayHitSound(_metronome.MetronomeClip);
 		SampledTime = 0;
 
 		// Play beats
@@ -101,6 +123,7 @@ public class BeatmapManager : MonoBehaviour
 		// Stop if there are no more notes
 		if (Beatmap.AllNotes.Count == 0) {
 			Debug.LogWarning("SONG ENDED");
+			SongEnd();
 			return;
 		}
 
@@ -134,12 +157,21 @@ public class BeatmapManager : MonoBehaviour
 		}
 	}
 
+	protected void SongEnd()
+	{
 
-	public void PlayHitSound(AudioClip hitClip) {
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload scene to "restart" the song
+        // I wasn't sure if calling the functions called on Start() would restart the song so I did this for now, but could do calls here to restart
+		// Just restarting the scene won't work 'n_n you apparently need to reload the beatmap thingy??
+    }
+
+    public void PlayHitSound(AudioClip hitClip) {
 		if (hitClip) _hitSoundSource.PlayOneShot(hitClip);
 	}
 
 	private void OnDestroy() {
 		if (Instance == this) Instance = null;
-	}
+
+        Player.PlayerDeathEvent -= StopSong;
+    }
 }

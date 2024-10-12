@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NotePreview : MonoBehaviour
+public class NotePreviewCircle : MonoBehaviour
 {
     [SerializeField] private LineRenderer _lineRenderer;
     [SerializeField] private AnimationCurve _approachCurve;

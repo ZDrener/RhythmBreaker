@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
 	public static UnityEvent ON_Dash = new UnityEvent();
 
 	[Header("MOVEMENT")]
+	[SerializeField] protected float _moveSpeed = 3;
+	[SerializeField] protected Joystick _joystick;
+	[Header("DASH")]
 	[SerializeField] protected float _dashDistance = 3;
 	[SerializeField] protected float _dashDuration = 0.15f;
 	[SerializeField] protected AnimationCurve _dashCurve;
@@ -20,7 +24,15 @@ public class PlayerMovement : MonoBehaviour
 	[HideInInspector] public Vector2 Direction { get; protected set; }
 
 	protected virtual void Start() {
-		PlayerInputManager.ON_DashInput.AddListener(DashBegin);
+		//PlayerInputManager.ON_DashInput.AddListener(DashBegin);
+	}
+
+	protected virtual void Update() {
+		Move();
+	}
+
+	private void Move() {
+		transform.position += (Vector3)_joystick.Direction * _moveSpeed * Time.deltaTime;
 	}
 
 	protected virtual void DashBegin(Vector2 pDirection) {

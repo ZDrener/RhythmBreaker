@@ -40,13 +40,16 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     private void HandleMobileTouch() {
-        Touch lTouch;
+        // Reset Input
+        AttackInput = false;
+
         // For every finger on screen
+        Touch lTouch;
         for (int i = Input.touchCount - 1; i >= 0; i--) {
             lTouch = Input.GetTouch(i);
 
             if (lTouch.phase == TouchPhase.Began || lTouch.phase == TouchPhase.Moved || lTouch.phase == TouchPhase.Stationary) {
-                // Screen right side
+                // Screen right side => Attack input
                 if (lTouch.position.x >= _mainCamera.scaledPixelWidth / 2) {
                     AttackInput = true;
 
@@ -58,16 +61,14 @@ public class PlayerInputManager : MonoBehaviour
                         AttackType = NoteType.Blue;
                     }
                 }
-                // Screen left side
-                else if (lTouch.phase == TouchPhase.Began) {
-                    _touchStartPos = Utils.ScreenToWorld(_mainCamera, Input.GetTouch(i).position); // Record the starting position of the touch
-                    _touchStartTime = Time.time; // Record the starting time of the touch
-                    AllowDash(lTouch);
-                }
-                return;
+                // Screen left side => Dash Input
+                //else if (lTouch.phase == TouchPhase.Began) {
+                //    _touchStartPos = Utils.ScreenToWorld(_mainCamera, Input.GetTouch(i).position); // Record the starting position of the touch
+                //    _touchStartTime = Time.time; // Record the starting time of the touch
+                //    AllowDash(lTouch);
+                //}
             }
         }
-        AttackInput = false;
     }
 
     protected virtual void AllowDash(Touch lTouch) {

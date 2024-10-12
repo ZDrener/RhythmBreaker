@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,12 @@ public class DemoDummy : MonoBehaviour
 	[SerializeField] protected int _maxHealth;
 	protected int _health;
 	[Space]
+	[Header("COMBAT")]
+	[SerializeField] protected Vector2 _attackRateRange;
+	protected float _attackRate;
+	[SerializeField] protected GameObject _projectilePrefab;
+	protected Player _player;
+	[Space]
 	[Header("REFERENCES")]
 	[SerializeField] protected Image _lifeBar;
 	[SerializeField] protected Image _lifeBar2;
@@ -24,14 +31,31 @@ public class DemoDummy : MonoBehaviour
 
 	protected float _timeSinceLastHit;
 
+	public bool ChangePosOnFirstSpawn;
 	public bool ChangePosOnRespawn;
 
-	public void Start() {
+    private void Awake()
+    {
+		Player.PlayerDeathEvent += OnPlayerDeath;
+    }
+
+    public void Start() {
 		Respawn();
 		DummyList.Add(this);
-	}
+		_attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
+		BeatmapManager.SongStartEvent += OnSongStart;
 
-	public static DemoDummy GetClosestDummy(Vector3 pPosition) {
+		if (ChangePosOnFirstSpawn)
+		{
+            transform.position = new Vector3(
+            Random.Range(_spawnRect.xMin, _spawnRect.xMax),
+            Random.Range(_spawnRect.yMin, _spawnRect.yMax),
+            0);
+        }
+    }
+
+
+    public static DemoDummy GetClosestDummy(Vector3 pPosition) {
 		DemoDummy Target;
 		// Set target
 		if (DummyList.Count == 0) Target = null;
@@ -73,4 +97,49 @@ public class DemoDummy : MonoBehaviour
 		if (_spriteRenderer.color != Color.white)
 			_spriteRenderer.color = Color.Lerp(_spriteRenderer.color, Color.white, _HitHueChangeDuration * Time.deltaTime);
 	}
+    private IEnumerator ManageAttacks()
+    {
+        float lTime = 0f;
+
+        if (_player == null && Player.Instance != null)
+            _player = Player.Instance;
+
+        while (_player != null)
+        {
+            lTime += Time.deltaTime;
+
+            if (lTime > _attackRate)
+            {
+                AttackPlayer();
+                lTime -= _attackRate;
+            }
+
+            yield return null;
+        }
+
+        yield break;
+    }
+
+    private void AttackPlayer()
+	{
+		EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
+		lProjectile.InitAndStart(_player.gameObject);
+	}
+
+    protected void OnSongStart()
+    {
+        StartCoroutine(ManageAttacks());
+    }
+
+    protected void OnPlayerDeath()
+	{
+		StopAllCoroutines();
+	}
+
+    private void OnDestroy()
+    {
+		DummyList.Remove(this);
+        Player.PlayerDeathEvent -= OnPlayerDeath;
+		BeatmapManager.SongStartEvent -= OnSongStart;
+    }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4443095568432059861}
   - component: {fileID: 4443095568432059860}
   - component: {fileID: 4443095568432059859}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BarFill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4443095568454281857}
   - component: {fileID: 4443095568454281858}
   - component: {fileID: 4443095568454281859}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BarFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4443095569230591996}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Lifebar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 4443095569799078192}
   - component: {fileID: 4443095569799078207}
   - component: {fileID: 4443095569799078206}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 4443095569802303669}
   - component: {fileID: 4443095569802303657}
   - component: {fileID: 6163524919453767985}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,8 +432,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f315232cea49f847885870a75f55707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_NoteAwaited: 0
+  m_NotesForAction: 1
   _maxHealth: 4
-  _attackRateRange: {x: 1, y: 3}
   _projectilePrefab: {fileID: 8359058598341790087, guid: 7ffd534c8bec7c444bef5774feb3bf6f, type: 3}
   _lifeBar: {fileID: 4443095568454281859}
   _lifeBar2: {fileID: 4443095568432059859}
@@ -472,7 +473,7 @@ GameObject:
   - component: {fileID: 4443095570245798908}
   - component: {fileID: 4443095570245798910}
   - component: {fileID: 4443095570245798909}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

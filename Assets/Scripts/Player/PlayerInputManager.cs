@@ -7,7 +7,8 @@ using UnityEngine.Events;
 public class PlayerInputManager : MonoBehaviour
 {
     public static UnityEvent<Vector2> ON_DashInput = new UnityEvent<Vector2>();
-	public static Vector2 DirectionInput;
+    public static UnityEvent<NoteType> ON_ArcheroAttackInput = new UnityEvent<NoteType>();
+    public static Vector3 DirectionInput;
     public static bool AttackInput;
     public static NoteType AttackType;
     public static Vector2 DashDirection;
@@ -15,8 +16,13 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private float _minSwipeDistance = .2f;
     [SerializeField] private float _maxSwipeTime = .1f;
     [SerializeField] private VariableJoystick _joystick;
+    [Space]
+    [Header("ARCHERO GAMEPLAY")]
+    public bool ArcheroGameplay;
+    [SerializeField] private float _fireDelay;
+    private float _timeSinceLastShot = 0;
 
-	private Camera _mainCamera;
+    private Camera _mainCamera;
     private bool _canDash = true;
     private Vector2 _touchStartPos;
     private float _touchStartTime;
@@ -35,11 +41,21 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     protected virtual void Update() {
-        HandleMobileTouch();
+        if (ArcheroGameplay) HandleArcheroInput();
+        else HandleMobileTouch();
 		DirectionInput = _joystick.Direction;
     }
 
-    private void HandleMobileTouch() {
+	private void HandleArcheroInput() {
+        _timeSinceLastShot += Time.deltaTime;
+
+        if(_timeSinceLastShot >= _fireDelay && _joystick.Direction == Vector2.zero) {
+            _timeSinceLastShot = 0;
+            ON_ArcheroAttackInput.Invoke(NoteType.Yellow);  // We don't care about the type lol
+        }
+	}
+
+	private void HandleMobileTouch() {
         // Reset Input
         AttackInput = false;
 

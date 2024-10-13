@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
 
 	[Header("MOVEMENT")]
 	[SerializeField] protected float _moveSpeed = 3;
-	[SerializeField] protected Joystick _joystick;
 	[Header("DASH")]
 	[SerializeField] protected float _dashDistance = 3;
 	[SerializeField] protected float _dashDuration = 0.15f;
@@ -32,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	private void Move() {
-		transform.position += (Vector3)_joystick.Direction * _moveSpeed * Time.deltaTime;
+		transform.position += PlayerInputManager.DirectionInput * _moveSpeed * Time.deltaTime;
 	}
 
 	protected virtual void DashBegin(Vector2 pDirection) {

@@ -10,10 +10,13 @@ public class DebugGameMode : MonoBehaviour
 
     public bool MobileInputs;
     public bool AllowHold;
+    public ScreenOrientation Orientation;
 
     private void Start() {
         if (Instance != null) throw new System.Exception("Two instance of a singleton exists at the same time. Go fix it dumbass.");
         Instance = this;
+
+        Screen.orientation = Orientation;
     }
 
     public void ReloadScene() {

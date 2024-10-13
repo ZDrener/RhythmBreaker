@@ -19,6 +19,7 @@ public class PlayerHands : MonoBehaviour
 	[SerializeField] protected Camera _camera;
 	[SerializeField] protected float _weaponSmoothRotation = .5f;
 	[SerializeField] float _secondaryWeaponRange = 2;
+	[SerializeField] protected bool _ImmobileToShoot;
 
 	protected Weapon _lastUsedWeapon;
 
@@ -32,9 +33,10 @@ public class PlayerHands : MonoBehaviour
 		_mainWeapon.gameObject.SetActive(false);
 		_secondaryWeapon.gameObject.SetActive(false);
 
-		//PlayerInputManager.ON_MainFireKeyPressed.AddListener(FireMain);
-		//PlayerInputManager.ON_SecondaryFireKeyPressed.AddListener(FireSecondary);
-		BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
+		if (PlayerInputManager.Instance.ArcheroGameplay)
+			PlayerInputManager.ON_ArcheroAttackInput.AddListener(OrderFire);
+		else
+			BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
 	}
 
 	protected virtual void AimAtCursor() {
@@ -59,12 +61,17 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void OrderFire(NoteType pType) {
-		//DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
-		//if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
-		//else FireMain();
-
-		if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
-		else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
+		// Archero
+		if (PlayerInputManager.Instance.ArcheroGameplay) {
+			DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
+			if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
+			else FireMain();
+		}
+		// Hold
+		else {
+			if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
+			else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
+		}		
     }
 
 	protected virtual void FireMain() {

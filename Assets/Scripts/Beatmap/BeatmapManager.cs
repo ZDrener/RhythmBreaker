@@ -30,6 +30,7 @@ public class BeatmapManager : MonoBehaviour
 
 	public delegate void SimpleEvent();
 	public static event SimpleEvent SongStartEvent;
+	public static event SimpleEvent TriggerNoteEndEvent;
 
 	private void Awake()
 	{
@@ -145,6 +146,7 @@ public class BeatmapManager : MonoBehaviour
 
             ON_TriggerNote.Invoke(lNote._noteType);
             Beatmap.AllNotes.RemoveAt(0);
+			TriggerNoteEndEvent?.Invoke();
 
             /*// Play hit sound
             if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
@@ -154,7 +156,7 @@ public class BeatmapManager : MonoBehaviour
 
 			// Remove the note from the list once it's hit
 			Beatmap.AllNotes.RemoveAt(0);*/
-		}
+        }
 		/*// Destroy note on fail
 		else if (noteTime - pSampledTime < -InputBufferWindow) {
 			Beatmap.AllNotes.RemoveAt(0);

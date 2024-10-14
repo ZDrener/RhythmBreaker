@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
 	public delegate void IntEvent(int pInt);
 	public static event IntEvent PlayerHealthChange;
 
+	[SerializeField] protected Animator _animator;
+	protected const string _DAMAGED_TRIGGER = "Damaged";
+
 	private void Awake() {
 		if (Instance != null) throw new Exception("Two instances of a singleton exist at the same time");
 		Instance = this;
@@ -35,6 +38,7 @@ public class Player : MonoBehaviour
 		{
             _health -= pDamage;
             PlayerHealthChange?.Invoke(_health);
+			_animator.SetTrigger(_DAMAGED_TRIGGER);
 
             if (_health <= 0)
             {

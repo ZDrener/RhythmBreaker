@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae61c8caa50a734e85a79d1bd90d37a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveSpeed: 3
   _dashDistance: 6
   _dashDuration: 0.25
   _dashCurve:
@@ -104,6 +105,8 @@ MonoBehaviour:
   _minSwipeDistance: 0.2
   _maxSwipeTime: 0.1
   _joystick: {fileID: 0}
+  ArcheroGameplay: 0
+  _fireDelay: 0
 --- !u!114 &499710583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2389129b0b2c6148b5e6cd9f8095277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 5893556873931702514}
 --- !u!65 &6298072289206404031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -180,6 +184,7 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _weaponSmoothRotation: 0.5
   _secondaryWeaponRange: 2
+  _ImmobileToShoot: 0
 --- !u!1 &6519824446481834155
 GameObject:
   m_ObjectHideFlags: 0

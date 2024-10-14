@@ -31,6 +31,7 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected float _HitHueChangeDuration;
 
 	protected float _timeSinceLastHit;
+	protected static bool _hasFired = false;
 
 	public bool ChangePosOnFirstSpawn;
 	public bool ChangePosOnRespawn;
@@ -39,6 +40,7 @@ public class DemoDummy : EntityFollowingBeat
     {
 		base.Awake();
 		Player.PlayerDeathEvent += OnPlayerDeath;
+		BeatmapManager.TriggerNoteEndEvent += OnNoteEnd;
     }
 
     public void Start() {
@@ -136,10 +138,11 @@ public class DemoDummy : EntityFollowingBeat
 
     protected override void PlayAction()
     {
-		if (!_attackPeriodically)
+		if (!_attackPeriodically && _spriteRenderer.isVisible && !_hasFired)
 		{
 			base.PlayAction();
 
+			_hasFired = true;
 			EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
 			lProjectile.InitAndStart(GetPlayer.gameObject);
 		}
@@ -150,10 +153,16 @@ public class DemoDummy : EntityFollowingBeat
 		StopAllCoroutines();
 	}
 
+	protected virtual void OnNoteEnd()
+	{
+		_hasFired = false;
+	}
+
     override protected void OnDestroy()
     {
 		DummyList.Remove(this);
         Player.PlayerDeathEvent -= OnPlayerDeath;
 		BeatmapManager.SongStartEvent -= OnSongStart;
+		BeatmapManager.TriggerNoteEndEvent -= OnNoteEnd;
     }
 }

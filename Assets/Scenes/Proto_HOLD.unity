@@ -6472,7 +6472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c08ad309baaa843a0292942823cd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Beatmap: {fileID: 11400000, guid: 504a4b4cf00be5448b777e51c957bbfa, type: 2}
+  Beatmap: {fileID: 11400000, guid: 511aaa89afce48845a69626f3367fb45, type: 2}
   _hitSoundSource: {fileID: 1412987841}
   _musicSource: {fileID: 709541451}
   _metronome:

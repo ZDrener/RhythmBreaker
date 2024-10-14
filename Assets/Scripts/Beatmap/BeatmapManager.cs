@@ -26,29 +26,30 @@ public class BeatmapManager : MonoBehaviour
 	public float InputBufferWindow = 0.2f; // Adjust this value as needed
 	[Header("STUFF")]
 	[SerializeField] protected GameObject _restartPrefab;
+	protected bool _songEnded = false;
 
 	public delegate void SimpleEvent();
 	public static event SimpleEvent SongStartEvent;
 
-    private void Awake()
-    {
+	private void Awake()
+	{
 		Player.PlayerDeathEvent += StopSong;
-    }
+	}
 
-    void Start() {
+	void Start() {
 		if (Instance != null) throw new Exception("Two instances of BeatmapManager exist at the same time");
 		Instance = this;
 
-    }
+	}
 	
 	public void StartSong()
-    {
-        _musicSource.clip = Beatmap.Audio;
-        StartCoroutine(WaitForLoad());
+	{
+		_musicSource.clip = Beatmap.Audio;
+		StartCoroutine(WaitForLoad());
 
-        Beatmap.InitNotes();
-        BeatDisplay.ON_InitBeatmap.Invoke(Beatmap.AllNotes);
-    }
+		Beatmap.InitNotes();
+		BeatDisplay.ON_InitBeatmap.Invoke(Beatmap.AllNotes);
+	}
 
 	private void StopSong()
 	{
@@ -91,8 +92,8 @@ public class BeatmapManager : MonoBehaviour
 		_musicSource.Play();
 		SongStartEvent?.Invoke();
 
-        // Play the first Hit Sound
-        PlayHitSound(_metronome.MetronomeClip);
+		// Play the first Hit Sound
+		PlayHitSound(_metronome.MetronomeClip);
 		SampledTime = 0;
 
 		// Play beats
@@ -114,6 +115,8 @@ public class BeatmapManager : MonoBehaviour
 
 			// Check for the notes
 			CheckForNote(SampledTime);
+			if (_songEnded)
+				yield break;
 
 			yield return new WaitForEndOfFrame();
 		}
@@ -135,43 +138,43 @@ public class BeatmapManager : MonoBehaviour
 			noteTime <= pSampledTime :
 			(noteTime <= pSampledTime) && (noteTime + InputBufferWindow >= pSampledTime);
 
+        
 
-		// Check if the note is within the buffer window and if the player pressed it
-		if (pCondition && PlayerInputManager.AttackInput && lNote._noteType == PlayerInputManager.AttackType) {
+        // Check if the note is within the buffer window and if the player pressed it
+        if (pCondition/* && PlayerInputManager.AttackInput && lNote._noteType == PlayerInputManager.AttackType*/) {
 
-			ON_TriggerNote.Invoke(lNote._noteType);
+            ON_TriggerNote.Invoke(lNote._noteType);
+            Beatmap.AllNotes.RemoveAt(0);
 
-			// Play hit sound
-			if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
+            /*// Play hit sound
+            if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
 
 			// Add a bar to the accuracy display
 			AccuracyDisplay.DisplayAccuracyEvent.Invoke((noteTime - pSampledTime) / InputBufferWindow);
 
 			// Remove the note from the list once it's hit
-			Beatmap.AllNotes.RemoveAt(0);
+			Beatmap.AllNotes.RemoveAt(0);*/
 		}
-		// Destroy note on fail
+		/*// Destroy note on fail
 		else if (noteTime - pSampledTime < -InputBufferWindow) {
 			Beatmap.AllNotes.RemoveAt(0);
 			if (Beatmap.MissHitSound) PlayHitSound(Beatmap.MissHitSound);
-		}
+		}*/
 	}
 
 	protected void SongEnd()
 	{
-
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload scene to "restart" the song
-        // I wasn't sure if calling the functions called on Start() would restart the song so I did this for now, but could do calls here to restart
-		// Just restarting the scene won't work 'n_n you apparently need to reload the beatmap thingy??
+		_songEnded = true;
+        Instantiate(_restartPrefab);
     }
 
-    public void PlayHitSound(AudioClip hitClip) {
+	public void PlayHitSound(AudioClip hitClip) {
 		if (hitClip) _hitSoundSource.PlayOneShot(hitClip);
 	}
 
 	private void OnDestroy() {
 		if (Instance == this) Instance = null;
 
-        Player.PlayerDeathEvent -= StopSong;
-    }
+		Player.PlayerDeathEvent -= StopSong;
+	}
 }

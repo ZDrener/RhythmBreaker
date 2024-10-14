@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class EnemyProjectile : Projectile
 {
-	protected float m_Speed;
-	protected float m_Lifetime;
-	protected int m_Damage;
+	[Header("STATS")]
+	[Space]
+	[SerializeField] protected float m_Speed = 5f;
+	[SerializeField] protected float m_Lifetime = 2.5f;
+    [SerializeField] protected int m_Damage = 1;
+	[Header("VFXS")]
+	[Space]
+	[SerializeField] protected GameObject m_HitVFX;
 	protected GameObject m_Target;
 	protected Vector2 m_MovementDirection;
 
 
-    public void InitAndStart(GameObject pTarget, float pSpeed = 5f, int pDamage = 1, float pLifetime = 2.5f)
+    public void InitAndStart(GameObject pTarget/*, float pSpeed = 5f, int pDamage = 1, float pLifetime = 2.5f*/)
 	{
 		m_Target = pTarget;
-		m_Speed = pSpeed ;
+		/*m_Speed = pSpeed ;
 		m_Damage = pDamage ;
-		m_Lifetime = pLifetime ;
+		m_Lifetime = pLifetime ;*/
 
 		StartProjectile();
 	}
@@ -37,6 +42,10 @@ public class EnemyProjectile : Projectile
         {
             Player.Instance.TakeDamage(m_Damage);
             // Could add hit SFXs and such here or through a call to a function, instead of simply destroying
+
+            GameObject lImpact = Instantiate(m_HitVFX);
+            lImpact.transform.position = pOther.ClosestPoint(transform.position);
+            lImpact.transform.rotation = transform.rotation;
             Destroy(gameObject);
         }
     }

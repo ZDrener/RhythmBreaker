@@ -47,12 +47,13 @@ public class PlayerInputManager : MonoBehaviour
     }
 
 	private void HandleArcheroInput() {
-        _timeSinceLastShot += Time.deltaTime;
+        //_timeSinceLastShot += Time.deltaTime;
 
-        if(_timeSinceLastShot >= _fireDelay && _joystick.Direction == Vector2.zero) {
+        if(_joystick.Direction == Vector2.zero) {
             _timeSinceLastShot = 0;
-            ON_ArcheroAttackInput.Invoke(NoteType.Yellow);  // We don't care about the type lol
+			AttackInput = true;  // We don't care about the type lol
         }
+		else AttackInput = false;
 	}
 
 	private void HandleMobileTouch() {

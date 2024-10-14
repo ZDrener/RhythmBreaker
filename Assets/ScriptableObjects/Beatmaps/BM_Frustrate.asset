@@ -19,7 +19,7 @@ MonoBehaviour:
   _missHitSound: {fileID: 8300000, guid: 93d3e4ee21bbe8245b06a34d7b0dad52, type: 3}
   _bpm: 126
   _offset: 0
-  _difficulty: 0
+  _difficulty: 20
   Sections:
   - Name: 
     IsKiai: 0
@@ -501,293 +501,293 @@ MonoBehaviour:
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 96
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 96.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 97
         - PositionInMeasure: 1.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 97.5
         - PositionInMeasure: 1.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 97.75
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 98
         - PositionInMeasure: 2.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 98.25
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 98.5
         - PositionInMeasure: 2.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 98.75
         - PositionInMeasure: 3
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 99
         - PositionInMeasure: 3.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 99.25
         - PositionInMeasure: 3.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 99.5
         - PositionInMeasure: 3.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 99.75
       - Name: 2
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 100
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 100.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 101
         - PositionInMeasure: 1.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 101.5
         - PositionInMeasure: 1.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 101.75
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 102
         - PositionInMeasure: 2.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 102.25
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 102.5
         - PositionInMeasure: 2.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 102.75
         - PositionInMeasure: 3
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 103
         - PositionInMeasure: 3.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 103.5
       - Name: 1
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 104
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 104.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 105
         - PositionInMeasure: 1.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 105.5
         - PositionInMeasure: 1.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 105.75
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 106
         - PositionInMeasure: 2.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 106.25
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 106.5
         - PositionInMeasure: 2.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 106.75
         - PositionInMeasure: 3
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 107
         - PositionInMeasure: 3.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 107.25
         - PositionInMeasure: 3.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 107.5
         - PositionInMeasure: 3.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 107.75
       - Name: 3
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 108
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 108.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 109
         - PositionInMeasure: 1.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 109.5
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 110
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 110.5
         - PositionInMeasure: 3
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 111
         - PositionInMeasure: 3.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 111.5
       - Name: 1
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 112
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 112.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 113
         - PositionInMeasure: 1.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 113.5
         - PositionInMeasure: 1.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 113.75
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 114
         - PositionInMeasure: 2.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 114.25
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 114.5
         - PositionInMeasure: 2.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 114.75
         - PositionInMeasure: 3
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 115
         - PositionInMeasure: 3.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 115.25
         - PositionInMeasure: 3.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 115.5
         - PositionInMeasure: 3.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 115.75
       - Name: 2
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 116
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 116.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 117
         - PositionInMeasure: 1.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 117.5
         - PositionInMeasure: 1.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 117.75
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 118
         - PositionInMeasure: 2.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 118.25
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 118.5
         - PositionInMeasure: 2.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 118.75
         - PositionInMeasure: 3
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 119
         - PositionInMeasure: 3.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 119.5
       - Name: 1
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 120
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 120.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 121
         - PositionInMeasure: 1.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 121.5
         - PositionInMeasure: 1.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 121.75
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 122
         - PositionInMeasure: 2.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 122.25
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 122.5
         - PositionInMeasure: 2.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 122.75
         - PositionInMeasure: 3
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 123
         - PositionInMeasure: 3.25
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 123.25
         - PositionInMeasure: 3.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 123.5
         - PositionInMeasure: 3.75
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 123.75
       - Name: 3
         LengthInBeats: 4
         Notes:
         - PositionInMeasure: 0
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 124
         - PositionInMeasure: 0.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 124.5
         - PositionInMeasure: 1
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 125
         - PositionInMeasure: 1.5
           _noteType: 0
-          GlobalOffset: 0
+          GlobalOffset: 125.5
         - PositionInMeasure: 2
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 126
         - PositionInMeasure: 2.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 126.5
         - PositionInMeasure: 3
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 127
         - PositionInMeasure: 3.5
           _noteType: 1
-          GlobalOffset: 0
+          GlobalOffset: 127.5
     Measures: []

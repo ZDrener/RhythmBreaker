@@ -1,0 +1,868 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78672ca31cb5204daa31db654c5654f, type: 3}
+  m_Name: BM_HellSun
+  m_EditorClassIdentifier: 
+  _name: 
+  _artist: 
+  _audio: {fileID: 8300000, guid: 79cedfa686868914389e8200ba8d1dca, type: 3}
+  _defaultHitSound: {fileID: 0}
+  _missHitSound: {fileID: 0}
+  _bpm: 128
+  _offset: 0
+  _difficulty: 0
+  Sections:
+  - Name: Pre drop
+    IsKiai: 0
+    SubSections: []
+    Measures:
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 0
+        GlobalOffset: 0
+      - PositionInMeasure: 0.75
+        _noteType: 0
+        GlobalOffset: 0.75
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 1.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 2
+      - PositionInMeasure: 2.75
+        _noteType: 0
+        GlobalOffset: 2.75
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 3.5
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 0
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 0
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 1
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 2
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 3
+    - Name: 2
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0.25
+        _noteType: 0
+        GlobalOffset: 4.25
+      - PositionInMeasure: 1
+        _noteType: 0
+        GlobalOffset: 5
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 5.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 6
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 6.5
+      - PositionInMeasure: 3.25
+        _noteType: 0
+        GlobalOffset: 7.25
+      - PositionInMeasure: 2.5
+        _noteType: 1
+        GlobalOffset: 6.5
+      - PositionInMeasure: 3.25
+        _noteType: 1
+        GlobalOffset: 7.25
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 4
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 5
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 6
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 7
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 0
+        GlobalOffset: 8
+      - PositionInMeasure: 0.75
+        _noteType: 0
+        GlobalOffset: 8.75
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 9.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 10
+      - PositionInMeasure: 2.75
+        _noteType: 0
+        GlobalOffset: 10.75
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 11.5
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 8
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 8
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 9
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 10
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 11
+    - Name: 2
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0.25
+        _noteType: 0
+        GlobalOffset: 12.25
+      - PositionInMeasure: 1
+        _noteType: 0
+        GlobalOffset: 13
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 13.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 14
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 14.5
+      - PositionInMeasure: 3.25
+        _noteType: 0
+        GlobalOffset: 15.25
+      - PositionInMeasure: 2.5
+        _noteType: 1
+        GlobalOffset: 14.5
+      - PositionInMeasure: 3.25
+        _noteType: 1
+        GlobalOffset: 15.25
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 12
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 13
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 14
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 15
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 0
+        GlobalOffset: 16
+      - PositionInMeasure: 0.75
+        _noteType: 0
+        GlobalOffset: 16.75
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 17.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 18
+      - PositionInMeasure: 2.75
+        _noteType: 0
+        GlobalOffset: 18.75
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 19.5
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 16
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 16
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 17
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 18
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 19
+    - Name: 2 no red
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0.25
+        _noteType: 0
+        GlobalOffset: 20.25
+      - PositionInMeasure: 1
+        _noteType: 0
+        GlobalOffset: 21
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 21.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 22
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 22.5
+      - PositionInMeasure: 3.25
+        _noteType: 0
+        GlobalOffset: 23.25
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 20
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 21
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 22
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 23
+    - Name: 3
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 0
+        GlobalOffset: 24
+      - PositionInMeasure: 0.5
+        _noteType: 0
+        GlobalOffset: 24.5
+      - PositionInMeasure: 1
+        _noteType: 0
+        GlobalOffset: 25
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 25.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 26
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 26.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 27
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 27.5
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 24
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 25
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 26
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 27
+    - Name: 4
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 0
+        GlobalOffset: 28
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 28
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 29
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 30
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 31
+  - Name: Drop
+    IsKiai: 0
+    SubSections: []
+    Measures:
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 32
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 33
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 34
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 35
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 32
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 33
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 33.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 34
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 34.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 35
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 35.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 36
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 37
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 38
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 39
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 36
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 37
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 37.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 38
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 38.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 39
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 39.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 40
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 41
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 42
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 43
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 40
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 41
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 41.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 42
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 42.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 43
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 43.5
+    - Name: 2
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 44
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 45
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 46
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 47
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 44
+      - PositionInMeasure: 0.75
+        _noteType: 1
+        GlobalOffset: 44.75
+      - PositionInMeasure: 1.5
+        _noteType: 1
+        GlobalOffset: 45.5
+      - PositionInMeasure: 2.25
+        _noteType: 1
+        GlobalOffset: 46.25
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 47
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 47.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 48
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 49
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 50
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 51
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 48
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 49
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 49.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 50
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 50.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 51
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 51.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 52
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 53
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 54
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 55
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 52
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 53
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 53.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 54
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 54.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 55
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 55.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 56
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 57
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 58
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 59
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 56
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 57
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 57.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 58
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 58.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 59
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 59.5
+    - Name: 2
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 60
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 61
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 62
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 63
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 60
+      - PositionInMeasure: 0.75
+        _noteType: 1
+        GlobalOffset: 60.75
+      - PositionInMeasure: 1.5
+        _noteType: 1
+        GlobalOffset: 61.5
+      - PositionInMeasure: 2.25
+        _noteType: 1
+        GlobalOffset: 62.25
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 63
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 63.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 64
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 65
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 66
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 67
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 64
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 65
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 65.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 66
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 66.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 67
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 67.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 68
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 69
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 70
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 71
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 68
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 69
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 69.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 70
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 70.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 71
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 71.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 72
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 73
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 74
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 75
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 72
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 73
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 73.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 74
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 74.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 75
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 75.5
+    - Name: 2
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 76
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 77
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 78
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 79
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 76
+      - PositionInMeasure: 0.75
+        _noteType: 1
+        GlobalOffset: 76.75
+      - PositionInMeasure: 1.5
+        _noteType: 1
+        GlobalOffset: 77.5
+      - PositionInMeasure: 2.25
+        _noteType: 1
+        GlobalOffset: 78.25
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 79
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 79.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 80
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 81
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 82
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 83
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 80
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 81
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 81.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 82
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 82.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 83
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 83.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 84
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 85
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 86
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 87
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 84
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 85
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 85.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 86
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 86.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 87
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 87.5
+    - Name: 1
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 88
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 89
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 90
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 91
+      - PositionInMeasure: 0
+        _noteType: 1
+        GlobalOffset: 88
+      - PositionInMeasure: 1
+        _noteType: 1
+        GlobalOffset: 89
+      - PositionInMeasure: 1.5
+        _noteType: 0
+        GlobalOffset: 89.5
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 90
+      - PositionInMeasure: 2.5
+        _noteType: 0
+        GlobalOffset: 90.5
+      - PositionInMeasure: 3
+        _noteType: 0
+        GlobalOffset: 91
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 91.5
+    - Name: 3
+      LengthInBeats: 4
+      Notes:
+      - PositionInMeasure: 0
+        _noteType: 2
+        GlobalOffset: 92
+      - PositionInMeasure: 1
+        _noteType: 2
+        GlobalOffset: 93
+      - PositionInMeasure: 2
+        _noteType: 2
+        GlobalOffset: 94
+      - PositionInMeasure: 3
+        _noteType: 2
+        GlobalOffset: 95
+      - PositionInMeasure: 0
+        _noteType: 0
+        GlobalOffset: 92
+      - PositionInMeasure: 1
+        _noteType: 0
+        GlobalOffset: 93
+      - PositionInMeasure: 2
+        _noteType: 0
+        GlobalOffset: 94
+      - PositionInMeasure: 2.75
+        _noteType: 0
+        GlobalOffset: 94.75
+      - PositionInMeasure: 3.5
+        _noteType: 0
+        GlobalOffset: 95.5

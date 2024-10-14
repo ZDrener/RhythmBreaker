@@ -34,7 +34,8 @@ public class PlayerHands : MonoBehaviour
 		_secondaryWeapon.gameObject.SetActive(false);
 
 		if (PlayerInputManager.Instance.ArcheroGameplay)
-			PlayerInputManager.ON_ArcheroAttackInput.AddListener(OrderFire);
+			BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
+		//PlayerInputManager.ON_ArcheroAttackInput.AddListener(OrderFire);
 		else
 			BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
 	}
@@ -62,13 +63,13 @@ public class PlayerHands : MonoBehaviour
 
 	protected virtual void OrderFire(NoteType pType) {
 		// Archero
-		if (PlayerInputManager.Instance.ArcheroGameplay) {
+		if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput) {
 			DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
 			if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
 			else FireMain();
 		}
 		// Hold
-		else {
+		else if (!PlayerInputManager.Instance.ArcheroGameplay && PlayerInputManager.AttackInput) {
 			if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
 			else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
 		}		

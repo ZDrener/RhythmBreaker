@@ -435,6 +435,8 @@ MonoBehaviour:
   m_NoteAwaited: 0
   m_NotesForAction: 1
   _maxHealth: 4
+  _attackPeriodically: 0
+  _attackRateRange: {x: 1, y: 2}
   _projectilePrefab: {fileID: 8359058598341790087, guid: 7ffd534c8bec7c444bef5774feb3bf6f, type: 3}
   _lifeBar: {fileID: 4443095568454281859}
   _lifeBar2: {fileID: 4443095568432059859}

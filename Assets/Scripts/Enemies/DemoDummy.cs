@@ -14,8 +14,9 @@ public class DemoDummy : EntityFollowingBeat
 	protected int _health;
 	[Space]
 	[Header("COMBAT")]
-	//[SerializeField] protected Vector2 _attackRateRange;
-	//protected float _attackRate;
+	[SerializeField] protected bool _attackPeriodically = false;
+	[SerializeField] protected Vector2 _attackRateRange;
+	protected float _attackRate;
 	[SerializeField] protected GameObject _projectilePrefab;
 	protected Player GetPlayer => Player.Instance;
 	[Space]
@@ -43,7 +44,7 @@ public class DemoDummy : EntityFollowingBeat
     public void Start() {
 		Respawn();
 		DummyList.Add(this);
-		//_attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
+
 		BeatmapManager.SongStartEvent += OnSongStart;
 
 		if (ChangePosOnFirstSpawn)
@@ -98,16 +99,11 @@ public class DemoDummy : EntityFollowingBeat
 			_spriteRenderer.color = Color.Lerp(_spriteRenderer.color, Color.white, _HitHueChangeDuration * Time.deltaTime);
 	}
 
-	// Was used for enemy attacks after a certain amount of time
-	// Deprecated now that enemies use the beat
-    /*protected virtual IEnumerator ManageAttacks()
+    protected virtual IEnumerator ManageAttacks()
     {
         float lTime = 0f;
 
-        if (_player == null && Player.Instance != null)
-            _player = Player.Instance;
-
-        while (_player != null)
+        while (GetPlayer != null)
         {
             lTime += Time.deltaTime;
 
@@ -121,7 +117,7 @@ public class DemoDummy : EntityFollowingBeat
         }
 
         yield break;
-    }*/
+    }
 
     protected virtual void AttackPlayer()
 	{
@@ -131,15 +127,22 @@ public class DemoDummy : EntityFollowingBeat
 
     protected virtual void OnSongStart()
     {
-        //StartCoroutine(ManageAttacks());
+		if (_attackPeriodically)
+		{
+            _attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
+            StartCoroutine(ManageAttacks());
+        }
     }
 
     protected override void PlayAction()
     {
-        base.PlayAction();
+		if (!_attackPeriodically)
+		{
+			base.PlayAction();
 
-		EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
-		lProjectile.InitAndStart(GetPlayer.gameObject);
+			EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
+			lProjectile.InitAndStart(GetPlayer.gameObject);
+		}
     }
 
     protected virtual void OnPlayerDeath()

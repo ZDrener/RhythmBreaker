@@ -12,6 +12,7 @@ public class DemoDummy : EntityFollowingBeat
 	[Header("STATS")]
 	[SerializeField] protected int _maxHealth;
 	protected int _health;
+	protected Color _baseColor;
 	[Space]
 	[Header("COMBAT")]
 	[SerializeField] protected bool _attackPeriodically = false;
@@ -24,29 +25,37 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected Image _lifeBar;
 	[SerializeField] protected Image _lifeBar2;
 	[SerializeField] protected Rect _spawnRect;
+	[SerializeField] protected SpriteRenderer _chargeEffect;
 	[Space]
 	[Header("JUICE")]
 	[SerializeField] protected float _lifeBar2DecreaseForce;
 	[SerializeField] protected SpriteRenderer _spriteRenderer;
 	[SerializeField] protected float _HitHueChangeDuration;
+	[Space]
+	[Header("PREDICTION")]
+	 protected float _predictionTimeRange = 1.5f;
+	 protected float _maxPredictionShake = 0.125f;
 
 	protected float _timeSinceLastHit;
 	protected static bool _hasFired = false;
 
 	public bool ChangePosOnFirstSpawn;
 	public bool ChangePosOnRespawn;
+	protected Vector3 _originalPosition;
 
     override protected void Awake()
     {
 		base.Awake();
 		Player.PlayerDeathEvent += OnPlayerDeath;
 		BeatmapManager.TriggerNoteEndEvent += OnNoteEnd;
+		BeatmapManager.SongStopEvent += OnSongStop;
+		_baseColor = _spriteRenderer.color;
     }
 
     public void Start() {
-		Respawn();
-		DummyList.Add(this);
 
+        _originalPosition = transform.position;
+		DummyList.Add(this);
 		BeatmapManager.SongStartEvent += OnSongStart;
 
 		if (ChangePosOnFirstSpawn)
@@ -83,13 +92,15 @@ public class DemoDummy : EntityFollowingBeat
 
 	private void Respawn() {
 		_health = _maxHealth;
-		_spriteRenderer.color = Color.clear;
+		_spriteRenderer.color = _baseColor;
 		_lifeBar.fillAmount = 1;
 		if (ChangePosOnRespawn) transform.position = new Vector3(
 			Random.Range(_spawnRect.xMin, _spawnRect.xMax),
 			Random.Range(_spawnRect.yMin, _spawnRect.yMax),
 			0);
-	}
+
+		_originalPosition = transform.position;
+    }
 
 	private void Update() {
 		// Update lifebar2
@@ -97,8 +108,8 @@ public class DemoDummy : EntityFollowingBeat
 			_lifeBar2.fillAmount = Mathf.Lerp(_lifeBar2.fillAmount, _health / _maxHealth, _lifeBar2DecreaseForce * Time.deltaTime);
 
 		// Update SpriteRenderer
-		if (_spriteRenderer.color != Color.white)
-			_spriteRenderer.color = Color.Lerp(_spriteRenderer.color, Color.white, _HitHueChangeDuration * Time.deltaTime);
+		/*if (_spriteRenderer.color != Color.white)
+			_spriteRenderer.color = Color.Lerp(_spriteRenderer.color, Color.white, _HitHueChangeDuration * Time.deltaTime);*/
 	}
 
     protected virtual IEnumerator ManageAttacks()
@@ -134,24 +145,52 @@ public class DemoDummy : EntityFollowingBeat
             _attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
             StartCoroutine(ManageAttacks());
         }
+		else
+            StartCoroutine(ManageActionPrediction());
     }
+
+	protected virtual void OnSongStop()
+	{
+		StopAllCoroutines();
+    }
+
+    protected virtual void OnPlayerDeath()
+    {
+        StopAllCoroutines();
+    }
+
+    protected IEnumerator ManageActionPrediction()
+	{
+		float lPredictionRatio = 0f;
+
+		while (true)
+		{
+            if (_spriteRenderer.isVisible && m_CurrentNoteCount - m_NotesForAction == -1)
+            {
+                lPredictionRatio = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
+
+                transform.position = _originalPosition + lPredictionRatio * new Vector3(Random.Range(-_maxPredictionShake, _maxPredictionShake),
+                    Random.Range(-_maxPredictionShake, _maxPredictionShake));
+
+                _chargeEffect.transform.localScale = Vector3.one * lPredictionRatio;
+            }
+
+			yield return null;
+		}
+	}
 
     protected override void PlayAction()
     {
-		if (!_attackPeriodically && _spriteRenderer.isVisible && !_hasFired)
+        if (!_attackPeriodically && _spriteRenderer.isVisible /*&& _hasFired*/)
 		{
 			base.PlayAction();
 
+			_chargeEffect.transform.localScale = Vector3.zero;
 			_hasFired = true;
 			EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
 			lProjectile.InitAndStart(GetPlayer.gameObject);
 		}
     }
-
-    protected virtual void OnPlayerDeath()
-	{
-		StopAllCoroutines();
-	}
 
 	protected virtual void OnNoteEnd()
 	{

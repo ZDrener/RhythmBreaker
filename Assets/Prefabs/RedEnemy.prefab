@@ -86,6 +86,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+--- !u!212 &6282267765780719648 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1890732287321122359, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+  m_PrefabInstance: {fileID: 5553540602003197463}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &8123130478198888096 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4443095569802303671, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
@@ -109,8 +114,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NoteAwaited: 1
-  m_NotesForAction: 4
+  m_NotesForAction: 3
   _maxHealth: 6
+  _attackPeriodically: 0
+  _attackRateRange: {x: 0, y: 0}
   _projectilePrefab: {fileID: 8359058598341790087, guid: 7ffd534c8bec7c444bef5774feb3bf6f, type: 3}
   _lifeBar: {fileID: 8123130478997300372}
   _lifeBar2: {fileID: 8123130479111920580}
@@ -120,6 +127,7 @@ MonoBehaviour:
     y: -9
     width: 32
     height: 18
+  _chargeEffect: {fileID: 6282267765780719648}
   _lifeBar2DecreaseForce: 1
   _spriteRenderer: {fileID: 8123130478198888096}
   _HitHueChangeDuration: 1

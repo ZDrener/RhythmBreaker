@@ -70,4 +70,20 @@ public class BeatmapSO : ScriptableObject
 
 		_allNotes = allNotes;
 	}
+
+	public float GetNotePrediction(float pSampledTime, float pPredictionTimeReach, NoteType pDesiredNoteType)
+	{
+		float lMaxTime = pSampledTime + pPredictionTimeReach;
+
+		foreach (Note note in AllNotes)
+		{
+			if (note.GlobalOffset > lMaxTime)
+				return 0f;
+
+			if (note._noteType == pDesiredNoteType)
+				return (note.GlobalOffset - pSampledTime) / pPredictionTimeReach;
+		}
+
+		return 0f;
+	}
 }

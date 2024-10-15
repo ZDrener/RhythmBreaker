@@ -30,6 +30,7 @@ public class BeatmapManager : MonoBehaviour
 
 	public delegate void SimpleEvent();
 	public static event SimpleEvent SongStartEvent;
+	public static event SimpleEvent SongStopEvent;
 	public static event SimpleEvent TriggerNoteEndEvent;
 
 	private void Awake()
@@ -54,8 +55,10 @@ public class BeatmapManager : MonoBehaviour
 
 	private void StopSong()
 	{
-		_musicSource.Stop();
-		Instantiate(_restartPrefab);
+		_songEnded = true;
+        _musicSource.Stop();
+		SongStopEvent?.Invoke();
+        Instantiate(_restartPrefab);
 	}
 
 	private IEnumerator WaitForLoad() {
@@ -164,10 +167,14 @@ public class BeatmapManager : MonoBehaviour
 		}*/
 	}
 
+	public float GetNotePrediction(float pPpredictionTimeReach, NoteType pDesiredNoteType)
+	{
+        return Beatmap.GetNotePrediction(SampledTime, pPpredictionTimeReach, pDesiredNoteType);
+	}
+
 	protected void SongEnd()
 	{
-		_songEnded = true;
-        Instantiate(_restartPrefab);
+		StopSong();
     }
 
 	public void PlayHitSound(AudioClip hitClip) {

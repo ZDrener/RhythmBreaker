@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/ProtoChoseScreen.unity
+    guid: d963075218a8fb942b7906f26ab99784
+  - enabled: 1
     path: Assets/Scenes/Proto_HOLD_Circles.unity
     guid: 2548a73f48be1064b84c1ec97f098711
-  - enabled: 0
-    path: Assets/Scenes/Proto_ARCHERO.unity
-    guid: bfdb969e891a16a4f9cbdc365fb4335f
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Proto_HOLD_Bars.unity
-    guid: 40e6d6b8395171046ba282246cb8ebd9
+    guid: 750ccc8e1aa00224d822d8ef41a6c9cc
+  - enabled: 1
+    path: Assets/Scenes/Proto_Archero.unity
+    guid: b8b340594dfc31249a2bbd259f62155c
   m_configObjects: {}

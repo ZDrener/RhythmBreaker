@@ -5017,6 +5017,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4443095569802303656, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
   m_PrefabInstance: {fileID: 159046719}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &188602761 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8665464073578493120, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+  m_PrefabInstance: {fileID: 215903132339043233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &188602762 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 512032971968990496, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+  m_PrefabInstance: {fileID: 215903132339043233}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &209856728
 GameObject:
   m_ObjectHideFlags: 0
@@ -5904,7 +5914,7 @@ Camera:
   far clip plane: 50
   field of view: 34
   orthographic: 1
-  orthographic size: 7.967626
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6108,7 +6118,7 @@ MonoBehaviour:
   m_Follow: {fileID: 799920889}
   m_Lens:
     FieldOfView: 34
-    OrthographicSize: 7.967626
+    OrthographicSize: 8
     NearClipPlane: -50
     FarClipPlane: 50
     Dutch: 0
@@ -6714,6 +6724,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1028489508 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8740028609729513578, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+  m_PrefabInstance: {fileID: 215903132339043233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1028489509 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 436888030647431562, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+  m_PrefabInstance: {fileID: 215903132339043233}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1056716056
 GameObject:
   m_ObjectHideFlags: 0
@@ -8677,6 +8697,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 891713477}
     m_Modifications:
+    - target: {fileID: 933450578536933566, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 188602762}
+    - target: {fileID: 933450578536933566, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 188602761}
+    - target: {fileID: 1008648279102084116, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1028489509}
+    - target: {fileID: 1008648279102084116, guid: da1050c765836a74c9859e5a370236ef, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 1028489508}
     - target: {fileID: 2209552092713739264, guid: da1050c765836a74c9859e5a370236ef, type: 3}
       propertyPath: _joystick
       value: 

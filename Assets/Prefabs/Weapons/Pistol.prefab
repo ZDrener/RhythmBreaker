@@ -183,8 +183,10 @@ MonoBehaviour:
   _projectileSpawn: {fileID: 3074790262934136484}
   _weaponSprite: {fileID: 9180847912551512528}
   _audioClips:
-  - {fileID: 8300000, guid: 2212ffcec97032547a8d1795bceec0af, type: 3}
+  - {fileID: 8300000, guid: cb9bc9adbbac9d4439fa812dcacd1659, type: 3}
   sortingGroup: {fileID: 4600294420316962905}
+  _animator: {fileID: 586508799338142125}
+  _audioSource: {fileID: 8608982853071478861}
 --- !u!210 &4600294420316962905
 SortingGroup:
   m_ObjectHideFlags: 0

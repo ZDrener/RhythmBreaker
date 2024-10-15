@@ -64,9 +64,8 @@ public class PlayerHands : MonoBehaviour
 	protected virtual void OrderFire(NoteType pType) {
 		// Archero
 		if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput) {
-			DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
-			if (Vector3.Distance(lTarget.transform.position, transform.position) < _secondaryWeaponRange) FireSecondary();
-			else FireMain();
+			if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
+			else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
 		}
 		// Hold
 		else if (!PlayerInputManager.Instance.ArcheroGameplay && PlayerInputManager.AttackInput) {

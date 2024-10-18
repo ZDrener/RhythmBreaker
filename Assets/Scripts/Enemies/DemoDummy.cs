@@ -36,6 +36,7 @@ public class DemoDummy : EntityFollowingBeat
     protected Animator _animator;
     protected const string _CHARGE_FLOAT = "Charge";
 	protected const string _HURT_TRIGGER = "Hurt";
+	protected const string _ATTACK_TRIGGER = "Attack";
     [Space]
 	[Header("PREDICTION")]
 	protected float _predictionTimeRange = 1.5f;
@@ -137,7 +138,8 @@ public class DemoDummy : EntityFollowingBeat
 	{
 		EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
 		lProjectile.InitAndStart(GetPlayer.gameObject);
-	}
+		_animator.SetTrigger(_ATTACK_TRIGGER);
+    }
 
     protected virtual void OnSongStart()
     {
@@ -203,8 +205,7 @@ public class DemoDummy : EntityFollowingBeat
 			base.PlayAction();
             _animator.SetFloat(_CHARGE_FLOAT, 0f);
             _chargeEffect.transform.localScale = Vector3.zero;
-			EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
-			lProjectile.InitAndStart(GetPlayer.gameObject);
+			AttackPlayer();
 		}
     }
 

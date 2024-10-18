@@ -83,6 +83,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.16042183
       objectReference: {fileID: 0}
+    - target: {fileID: 7709401779656952261, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709401779656952261, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5792619
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709401779656952261, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: m_Color.r
+      value: 0.16509432
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
@@ -128,6 +140,8 @@ MonoBehaviour:
   m_NoteAwaited: 0
   m_NotesForAction: 2
   _maxHealth: 3
+  _attackPeriodically: 0
+  _attackRateRange: {x: 0, y: 0}
   _projectilePrefab: {fileID: 8679621443886071817, guid: 6f4f06e653fd2ec468aa567518a165a6, type: 3}
   _lifeBar: {fileID: 2492661909053407039}
   _lifeBar2: {fileID: 2492661909100380271}
@@ -138,12 +152,18 @@ MonoBehaviour:
     width: 32
     height: 18
   _lifeBar2DecreaseForce: 1
-  _spriteRenderer: {fileID: 2492661909883424011}
+  _spriteRenderer: {fileID: 8485891376815643769}
   _HitHueChangeDuration: 1
+  _laserLineRenderer: {fileID: 7084040362738029476}
   ChangePosOnFirstSpawn: 1
   ChangePosOnRespawn: 0
---- !u!212 &2492661909883424011 stripped
+--- !u!120 &7084040362738029476 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 9039054309464311320, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+  m_PrefabInstance: {fileID: 2251444867766031804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &8485891376815643769 stripped
 SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 4443095569802303671, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7709401779656952261, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
   m_PrefabInstance: {fileID: 2251444867766031804}
   m_PrefabAsset: {fileID: 0}

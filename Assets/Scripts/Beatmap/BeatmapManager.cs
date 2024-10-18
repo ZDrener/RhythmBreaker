@@ -30,6 +30,8 @@ public class BeatmapManager : MonoBehaviour
 
 	public delegate void SimpleEvent();
 	public static event SimpleEvent SongStartEvent;
+	public static event SimpleEvent SongStopEvent;
+	public static event SimpleEvent TriggerNoteEndEvent;
 
 	private void Awake()
 	{
@@ -53,8 +55,10 @@ public class BeatmapManager : MonoBehaviour
 
 	private void StopSong()
 	{
-		_musicSource.Stop();
-		Instantiate(_restartPrefab);
+		_songEnded = true;
+        _musicSource.Stop();
+		SongStopEvent?.Invoke();
+        Instantiate(_restartPrefab);
 	}
 
 	private IEnumerator WaitForLoad() {
@@ -145,6 +149,7 @@ public class BeatmapManager : MonoBehaviour
 
             ON_TriggerNote.Invoke(lNote._noteType);
             Beatmap.AllNotes.RemoveAt(0);
+			TriggerNoteEndEvent?.Invoke();
 
             /*// Play hit sound
             if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
@@ -154,7 +159,7 @@ public class BeatmapManager : MonoBehaviour
 
 			// Remove the note from the list once it's hit
 			Beatmap.AllNotes.RemoveAt(0);*/
-		}
+        }
 		/*// Destroy note on fail
 		else if (noteTime - pSampledTime < -InputBufferWindow) {
 			Beatmap.AllNotes.RemoveAt(0);
@@ -162,10 +167,14 @@ public class BeatmapManager : MonoBehaviour
 		}*/
 	}
 
+	public float GetNotePrediction(float pPpredictionTimeReach, NoteType pDesiredNoteType)
+	{
+        return Beatmap.GetNotePrediction(SampledTime, pPpredictionTimeReach, pDesiredNoteType);
+	}
+
 	protected void SongEnd()
 	{
-		_songEnded = true;
-        Instantiate(_restartPrefab);
+		StopSong();
     }
 
 	public void PlayHitSound(AudioClip hitClip) {

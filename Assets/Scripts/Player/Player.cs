@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
 
 	protected Animator _animator;
 	protected const string _DAMAGED_TRIGGER = "Damaged";
-	protected const string _INVULN_TRIGGER = "Invuln";
 
 	protected BoxCollider _boxCollider;
 	protected bool _isInvuln;
@@ -64,7 +63,6 @@ public class Player : MonoBehaviour
 	{
 		_boxCollider.enabled = false;
 		_isInvuln = true;
-        _animator.SetTrigger(_INVULN_TRIGGER);
     }
 
 	protected void InvulnEnd()

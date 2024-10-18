@@ -31,7 +31,6 @@ public class EnemyProjectile : Projectile
 		m_MovementDirection = (m_Target.transform.position - transform.position).normalized;
 		transform.rotation *= Quaternion.AngleAxis(Vector2.SignedAngle(transform.right, m_MovementDirection), Vector3.forward);
 
-
 		StartCoroutine(ManageMovement()); 
 	}
 
@@ -41,11 +40,7 @@ public class EnemyProjectile : Projectile
         if (pOther.gameObject.GetComponentInParent<Player>())
         {
             Player.Instance.TakeDamage(m_Damage);
-            // Could add hit SFXs and such here or through a call to a function, instead of simply destroying
-
-            GameObject lImpact = Instantiate(m_HitVFX);
-            lImpact.transform.position = pOther.ClosestPoint(transform.position);
-            lImpact.transform.rotation = transform.rotation;
+            Instantiate(m_HitVFX, pOther.ClosestPoint(transform.position), transform.rotation);
             Destroy(gameObject);
         }
     }

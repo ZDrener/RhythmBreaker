@@ -98,11 +98,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
---- !u!212 &361281734784922507 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1890732287321122359, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 2251444867766031804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2492661909053407039 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4443095568454281859, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
@@ -156,12 +151,17 @@ MonoBehaviour:
     y: -9
     width: 32
     height: 18
-  _chargeEffect: {fileID: 361281734784922507}
   _lifeBar2DecreaseForce: 1
   _spriteRenderer: {fileID: 8485891376815643769}
   _HitHueChangeDuration: 1
+  _laserLineRenderer: {fileID: 7084040362738029476}
   ChangePosOnFirstSpawn: 1
   ChangePosOnRespawn: 0
+--- !u!120 &7084040362738029476 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 9039054309464311320, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+  m_PrefabInstance: {fileID: 2251444867766031804}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &8485891376815643769 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 7709401779656952261, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}

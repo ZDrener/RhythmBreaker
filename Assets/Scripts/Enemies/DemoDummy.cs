@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(Animator))]
 public class DemoDummy : EntityFollowingBeat
 {
 	public static List<DemoDummy> DummyList = new List<DemoDummy>();
@@ -31,22 +32,23 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected float _lifeBar2DecreaseForce;
 	[SerializeField] protected SpriteRenderer _spriteRenderer;
 	[SerializeField] protected float _HitHueChangeDuration;
-	[Space]
+    protected Animator _animator;
+    protected const string _CHARGE_FLOAT = "Charge";
+	protected const string _HURT_TRIGGER = "Hurt";
+    [Space]
 	[Header("PREDICTION")]
-	 protected float _predictionTimeRange = 1.5f;
-	 protected float _maxPredictionShake = 0.125f;
+	protected float _predictionTimeRange = 1.5f;
 
-	protected float _timeSinceLastHit;
-	protected static bool _hasFired = false;
+	//protected float _timeSinceLastHit;
 
 	public bool ChangePosOnFirstSpawn;
 	public bool ChangePosOnRespawn;
-	protected Vector3 _originalPosition;
 
     override protected void Awake()
     {
 		base.Awake();
-		Player.PlayerDeathEvent += OnPlayerDeath;
+        _animator = GetComponent<Animator>();
+        Player.PlayerDeathEvent += OnPlayerDeath;
 		BeatmapManager.TriggerNoteEndEvent += OnNoteEnd;
 		BeatmapManager.SongStopEvent += OnSongStop;
 		_baseColor = _spriteRenderer.color;
@@ -54,7 +56,6 @@ public class DemoDummy : EntityFollowingBeat
 
     public void Start() {
 
-        _originalPosition = transform.position;
 		DummyList.Add(this);
 		BeatmapManager.SongStartEvent += OnSongStart;
 
@@ -83,11 +84,12 @@ public class DemoDummy : EntityFollowingBeat
 
 	public void Damage(int pDamage) {
 		_health -= pDamage;
-		_timeSinceLastHit = 0;
-		_lifeBar.fillAmount = (float)_health / (float)_maxHealth;
-		_spriteRenderer.color = Color.red;
+        /*_timeSinceLastHit = 0;
+		_spriteRenderer.color = Color.red;*/
+        _lifeBar.fillAmount = (float)_health / (float)_maxHealth;
 
-		if (_health <= 0) Respawn();
+        if (_health <= 0) Respawn();
+		else _animator.SetTrigger(_HURT_TRIGGER);
 	}
 
 	private void Respawn() {
@@ -98,8 +100,6 @@ public class DemoDummy : EntityFollowingBeat
 			Random.Range(_spawnRect.xMin, _spawnRect.xMax),
 			Random.Range(_spawnRect.yMin, _spawnRect.yMax),
 			0);
-
-		_originalPosition = transform.position;
     }
 
 	private void Update() {
@@ -168,11 +168,7 @@ public class DemoDummy : EntityFollowingBeat
             if (_spriteRenderer.isVisible && m_CurrentNoteCount - m_NotesForAction == -1)
             {
                 lPredictionRatio = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
-
-                transform.position = _originalPosition + lPredictionRatio * new Vector3(Random.Range(-_maxPredictionShake, _maxPredictionShake),
-                    Random.Range(-_maxPredictionShake, _maxPredictionShake));
-
-                _chargeEffect.transform.localScale = Vector3.one * lPredictionRatio;
+				_animator.SetFloat(_CHARGE_FLOAT, lPredictionRatio);
             }
 
 			yield return null;
@@ -184,9 +180,8 @@ public class DemoDummy : EntityFollowingBeat
         if (!_attackPeriodically && _spriteRenderer.isVisible /*&& _hasFired*/)
 		{
 			base.PlayAction();
-
-			_chargeEffect.transform.localScale = Vector3.zero;
-			_hasFired = true;
+            _animator.SetFloat(_CHARGE_FLOAT, 0f);
+            _chargeEffect.transform.localScale = Vector3.zero;
 			EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
 			lProjectile.InitAndStart(GetPlayer.gameObject);
 		}
@@ -194,7 +189,7 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected virtual void OnNoteEnd()
 	{
-		_hasFired = false;
+
 	}
 
     override protected void OnDestroy()

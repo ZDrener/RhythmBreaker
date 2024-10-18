@@ -81,7 +81,7 @@ public class BeatmapSO : ScriptableObject
 				return 0f;
 
 			if (note._noteType == pDesiredNoteType)
-				return (note.GlobalOffset - pSampledTime) / pPredictionTimeReach;
+				return 1f - (note.GlobalOffset - pSampledTime) / pPredictionTimeReach;
 		}
 
 		return 0f;

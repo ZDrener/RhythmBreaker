@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerHands : MonoBehaviour
 {
+	public static UnityEvent<GameObject> ON_WeaponPickUp = new UnityEvent<GameObject>();
+
 	[Header("HANDS REFERENCES")]
 	[SerializeField] protected Weapon _mainWeapon;
 	[SerializeField] protected Weapon _secondaryWeapon;
@@ -26,18 +29,30 @@ public class PlayerHands : MonoBehaviour
 	protected virtual void Start() {
 		_camera = Camera.main;
 
-		_mainWeapon.SetWeaponColor(_playerColors.mainColor);
-		_secondaryWeapon.SetWeaponColor(_playerColors.secondaryColor);
+		if (_mainWeapon) {
+			_mainWeapon.SetWeaponColor(_playerColors.mainColor);
+			_mainWeapon.gameObject.SetActive(false);
+		}
+		if (_secondaryWeapon) {
+			_secondaryWeapon.SetWeaponColor(_playerColors.secondaryColor);
+			_secondaryWeapon.gameObject.SetActive(false);
+		}
 
-		// Disable visuals of weapons on start
-		_mainWeapon.gameObject.SetActive(false);
-		_secondaryWeapon.gameObject.SetActive(false);
+		ON_WeaponPickUp.AddListener(GetNewWeapon);
 
 		if (PlayerInputManager.Instance.ArcheroGameplay)
 			BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
 		//PlayerInputManager.ON_ArcheroAttackInput.AddListener(OrderFire);
 		else
 			BeatmapManager.ON_TriggerNote.AddListener(OrderFire);
+	}
+
+	public void GetNewWeapon(GameObject pWeapon) {
+		if (_secondaryWeapon) Destroy(_secondaryWeapon.gameObject);
+
+		_secondaryWeapon = Instantiate(pWeapon, transform.position, Quaternion.identity, transform).GetComponent<Weapon>();
+		_secondaryWeapon.SetWeaponColor(_playerColors.secondaryColor);
+		_secondaryWeapon.gameObject.SetActive(false);
 	}
 
 	protected virtual void AimAtCursor() {
@@ -64,30 +79,32 @@ public class PlayerHands : MonoBehaviour
 	protected virtual void OrderFire(NoteType pType) {
 		// Archero
 		if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput) {
-			if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
-			else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
+			if ((pType == NoteType.Red)) FireMain();
+			else if ((pType == NoteType.Blue)) FireSecondary();
 		}
 		// Hold
 		else if (!PlayerInputManager.Instance.ArcheroGameplay && PlayerInputManager.AttackInput) {
 			if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
 			else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
-		}		
-    }
+		}
+	}
 
 	protected virtual void FireMain() {
+		if (!_mainWeapon) return;
 		_mainWeapon.gameObject.SetActive(true);
 		_lastUsedWeapon = _mainWeapon;
 		_mainWeapon.sortingGroup.sortingOrder = 1;
-		_secondaryWeapon.sortingGroup.sortingOrder = 0;
+		if (_secondaryWeapon) _secondaryWeapon.sortingGroup.sortingOrder = 0;
 		AimAtCursor();
 		_mainWeapon.Fire();
 	}
 
 	protected virtual void FireSecondary() {
+		if (!_secondaryWeapon) return;
 		_secondaryWeapon.gameObject.SetActive(true);
 		_lastUsedWeapon = _secondaryWeapon;
 		_secondaryWeapon.sortingGroup.sortingOrder = 1;
-		_mainWeapon.sortingGroup.sortingOrder = 0;
+		if (_mainWeapon) _mainWeapon.sortingGroup.sortingOrder = 0;
 		AimAtCursor();
 		_secondaryWeapon.Fire();
 	}

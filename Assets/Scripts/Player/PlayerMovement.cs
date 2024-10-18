@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 	[HideInInspector] public Vector2 Direction { get; protected set; }
 
 	protected virtual void Start() {
-		//PlayerInputManager.ON_DashInput.AddListener(DashBegin);
+		PlayerInputManager.ON_DashInput.AddListener(DashBegin);
 	}
 
 	protected virtual void Update() {

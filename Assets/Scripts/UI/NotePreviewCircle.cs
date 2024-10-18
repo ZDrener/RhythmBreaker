@@ -10,7 +10,7 @@ public class NotePreviewCircle : MonoBehaviour
     private float _completionRatio;
     private Color _color;
     private int _segments = 32; // Number of segments to define the circle shape
-    private float _startRadius = 1500; // Starting radius of the circle
+    private float _startRadius = 2000; // Starting radius of the circle
     private float _endRadius = 150; // Final radius of the circle
 
     public void Init(Vector3 pStartScale, float pBeatOffset, Color pColor) {

@@ -19,6 +19,7 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected bool _attackPeriodically = false;
 	[SerializeField] protected Vector2 _attackRateRange;
 	protected float _attackRate;
+	protected float _currentAttackTimer;
 	[SerializeField] protected GameObject _projectilePrefab;
 	protected Player GetPlayer => Player.Instance;
 	[Space]
@@ -114,16 +115,16 @@ public class DemoDummy : EntityFollowingBeat
 
     protected virtual IEnumerator ManageAttacks()
     {
-        float lTime = 0f;
+		_currentAttackTimer = 0f;
 
         while (GetPlayer != null)
         {
-            lTime += Time.deltaTime;
+            _currentAttackTimer += Time.deltaTime;
 
-            if (lTime > _attackRate)
+            if (_currentAttackTimer > _attackRate)
             {
                 AttackPlayer();
-                lTime -= _attackRate;
+                _currentAttackTimer -= _attackRate;
             }
 
             yield return null;
@@ -144,9 +145,10 @@ public class DemoDummy : EntityFollowingBeat
 		{
             _attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
             StartCoroutine(ManageAttacks());
+			StartCoroutine(ManageActionPredictionPeriod());
         }
 		else
-            StartCoroutine(ManageActionPrediction());
+            StartCoroutine(ManageActionPredictionBeat());
     }
 
 	protected virtual void OnSongStop()
@@ -159,7 +161,26 @@ public class DemoDummy : EntityFollowingBeat
         StopAllCoroutines();
     }
 
-    protected IEnumerator ManageActionPrediction()
+	protected IEnumerator ManageActionPredictionPeriod()
+	{
+        float lPredictionRatio;
+		float lTimeBeforeAttack;
+
+        while (true)
+        {
+            lTimeBeforeAttack = _attackRate - _currentAttackTimer;
+
+            if (_spriteRenderer.isVisible && lTimeBeforeAttack <= _predictionTimeRange)
+            {
+				lPredictionRatio = 1 - lTimeBeforeAttack / _predictionTimeRange;
+                _animator.SetFloat(_CHARGE_FLOAT, lPredictionRatio);
+            }
+
+            yield return null;
+        }
+    }
+
+    protected IEnumerator ManageActionPredictionBeat()
 	{
 		float lPredictionRatio = 0f;
 

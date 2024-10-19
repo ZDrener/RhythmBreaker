@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class PlayerMovement : MonoBehaviour
 {
 	public static bool IsDashing;
-	public static UnityEvent ON_Dash = new UnityEvent();
+	public static UnityEvent<DashDirection> ON_Dash = new UnityEvent<DashDirection>();
 
 	[Header("MOVEMENT")]
 	[SerializeField] protected float _moveSpeed = 3;
@@ -42,14 +42,27 @@ public class PlayerMovement : MonoBehaviour
 	protected virtual IEnumerator DashCoroutine(Vector3 pDirection) {
 		float lT = 0;
 
-		Debug.Log($"DASH SWIPE at {Time.time}");
-
 		Vector3 lStartPos = transform.position;
 		Vector3 lEndPos = lStartPos + pDirection.normalized * _dashDistance;
 		Vector3 lDashDirection = (lEndPos - lStartPos).normalized;
 
+		float lMaxDot = .7f;
+
+		// Determine closest direction
+		if (Vector3.Dot(lDashDirection, Vector3.up) > lMaxDot) {
+			ON_Dash.Invoke(DashDirection.Up);
+		}
+		else if (Vector3.Dot(lDashDirection, Vector3.down) > lMaxDot) {
+			ON_Dash.Invoke(DashDirection.Down);
+		}
+		else if (Vector3.Dot(lDashDirection, Vector3.left) > lMaxDot) {
+			ON_Dash.Invoke(DashDirection.Left);
+		}
+		else if (Vector3.Dot(lDashDirection, Vector3.right) > lMaxDot) {
+			ON_Dash.Invoke(DashDirection.Right);
+		}
+
 		// Dash Start
-		ON_Dash.Invoke();
 		IsDashing = true;
 		_dashTrail.Play();
 		_dashRings.Play();
@@ -69,3 +82,5 @@ public class PlayerMovement : MonoBehaviour
 		_dashRings.Stop();
 	}
 }
+
+public enum DashDirection { Up, Down, Left, Right }

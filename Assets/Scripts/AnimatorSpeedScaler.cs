@@ -9,11 +9,11 @@ public class AnimatorSpeedScaler : MonoBehaviour
 	public static UnityEvent<float> ON_SetAnimatorSpeedScales = new UnityEvent<float>();
 	[SerializeField] protected Animator _animator;
 
-	private void Start() {
+	protected virtual void Start() {
 		Metronome.Trigger.AddListener(PlayAnim);
 	}
 
-	private void PlayAnim() {
+	protected virtual void PlayAnim() {
 		_animator.SetBool("0", true);
 	}
 }

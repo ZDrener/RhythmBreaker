@@ -114,7 +114,6 @@ public class PlayerInputManager : MonoBehaviour
 
 					if (Vector3.Distance(startPos, currentPos) >= _minSwipeDistance && Time.time - _touchStartTime <= _maxSwipeTime) {
 						ON_DashInput.Invoke((currentPos - startPos).normalized);
-						Debug.Log($"Swipe distance = {Vector3.Distance(startPos, currentPos)}, minSwipeDistance = {_minSwipeDistance}");
 						break; // Exit the loop since dash is triggered
 					}
 				}

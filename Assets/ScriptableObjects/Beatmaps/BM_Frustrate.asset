@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78672ca31cb5204daa31db654c5654f, type: 3}
   m_Name: BM_Frustrate
   m_EditorClassIdentifier: 
-  _name: 
-  _artist: 
+  _name: Frustrate
+  _artist: Blacklolita
   _audio: {fileID: 8300000, guid: 8f2b805686d4f73479c71a4ff62d830a, type: 3}
   _defaultHitSound: {fileID: 0}
   _missHitSound: {fileID: 8300000, guid: 93d3e4ee21bbe8245b06a34d7b0dad52, type: 3}
   _bpm: 126
   _offset: 0
-  _difficulty: 20
+  _difficulty: 6
   Sections:
-  - Name: 
+  - Name: Song
     IsKiai: 0
     SubSections:
     - Name: Intro

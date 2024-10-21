@@ -105,6 +105,7 @@ public class BeatmapManager : MonoBehaviour
 		while (_musicSource.isPlaying) {
 			lBeatPlayed = false;
 
+			// Note Sampling
 			SampledTime = _musicSource.timeSamples / (_musicSource.clip.frequency * _metronome.GetIntervalLength(Beatmap.Bpm));
 
 			// Check for the metronome
@@ -140,31 +141,38 @@ public class BeatmapManager : MonoBehaviour
 
 		bool pCondition = DebugGameMode.Instance.AllowHold ?
 			noteTime <= pSampledTime :
-			(noteTime <= pSampledTime) && (noteTime + InputBufferWindow >= pSampledTime);
-
-        
+			(noteTime <= pSampledTime) && (noteTime + InputBufferWindow >= pSampledTime);        
 
         // Check if the note is within the buffer window and if the player pressed it
-        if (pCondition/* && PlayerInputManager.AttackInput && lNote._noteType == PlayerInputManager.AttackType*/) {
+        if (pCondition) {
 
             ON_TriggerNote.Invoke(lNote._noteType);
             Beatmap.AllNotes.RemoveAt(0);
 			TriggerNoteEndEvent?.Invoke();
-
-            /*// Play hit sound
-            if (Beatmap.DefaultHitSound) PlayHitSound(Beatmap.DefaultHitSound);
-
-			// Add a bar to the accuracy display
-			AccuracyDisplay.DisplayAccuracyEvent.Invoke((noteTime - pSampledTime) / InputBufferWindow);
-
-			// Remove the note from the list once it's hit
-			Beatmap.AllNotes.RemoveAt(0);*/
         }
-		/*// Destroy note on fail
-		else if (noteTime - pSampledTime < -InputBufferWindow) {
-			Beatmap.AllNotes.RemoveAt(0);
-			if (Beatmap.MissHitSound) PlayHitSound(Beatmap.MissHitSound);
-		}*/
+		#region OLD WAY / FAIL
+		//// check if the note is within the buffer window and if the player pressed it
+		//if (pcondition/* && playerinputmanager.attackinput && lnote._notetype == playerinputmanager.attacktype*/) {
+
+		//	on_triggernote.invoke(lnote._notetype);
+		//	beatmap.allnotes.removeat(0);
+		//	triggernoteendevent?.invoke();
+
+		//	// play hit sound
+  //          if (beatmap.defaulthitsound) playhitsound(beatmap.defaulthitsound);
+
+		//	// add a bar to the accuracy display
+		//	accuracydisplay.displayaccuracyevent.invoke((notetime - psampledtime) / inputbufferwindow);
+
+		//	// remove the note from the list once it's hit
+		//	beatmap.allnotes.removeat(0);
+		//}
+		//// destroy note on fail
+		//else if (notetime - psampledtime < -inputbufferwindow) {
+		//	beatmap.allnotes.removeat(0);
+		//	if (beatmap.misshitsound) playhitsound(beatmap.misshitsound);
+		//}
+		#endregion
 	}
 
 	public float GetNotePrediction(float pPpredictionTimeReach, NoteType pDesiredNoteType)

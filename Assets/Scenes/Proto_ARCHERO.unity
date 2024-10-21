@@ -5116,6 +5116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedEnemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8123130478198888099, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8123130478198888127, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -5177,6 +5181,10 @@ PrefabInstance:
     - target: {fileID: 2492661909883424008, guid: b74424d235239c646a037028c6d2a551, type: 3}
       propertyPath: m_Name
       value: BlueEnemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2492661909883424008, guid: b74424d235239c646a037028c6d2a551, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2492661909883424020, guid: b74424d235239c646a037028c6d2a551, type: 3}
       propertyPath: m_RootOrder
@@ -6264,6 +6272,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlueEnemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2492661909883424008, guid: b74424d235239c646a037028c6d2a551, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2492661909883424020, guid: b74424d235239c646a037028c6d2a551, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -6722,6 +6734,10 @@ PrefabInstance:
     - target: {fileID: 8123130478198888099, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
       propertyPath: m_Name
       value: RedEnemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8123130478198888099, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8123130478198888127, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
       propertyPath: m_RootOrder
@@ -7781,6 +7797,10 @@ PrefabInstance:
     - target: {fileID: 8123130478198888099, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
       propertyPath: m_Name
       value: RedEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8123130478198888099, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8123130478198888127, guid: 0da50623c535b2244bbb63b6190d6053, type: 3}
       propertyPath: m_RootOrder

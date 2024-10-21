@@ -29,7 +29,7 @@ public class LineProjectile : Projectile
 		base.ProjectileInit(pColor);
 
 		// Init Lines
-		RaycastHit2D[] lHits = Physics2D.RaycastAll(transform.position, transform.right, _stats.range, _layerMask);
+		RaycastHit[] lHits = Physics.RaycastAll(transform.position, transform.right, _stats.range, _layerMask);
 		Vector3 lEndPoint;
 
 		// Pierce through all targets

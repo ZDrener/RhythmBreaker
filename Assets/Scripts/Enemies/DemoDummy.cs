@@ -20,6 +20,7 @@ public class DemoDummy : EntityFollowingBeat
 	protected float _attackRate;
 	protected float _currentAttackTimer;
 	[SerializeField] protected GameObject _projectilePrefab;
+	protected bool _weakened = false;
 	protected Player GetPlayer => Player.Instance;
 	[Space]
 	[Header("REFERENCES")]
@@ -35,10 +36,11 @@ public class DemoDummy : EntityFollowingBeat
 	protected const string _CHARGE_FLOAT = "Charge";
 	protected const string _HURT_TRIGGER = "Hurt";
 	protected const string _ATTACK_TRIGGER = "Attack";
+	protected const string _WEAKENED_BOOL = "Weak";
 	[Space]
 	[Header("PREDICTION")]
 	[SerializeField] protected LineRenderer _laserLineRenderer;
-	protected float _predictionTimeRange = 1.5f;
+	protected float _predictionTimeRange = 1.25f;
 	protected Color _laserColor;
 	protected float _predictionCharge = 0f;
 
@@ -59,8 +61,10 @@ public class DemoDummy : EntityFollowingBeat
 		DummyList.Add(this);
 		BeatmapManager.SongStartEvent += OnSongStart;
 		_laserColor = _laserLineRenderer.startColor;
+		_health = _maxHealth;
+        _lifeBar.fillAmount = 1;
 
-		if (ChangePosOnFirstSpawn)
+        if (ChangePosOnFirstSpawn)
 		{
 			transform.position = new Vector3(
 			Random.Range(_spawnRect.xMin, _spawnRect.xMax),
@@ -84,16 +88,33 @@ public class DemoDummy : EntityFollowingBeat
 	}
 
 	public void Damage(int pDamage) {
+		if (_health <= 0) return;
 		_health -= pDamage;
 		_lifeBar.fillAmount = (float)_health / (float)_maxHealth;
 		_animator.SetTrigger(_HURT_TRIGGER);
 
-		if (_health <= 0) Respawn();
+		//if (_health <= 0) Respawn();
+
+		if (_health <= 0)
+		{
+			StopAllCoroutines();
+			_weakened = true;
+            _animator.SetBool(_WEAKENED_BOOL, true);
+			_animator.SetFloat(_CHARGE_FLOAT, 0f);
+		}
+	}
+
+	protected void Defeat()
+	{
+		Respawn();
 	}
 
 	private void Respawn() {
-		_health = _maxHealth;
+		_weakened = false;
+		_animator.SetBool(_WEAKENED_BOOL, false);
+        _health = _maxHealth;
 		_lifeBar.fillAmount = 1;
+
 		if (ChangePosOnRespawn) transform.position = new Vector3(
 			Random.Range(_spawnRect.xMin, _spawnRect.xMax),
 			Random.Range(_spawnRect.yMin, _spawnRect.yMax),
@@ -117,7 +138,7 @@ public class DemoDummy : EntityFollowingBeat
 			if (_currentAttackTimer > _attackRate)
 			{
 				AttackPlayer();
-				_currentAttackTimer -= _attackRate;
+				_currentAttackTimer = 0f;
 			}
 
 			yield return null;
@@ -128,22 +149,29 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected virtual void AttackPlayer()
 	{
-		EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
+		ResetPrediction();
+        EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
 		lProjectile.InitAndStart(GetPlayer.gameObject);
 		_animator.SetTrigger(_ATTACK_TRIGGER);
 		ResetPredicitonLaser();
-	}
+    }
 
 	protected virtual void OnSongStart()
 	{
-		if (_attackPeriodically)
+		StartEnemy();
+	}
+
+	protected void StartEnemy()
+	{
+		/*if (_attackPeriodically)
 		{
 			_attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
 			StartCoroutine(ManageAttacks());
 			StartCoroutine(ManageActionPredictionPeriod());
 		}
 		else
-			StartCoroutine(ManageActionPredictionBeat());
+			StartCoroutine(ManageActionPredictionBeat());*/
+		StartCoroutine(ManageEnemy());
 	}
 
 	protected virtual void OnSongStop()
@@ -156,53 +184,81 @@ public class DemoDummy : EntityFollowingBeat
 		StopAllCoroutines();
 	}
 
-	protected IEnumerator ManageActionPredictionPeriod()
+	protected IEnumerator ManageEnemy()
 	{
-		float lTimeBeforeAttack;
-
-		while (true)
+		if (_attackPeriodically)
 		{
-			lTimeBeforeAttack = _attackRate - _currentAttackTimer;
+            _currentAttackTimer = 0f;
+            _attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
 
-			if ((_spriteRenderer.isVisible || _predictionCharge > 0) && lTimeBeforeAttack <= _predictionTimeRange)
+            while (GetPlayer != null)
+            {
+                _currentAttackTimer += Time.deltaTime;
+
+                if (_currentAttackTimer > _attackRate)
+                {
+                    AttackPlayer();
+                    _currentAttackTimer = 0f;
+                }
+
+                ManagePrediction();
+				yield return null;
+            }
+        }
+        else
+		{
+            while (GetPlayer != null)
+            {
+				ManagePrediction();
+				yield return null;
+            }
+        }
+	}
+
+	protected void ManagePrediction()
+	{
+		if (_spriteRenderer.isVisible || _predictionCharge > 0f)
+		{
+			if (_attackPeriodically)
 			{
-				_predictionCharge = 1 - lTimeBeforeAttack / _predictionTimeRange;
-				_animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
-				DrawPredictionLaser(_predictionCharge);
+                float lTimeBeforeAttack = Mathf.Clamp(_attackRate - _currentAttackTimer, 0f, _attackRate);
+
+				if (lTimeBeforeAttack <= _predictionTimeRange)
+				{
+                    _predictionCharge = 1f - lTimeBeforeAttack / _predictionTimeRange;
+
+                    _animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
+
+                    if (_predictionCharge > 0.2f)
+                        DrawPredictionLaser(_predictionCharge);
+                }
+
+            }
+			else if (m_CurrentNoteCount - m_NotesForAction == -1)
+			{
+                _predictionCharge = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
+                _animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
 
                 if (_predictionCharge > 0.2f)
                     DrawPredictionLaser(_predictionCharge);
             }
-
-			yield return null;
-		}
+        }
 	}
 
-	protected IEnumerator ManageActionPredictionBeat()
+	protected void ResetPrediction()
 	{
-		while (true)
-		{
-			if ((_spriteRenderer.isVisible || _predictionCharge > 0) && m_CurrentNoteCount - m_NotesForAction == -1)
-			{
-                _predictionCharge = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
-				_animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
-
-				if(_predictionCharge > 0.2f)
-					DrawPredictionLaser(_predictionCharge);
-			}
-
-			yield return null;
-		}
+		_predictionCharge = 0f;
+		_animator.SetFloat(_CHARGE_FLOAT, 0f);
+		ResetPredicitonLaser();
 	}
 
 	protected override void PlayAction()
 	{
 		if (!_attackPeriodically && (_spriteRenderer.isVisible || _predictionCharge > 0))
-		{
-			base.PlayAction();
-			_animator.SetFloat(_CHARGE_FLOAT, 0f);
-			_predictionCharge = 0f;
-            AttackPlayer();
+        {
+            ResetPrediction();
+            base.PlayAction();
+			AttackPlayer();
 		}
 	}
 
@@ -225,7 +281,13 @@ public class DemoDummy : EntityFollowingBeat
 
 	}
 
-	override protected void OnDestroy()
+    private void OnTriggerEnter(Collider pCollision)
+    {
+        if (_weakened && pCollision.gameObject.GetComponent<Player>() && PlayerMovement.IsDashing)
+            Defeat();
+    }
+
+    override protected void OnDestroy()
 	{
 		DummyList.Remove(this);
 		Player.PlayerDeathEvent -= OnPlayerDeath;

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
-	public static bool IsDashing;
+	public static bool IsDashing { get; protected set; }
 	public static UnityEvent ON_Dash_Stop = new UnityEvent();
 	public static UnityEvent<DashDirection> ON_Dash = new UnityEvent<DashDirection>();
 
@@ -20,23 +20,25 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] protected ParticleSystem _dashTrail;
 	[SerializeField] protected ParticleSystem _dashRings;
 
+	protected bool IsPlayerFinishing => Player.Instance.IsFinishing;
 
 	[HideInInspector] public Vector2 Direction { get; protected set; }
 
-	protected virtual void Start() {
-		PlayerInputManager.ON_DashInput.AddListener(DashBegin);
-	}
+	protected virtual void Awake()
+	{
+        PlayerInputManager.ON_DashInput.AddListener(DashBegin);
+    }
 
 	protected virtual void Update() {
 		Move();
 	}
 
 	private void Move() {
-		transform.position += PlayerInputManager.DirectionInput * _moveSpeed * Time.deltaTime;
+		transform.position += (IsPlayerFinishing ? _moveSpeed * 0.25f : _moveSpeed) * Time.deltaTime * PlayerInputManager.DirectionInput;
 	}
 
 	protected virtual void DashBegin(Vector2 pDirection) {
-		// You can't start another dash when you're already dashing, dumbass
+		// You can't start another dash when you're already dashing, dumbass <- meanie
 		if (!IsDashing) StartCoroutine(DashCoroutine(pDirection));
 	}
 
@@ -44,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 		float lT = 0;
 
 		Vector3 lStartPos = transform.position;
-		Vector3 lEndPos = lStartPos + pDirection.normalized * _dashDistance;
+		Vector3 lEndPos = lStartPos + pDirection.normalized * (IsPlayerFinishing ? _dashDistance * 0.25f : _dashDistance);
 		Vector3 lDashDirection = (lEndPos - lStartPos).normalized;
 
 		float lMaxDot = .7f;

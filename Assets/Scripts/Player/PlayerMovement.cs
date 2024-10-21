@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
 	public static bool IsDashing;
 	public static UnityEvent ON_Dash = new UnityEvent();
+	public static UnityEvent ON_Dash_Stop = new UnityEvent();
 
 	[Header("MOVEMENT")]
 	[SerializeField] protected float _moveSpeed = 3;
@@ -65,7 +66,8 @@ public class PlayerMovement : MonoBehaviour
 
 		// Dash End
 		IsDashing = false;
-		_dashTrail.Stop();
+		ON_Dash_Stop?.Invoke();
+        _dashTrail.Stop();
 		_dashRings.Stop();
 	}
 }

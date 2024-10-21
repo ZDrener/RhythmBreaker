@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
 	protected const string _DAMAGED_TRIGGER = "Damaged";
 
 	protected BoxCollider _boxCollider;
-	protected bool _isInvuln;
+	protected bool _isInvuln = false;
+	protected bool _isDashing = false;
 
 	private void Awake() {
 		if (Instance != null) throw new Exception("Two instances of a singleton exist at the same time");
@@ -30,6 +31,8 @@ public class Player : MonoBehaviour
 		_health = _MAX_HEALTH;
 		_animator = GetComponent<Animator>();
         _boxCollider = GetComponent<BoxCollider>();
+		PlayerMovement.ON_Dash.AddListener(OnPlayerDash);
+		PlayerMovement.ON_Dash_Stop.AddListener(OnPlayerDashStop);
     }
 
 	private void Start()
@@ -38,9 +41,19 @@ public class Player : MonoBehaviour
 			HealthBar.Instance.InitHealth(_health, _MAX_HEALTH);
 	}
 
+	protected virtual void OnPlayerDash()
+	{
+		_isDashing = true;
+    }
+
+	protected virtual void OnPlayerDashStop()
+	{
+		_isDashing = false;
+	}
+
 	public void TakeDamage(int pDamage)
 	{
-		if (_isInvuln)
+		if (_isInvuln || _isDashing)
 			return;
 
 		if (_health > 0)

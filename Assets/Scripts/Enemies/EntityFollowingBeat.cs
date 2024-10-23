@@ -29,7 +29,7 @@ public class EntityFollowingBeat : MonoBehaviour
 
 			if (m_CurrentNoteCount >= m_NotesForAction)
 			{
-				PlayAction();
+				PlayBeatAction();
 				m_CurrentNoteCount = 0;
 			}
 		}
@@ -38,7 +38,7 @@ public class EntityFollowingBeat : MonoBehaviour
 	/// <summary>
 	/// Called after m_NotesAwaited. Manages the entities action, ie: enemies attack, traps go off.
 	/// </summary>
-	protected virtual void PlayAction()
+	protected virtual void PlayBeatAction()
 	{
 		
 	}

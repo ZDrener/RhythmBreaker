@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 	public static event IntEvent PlayerHealthChange;
 
 	public static UnityEvent PlayerFinisherStart;
+	public static UnityEvent PlayerFinisherEnd;
 
 	protected Animator _animator;
 	protected const string _DAMAGED_TRIGGER = "Damaged";
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
         }
 	}
 
-	protected void InvulnStart()
+    protected void InvulnStart()
 	{
 		_isInvuln = true;
     }
@@ -68,16 +69,17 @@ public class Player : MonoBehaviour
         _isInvuln = false;
     }
 
-	protected virtual void StartFinisher()
+	public virtual void StartFinisher()
 	{
 		IsFinishing = true;
 		PlayerFinisherStart?.Invoke();
     }
 
-	protected virtual void EndFinisher()
+	public virtual void EndFinisher()
 	{
 		IsFinishing = false;
-	}
+		PlayerFinisherEnd?.Invoke();
+    }
 
 	private void OnDestroy() {
 		if (Instance == this) Instance = null;

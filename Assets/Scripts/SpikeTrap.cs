@@ -29,9 +29,9 @@ public class SpikeTrap : EntityFollowingBeat
         base.OnNotePlayed(pNote);
     }
 
-    protected override void PlayAction()
+    protected override void PlayBeatAction()
     {
-        base.PlayAction();
+        base.PlayBeatAction();
 
         m_Animator.SetTrigger(m_SPIKE_O_CLOCK_TRIGGER);
         m_IsTriggered = true;

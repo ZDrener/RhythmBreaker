@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -20,6 +21,16 @@ public class DemoDummy : EntityFollowingBeat
 	protected float _attackRate;
 	protected float _currentAttackTimer;
 	[SerializeField] protected GameObject _projectilePrefab;
+	[SerializeField] protected FinisherManager _finisherManager;
+	protected bool Weakened
+	{
+		get { return _weakened; }
+		set 
+		{ 
+			_weakened = value;
+			_animator.SetBool(_WEAKENED_BOOL, _weakened);
+		}
+	}
 	protected bool _weakened = false;
 	protected Player GetPlayer => Player.Instance;
 	[Space]
@@ -46,24 +57,26 @@ public class DemoDummy : EntityFollowingBeat
 
 	public bool ChangePosOnFirstSpawn;
 	public bool ChangePosOnRespawn;
+	public bool SpecialFinisher = true;
 
 	override protected void Awake()
 	{
 		base.Awake();
 		_animator = GetComponent<Animator>();
 		Player.PlayerDeathEvent += OnPlayerDeath;
+        BeatmapManager.SongStartEvent += OnSongStart;
 		BeatmapManager.SongStopEvent += OnSongStop;
-	}
+		_finisherManager.FinisherSuccess.AddListener(FinisherDefeat);
+    }
 
 	public void Start() {
 
 		DummyList.Add(this);
-		BeatmapManager.SongStartEvent += OnSongStart;
 		_laserColor = _laserLineRenderer.startColor;
 		_health = _maxHealth;
-        _lifeBar.fillAmount = 1;
+		_lifeBar.fillAmount = 1;
 
-        if (ChangePosOnFirstSpawn)
+		if (ChangePosOnFirstSpawn)
 		{
 			transform.position = new Vector3(
 			Random.Range(_spawnRect.xMin, _spawnRect.xMax),
@@ -92,27 +105,42 @@ public class DemoDummy : EntityFollowingBeat
 		_lifeBar.fillAmount = (float)_health / (float)_maxHealth;
 		_animator.SetTrigger(_HURT_TRIGGER);
 
-		//if (_health <= 0) Respawn();
-
 		if (_health <= 0)
-		{
-			StopAllCoroutines();
-			_weakened = true;
-            _animator.SetBool(_WEAKENED_BOOL, true);
-			_animator.SetFloat(_CHARGE_FLOAT, 0f);
-		}
+			Defeat();
 	}
 
 	protected void Defeat()
+	{
+        StopAllCoroutines();
+        ResetPrediction();
+        Weakened = true;
+    }
+
+	protected void FinisherStart()
+	{
+        _finisherManager.SetupFinisher();
+		Player.Instance.StartFinisher();
+    }
+
+	protected void FinisherDefeat()
+	{
+        Player.Instance.EndFinisher();
+		Death();
+    }
+
+	protected void Death()
 	{
 		Respawn();
 	}
 
 	private void Respawn() {
-		_weakened = false;
-		_animator.SetBool(_WEAKENED_BOOL, false);
-        _health = _maxHealth;
+		if (Weakened)
+			StartEnemy();
+
+		Weakened = false;
+		_health = _maxHealth;
 		_lifeBar.fillAmount = 1;
+		ResetPrediction();
 
 		if (ChangePosOnRespawn) transform.position = new Vector3(
 			Random.Range(_spawnRect.xMin, _spawnRect.xMax),
@@ -129,112 +157,111 @@ public class DemoDummy : EntityFollowingBeat
 	protected virtual void AttackPlayer()
 	{
 		ResetPrediction();
-        EnemyProjectile lProjectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>();
-		lProjectile.InitAndStart(GetPlayer.gameObject);
+		Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<EnemyProjectile>().InitAndStart(GetPlayer.gameObject);
 		_animator.SetTrigger(_ATTACK_TRIGGER);
+	}
+
+	protected override void PlayBeatAction()
+	{
+		if (!_attackPeriodically && (_spriteRenderer.isVisible || _predictionCharge > 0))
+		{
+			ResetPrediction();
+			base.PlayBeatAction();
+			AttackPlayer();
+		}
+	}
+
+	protected void StartEnemy()
+	{
+		_predictionCharge = 0;
+        StartCoroutine(ManageEnemy());
+	}
+
+	protected IEnumerator ManageEnemy()
+	{
+		if (_attackPeriodically)
+		{
+			_currentAttackTimer = 0f;
+			_attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
+
+			while (GetPlayer != null)
+			{
+				_currentAttackTimer += Time.deltaTime;
+
+				if (_currentAttackTimer > _attackRate)
+				{
+					AttackPlayer();
+					_currentAttackTimer = 0f;
+				}
+
+				ManagePrediction();
+				yield return null;
+			}
+		}
+		else
+		{
+			while (GetPlayer != null)
+			{
+				ManagePrediction();
+				yield return null;
+			}
+		}
+	}
+
+	protected void ManagePrediction()
+	{
+		if (_spriteRenderer.isVisible || _predictionCharge > 0f)
+		{
+			if (_attackPeriodically)
+			{
+				float lTimeBeforeAttack = Mathf.Clamp(_attackRate - _currentAttackTimer, 0f, _attackRate);
+
+				if (lTimeBeforeAttack <= _predictionTimeRange)
+				{
+					_predictionCharge = 1f - lTimeBeforeAttack / _predictionTimeRange;
+
+					_animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
+
+					if (_predictionCharge > 0.2f)
+						DrawPredictionLaser();
+				}
+
+			}
+			else if (m_CurrentNoteCount - m_NotesForAction == -1)
+			{
+				_predictionCharge = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
+				_animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
+
+				if (_predictionCharge > 0.2f)
+					DrawPredictionLaser();
+			}
+		}
+	}
+
+	protected void ResetPrediction()
+	{
+		_predictionCharge = 0f;
+		_animator.SetFloat(_CHARGE_FLOAT, 0f);
 		ResetPredictionLaser();
-    }
-
-	protected virtual void OnSongStart()
-	{
-		StartEnemy();
 	}
 
-    protected override void PlayAction()
-    {
-        if (!_attackPeriodically && (_spriteRenderer.isVisible || _predictionCharge > 0))
-        {
-            ResetPrediction();
-            base.PlayAction();
-            AttackPlayer();
-        }
-    }
-
-    protected void StartEnemy()
+	protected virtual void DrawPredictionLaser()
 	{
-		StartCoroutine(ManageEnemy());
+		_laserLineRenderer.SetPosition(0, transform.position);
+		_laserLineRenderer.SetPosition(1, GetPlayer.transform.position);
+		_laserLineRenderer.startColor = new Color(_laserColor.r, _laserColor.g, _laserColor.b, Mathf.Lerp(0, 1, _predictionCharge));
 	}
 
-    protected IEnumerator ManageEnemy()
-    {
-        if (_attackPeriodically)
-        {
-            _currentAttackTimer = 0f;
-            _attackRate = Random.Range(_attackRateRange.x, _attackRateRange.y);
-
-            while (GetPlayer != null)
-            {
-                _currentAttackTimer += Time.deltaTime;
-
-                if (_currentAttackTimer > _attackRate)
-                {
-                    AttackPlayer();
-                    _currentAttackTimer = 0f;
-                }
-
-                ManagePrediction();
-                yield return null;
-            }
-        }
-        else
-        {
-            while (GetPlayer != null)
-            {
-                ManagePrediction();
-                yield return null;
-            }
-        }
-    }
-
-    protected void ManagePrediction()
-    {
-        if (_spriteRenderer.isVisible || _predictionCharge > 0f)
-        {
-            if (_attackPeriodically)
-            {
-                float lTimeBeforeAttack = Mathf.Clamp(_attackRate - _currentAttackTimer, 0f, _attackRate);
-
-                if (lTimeBeforeAttack <= _predictionTimeRange)
-                {
-                    _predictionCharge = 1f - lTimeBeforeAttack / _predictionTimeRange;
-
-                    _animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
-
-                    if (_predictionCharge > 0.2f)
-                        DrawPredictionLaser(_predictionCharge);
-                }
-
-            }
-            else if (m_CurrentNoteCount - m_NotesForAction == -1)
-            {
-                _predictionCharge = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
-                _animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
-
-                if (_predictionCharge > 0.2f)
-                    DrawPredictionLaser(_predictionCharge);
-            }
-        }
-    }
-
-    protected void ResetPrediction()
-    {
-        _predictionCharge = 0f;
-        _animator.SetFloat(_CHARGE_FLOAT, 0f);
-        ResetPredictionLaser();
-    }
-
-    protected virtual void DrawPredictionLaser(float pChargeRatio)
-    {
+	protected virtual void ResetPredictionLaser()
+	{
         _laserLineRenderer.SetPosition(0, transform.position);
-        _laserLineRenderer.SetPosition(1, GetPlayer.transform.position);
-        _laserLineRenderer.startColor = new Color(_laserColor.r, _laserColor.g, _laserColor.b, Mathf.Lerp(0, 1, pChargeRatio));
-    }
-
-
-    protected virtual void ResetPredictionLaser()
-    {
         _laserLineRenderer.SetPosition(1, transform.position);
-        _laserLineRenderer.startColor = new Color(_laserColor.r, _laserColor.g, _laserColor.b, 0f);
+		_laserLineRenderer.startColor = new Color(_laserColor.r, _laserColor.g, _laserColor.b, 0f);
+	}
+
+    protected virtual void OnSongStart()
+    {
+        StartEnemy();
     }
 
     protected virtual void OnSongStop()
@@ -247,18 +274,22 @@ public class DemoDummy : EntityFollowingBeat
 		StopAllCoroutines();
 	}
 
-	
+	private void OnTriggerEnter(Collider pCollision)
+	{
+		if (Weakened && pCollision.gameObject.GetComponent<Player>() && PlayerMovement.IsDashing)
+		{
+			if (SpecialFinisher)
+				FinisherStart();
+			else
+				Death();
+		}
+	}
 
-    private void OnTriggerEnter(Collider pCollision)
-    {
-        if (_weakened && pCollision.gameObject.GetComponent<Player>() && PlayerMovement.IsDashing)
-            Defeat();
-    }
-
-    override protected void OnDestroy()
+	override protected void OnDestroy()
 	{
 		DummyList.Remove(this);
 		Player.PlayerDeathEvent -= OnPlayerDeath;
 		BeatmapManager.SongStartEvent -= OnSongStart;
-	}
+        BeatmapManager.SongStopEvent -= OnSongStop;
+    }
 }

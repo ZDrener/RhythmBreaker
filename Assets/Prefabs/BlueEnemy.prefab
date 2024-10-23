@@ -143,6 +143,7 @@ MonoBehaviour:
   _attackPeriodically: 0
   _attackRateRange: {x: 0, y: 0}
   _projectilePrefab: {fileID: 8679621443886071817, guid: 6f4f06e653fd2ec468aa567518a165a6, type: 3}
+  _finisherManager: {fileID: 3594576538013016052}
   _lifeBar: {fileID: 2492661909053407039}
   _lifeBar2: {fileID: 2492661909100380271}
   _spawnRect:
@@ -157,6 +158,18 @@ MonoBehaviour:
   _laserLineRenderer: {fileID: 7084040362738029476}
   ChangePosOnFirstSpawn: 1
   ChangePosOnRespawn: 0
+  SpecialFinisher: 1
+--- !u!114 &3594576538013016052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3376641426437311048, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+  m_PrefabInstance: {fileID: 2251444867766031804}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c076262b7906c443bbe26f4329cd143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!120 &7084040362738029476 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 9039054309464311320, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}

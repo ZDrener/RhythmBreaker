@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	private void Move() {
-		transform.position += (IsPlayerFinishing ? _moveSpeed * 0.25f : _moveSpeed) * Time.deltaTime * PlayerInputManager.DirectionInput;
+		transform.position += (IsPlayerFinishing ? _moveSpeed * 0.75f : _moveSpeed) * Time.deltaTime * PlayerInputManager.DirectionInput;
 	}
 
 	protected virtual void DashBegin(Vector2 pDirection) {
@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 		float lT = 0;
 
 		Vector3 lStartPos = transform.position;
-		Vector3 lEndPos = lStartPos + pDirection.normalized * (IsPlayerFinishing ? _dashDistance * 0.25f : _dashDistance);
+		Vector3 lEndPos = lStartPos + pDirection.normalized * (IsPlayerFinishing ? _dashDistance * 0.2f : _dashDistance);
 		Vector3 lDashDirection = (lEndPos - lStartPos).normalized;
 
 		float lMaxDot = .7f;

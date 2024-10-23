@@ -108,6 +108,17 @@ LineRenderer:
   m_CorrespondingSourceObject: {fileID: 9039054309464311320, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
   m_PrefabInstance: {fileID: 5553540602003197463}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7191719449248269407 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3376641426437311048, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+  m_PrefabInstance: {fileID: 5553540602003197463}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c076262b7906c443bbe26f4329cd143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8123130478198888099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4443095569802303668, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
@@ -131,6 +142,7 @@ MonoBehaviour:
   _attackPeriodically: 0
   _attackRateRange: {x: 0, y: 0}
   _projectilePrefab: {fileID: 8359058598341790087, guid: 7ffd534c8bec7c444bef5774feb3bf6f, type: 3}
+  _finisherManager: {fileID: 7191719449248269407}
   _lifeBar: {fileID: 8123130478997300372}
   _lifeBar2: {fileID: 8123130479111920580}
   _spawnRect:
@@ -145,6 +157,7 @@ MonoBehaviour:
   _laserLineRenderer: {fileID: 3486647853974652943}
   ChangePosOnFirstSpawn: 1
   ChangePosOnRespawn: 0
+  SpecialFinisher: 1
 --- !u!114 &8123130478997300372 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4443095568454281859, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}

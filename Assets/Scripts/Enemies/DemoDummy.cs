@@ -13,7 +13,7 @@ public class DemoDummy : EntityFollowingBeat
 	[Space]
 	[Header("STATS")]
 	[SerializeField] protected int _maxHealth;
-	protected int _health;
+	public int Health { get; protected set; }
 	[Space]
 	[Header("COMBAT")]
 	[SerializeField] protected bool _attackPeriodically = false;
@@ -39,6 +39,7 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected Image _lifeBar;
 	[SerializeField] protected Image _lifeBar2;
 	[SerializeField] protected Rect _spawnRect;
+	[SerializeField] protected BoxCollider _collider;
 	[Space]
 	[Header("JUICE")]
 	[SerializeField] protected float _lifeBar2DecreaseForce;
@@ -81,7 +82,7 @@ public class DemoDummy : EntityFollowingBeat
 
 		DummyList.Add(this);
 		_laserColor = _laserLineRenderer.startColor;
-		_health = _maxHealth;
+		Health = _maxHealth;
 		_lifeBar.fillAmount = 1;
 
 		if (ChangePosOnFirstSpawn)
@@ -94,26 +95,34 @@ public class DemoDummy : EntityFollowingBeat
 	}
 
 	public static DemoDummy GetClosestDummy(Vector3 pPosition) {
-		DemoDummy Target;
+		DemoDummy lTarget = null;
 		// Set target
-		if (DummyList.Count == 0) Target = null;
+		if (DummyList.Count == 0) lTarget = null;
 		else {
 			DummyList.Sort(delegate (DemoDummy n1, DemoDummy n2) {
 				return Vector3.Distance(pPosition, n1.transform.position).CompareTo(Vector3.Distance(pPosition, n2.transform.position));
 			});
-			Target = DummyList[0];
+			
+			for (int i = 0; i < DummyList.Count; i++)
+			{
+				if (DummyList[i].Health > 0)
+				{
+					lTarget = DummyList[i];
+					break;
+				}
+			}
 		}
 
-		return Target;
+		return lTarget;
 	}
 
 	public void Damage(int pDamage) {
-		if (_health <= 0) return;
-		_health -= pDamage;
-		_lifeBar.fillAmount = (float)_health / (float)_maxHealth;
+		if (Health <= 0) return;
+		Health -= pDamage;
+		_lifeBar.fillAmount = (float)Health / (float)_maxHealth;
 		_animator.SetTrigger(_HURT_TRIGGER);
 
-		if (_health <= 0)
+		if (Health <= 0)
 			Defeat();
 	}
 
@@ -144,7 +153,8 @@ public class DemoDummy : EntityFollowingBeat
 	{
 		_finisherManager.SetupFinisher();
 		Player.Instance.StartFinisher();
-	}
+		_collider.enabled = false;
+    }
 
 	protected void FinisherDefeat()
 	{
@@ -154,10 +164,13 @@ public class DemoDummy : EntityFollowingBeat
 
 	private void Respawn() {
 		if (Weakened)
+		{
 			StartEnemy();
+			_collider.enabled = true;
+        }
 
 		Weakened = false;
-		_health = _maxHealth;
+		Health = _maxHealth;
 		_lifeBar.fillAmount = 1;
 		ResetPrediction();
 
@@ -170,7 +183,7 @@ public class DemoDummy : EntityFollowingBeat
 	private void Update() {
 		// Update lifebar2
 		if (_lifeBar.fillAmount != _lifeBar2.fillAmount)
-			_lifeBar2.fillAmount = Mathf.Lerp(_lifeBar2.fillAmount, _health / _maxHealth, _lifeBar2DecreaseForce * Time.deltaTime);
+			_lifeBar2.fillAmount = Mathf.Lerp(_lifeBar2.fillAmount, Health / _maxHealth, _lifeBar2DecreaseForce * Time.deltaTime);
 	}
 
 	protected virtual void AttackPlayer()

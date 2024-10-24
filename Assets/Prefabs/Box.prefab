@@ -491,6 +491,7 @@ MonoBehaviour:
     y: -9
     width: 32
     height: 18
+  _collider: {fileID: 4282717055910952726}
   _lifeBar2DecreaseForce: 1
   _spriteRenderer: {fileID: 7709401779656952261}
   _HitHueChangeDuration: 1

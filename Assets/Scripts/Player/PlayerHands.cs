@@ -59,6 +59,8 @@ public class PlayerHands : MonoBehaviour
 		// Calculate target
 		DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
 
+		if (lTarget == null) return;
+
 		if (lTarget) {
 			Vector3 lDirection = lTarget.transform.position - transform.position;
 			float lAngle = Mathf.Atan2(lDirection.y, lDirection.x) * Mathf.Rad2Deg;

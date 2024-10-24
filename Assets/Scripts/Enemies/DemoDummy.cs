@@ -32,6 +32,7 @@ public class DemoDummy : EntityFollowingBeat
 		}
 	}
 	protected bool _weakened = false;
+	protected bool _playerFinishing = false;
 	protected Player GetPlayer => Player.Instance;
 	[Space]
 	[Header("REFERENCES")]
@@ -67,11 +68,13 @@ public class DemoDummy : EntityFollowingBeat
 	{
 		base.Awake();
 		if (_attackPeriodically) BeatmapManager.ON_TriggerNote.RemoveListener(OnNotePlayed);
-        _animator = GetComponent<Animator>();
+		_animator = GetComponent<Animator>();
 		Player.PlayerDeathEvent += OnPlayerDeath;
 		BeatmapManager.SongStartEvent += OnSongStart;
 		BeatmapManager.SongStopEvent += OnSongStop;
 		_finisherManager.FinisherSuccess.AddListener(FinisherDefeat);
+		Player.PlayerFinisherStart.AddListener(OnPlayerFinisherStart);
+		Player.PlayerFinisherEnd.AddListener(OnPlayerFinisherEnd);
 	}
 
 	public void Start() {
@@ -134,8 +137,8 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected void DeathAnimationEnded()
 	{
-        Respawn();
-    }
+		Respawn();
+	}
 
 	protected void FinisherStart()
 	{
@@ -179,7 +182,7 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected override void PlayBeatAction()
 	{
-		if (!Weakened && !_attackPeriodically && (_spriteRenderer.isVisible || _predictionCharge > 0))
+		if (!_playerFinishing && !Weakened && (_spriteRenderer.isVisible || _predictionCharge > 0))
 		{
 			ResetPrediction();
 			base.PlayBeatAction();
@@ -211,15 +214,19 @@ public class DemoDummy : EntityFollowingBeat
 
 			while (GetPlayer != null)
 			{
-				_currentAttackTimer += Time.deltaTime;
-
-				if (_currentAttackTimer > _attackRate)
+				if (!_playerFinishing)
 				{
-					AttackPlayer();
-					_currentAttackTimer = 0f;
-				}
+                    _currentAttackTimer += Time.deltaTime;
 
-				ManagePrediction();
+                    if (_currentAttackTimer > _attackRate)
+                    {
+                        AttackPlayer();
+                        _currentAttackTimer = 0f;
+                    }
+
+                    ManagePrediction();
+                }
+
 				yield return null;
 			}
 		}
@@ -227,7 +234,9 @@ public class DemoDummy : EntityFollowingBeat
 		{
 			while (GetPlayer != null)
 			{
-				ManagePrediction();
+                if (!_playerFinishing)
+                    ManagePrediction();
+
 				yield return null;
 			}
 		}
@@ -291,6 +300,16 @@ public class DemoDummy : EntityFollowingBeat
 	{
 		StopEnemy();
 	}
+
+	protected virtual void OnPlayerFinisherStart()
+	{
+		_playerFinishing = true;
+    }
+
+	protected virtual void OnPlayerFinisherEnd()
+	{
+		_playerFinishing = false;
+    }
 
 	protected virtual void OnPlayerDeath()
 	{

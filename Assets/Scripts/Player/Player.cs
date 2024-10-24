@@ -18,8 +18,8 @@ public class Player : MonoBehaviour
 	public delegate void IntEvent(int pInt);
 	public static event IntEvent PlayerHealthChange;
 
-	public static UnityEvent PlayerFinisherStart;
-	public static UnityEvent PlayerFinisherEnd;
+	public static UnityEvent PlayerFinisherStart = new UnityEvent();
+	public static UnityEvent PlayerFinisherEnd = new UnityEvent();
 
 	protected Animator _animator;
 	protected const string _DAMAGED_TRIGGER = "Damaged";

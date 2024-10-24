@@ -59,6 +59,8 @@ public class DemoDummy : EntityFollowingBeat
 	public bool ChangePosOnRespawn;
 	public bool SpecialFinisher = true;
 
+	protected Coroutine _enemyCoroutine;
+
 	override protected void Awake()
 	{
 		base.Awake();
@@ -111,7 +113,7 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected void Defeat()
 	{
-        StopAllCoroutines();
+		StopEnemy();
         ResetPrediction();
         Weakened = true;
     }
@@ -173,11 +175,20 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected void StartEnemy()
 	{
+		if (_enemyCoroutine != null)
+			return;
+
 		_predictionCharge = 0;
-        StartCoroutine(ManageEnemy());
+        _enemyCoroutine = StartCoroutine(ManageEnemy());
 	}
 
-	protected IEnumerator ManageEnemy()
+    protected void StopEnemy()
+    {
+        StopCoroutine(_enemyCoroutine);
+        _enemyCoroutine = null;
+    }
+
+    protected IEnumerator ManageEnemy()
 	{
 		if (_attackPeriodically)
 		{
@@ -219,11 +230,8 @@ public class DemoDummy : EntityFollowingBeat
 				if (lTimeBeforeAttack <= _predictionTimeRange)
 				{
 					_predictionCharge = 1f - lTimeBeforeAttack / _predictionTimeRange;
-
 					_animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
-
-					if (_predictionCharge > 0.2f)
-						DrawPredictionLaser();
+					DrawPredictionLaser();
 				}
 
 			}
@@ -231,9 +239,7 @@ public class DemoDummy : EntityFollowingBeat
 			{
 				_predictionCharge = BeatmapManager.Instance.GetNotePrediction(_predictionTimeRange, m_NoteAwaited);
 				_animator.SetFloat(_CHARGE_FLOAT, _predictionCharge);
-
-				if (_predictionCharge > 0.2f)
-					DrawPredictionLaser();
+				DrawPredictionLaser();
 			}
 		}
 	}
@@ -247,6 +253,9 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected virtual void DrawPredictionLaser()
 	{
+		if (_predictionCharge < 0.2f)
+			return;
+
 		_laserLineRenderer.SetPosition(0, transform.position);
 		_laserLineRenderer.SetPosition(1, GetPlayer.transform.position);
 		_laserLineRenderer.startColor = new Color(_laserColor.r, _laserColor.g, _laserColor.b, Mathf.Lerp(0, 1, _predictionCharge));
@@ -266,13 +275,13 @@ public class DemoDummy : EntityFollowingBeat
 
     protected virtual void OnSongStop()
 	{
-		StopAllCoroutines();
-	}
+        StopEnemy();
+    }
 
 	protected virtual void OnPlayerDeath()
 	{
-		StopAllCoroutines();
-	}
+		StopEnemy();
+    }
 
 	private void OnTriggerEnter(Collider pCollision)
 	{

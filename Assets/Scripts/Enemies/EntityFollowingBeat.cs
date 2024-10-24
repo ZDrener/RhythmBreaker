@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EntityFollowingBeat : MonoBehaviour
 {
-	[Header("ENEMY PATTERN")]
+	[Header("PATTERN")]
 	[Space]
 	[SerializeField] protected NoteType m_NoteAwaited;
 	[SerializeField][Tooltip("The amount of notes needing to be played before the enemy's action")] protected int m_NotesForAction = 1;

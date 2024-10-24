@@ -67,6 +67,22 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: _maxHealth
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: m_NoteAwaited
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: SpecialFinisher
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+      propertyPath: m_NotesForAction
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4443095569802303668, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
       propertyPath: m_Name
       value: RedEnemy
@@ -95,88 +111,5 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.9960785
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4443095569802303657, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
---- !u!212 &2877641636377757650 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 7709401779656952261, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 5553540602003197463}
-  m_PrefabAsset: {fileID: 0}
---- !u!120 &3486647853974652943 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 9039054309464311320, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 5553540602003197463}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7191719449248269407 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3376641426437311048, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 5553540602003197463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c076262b7906c443bbe26f4329cd143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &8123130478198888099 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4443095569802303668, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 5553540602003197463}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &751059911599153290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8123130478198888099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2629a6a257d5884cb3edca8b38bc143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NoteAwaited: 1
-  m_NotesForAction: 3
-  _maxHealth: 6
-  _attackPeriodically: 0
-  _attackRateRange: {x: 0, y: 0}
-  _projectilePrefab: {fileID: 8359058598341790087, guid: 7ffd534c8bec7c444bef5774feb3bf6f, type: 3}
-  _finisherManager: {fileID: 7191719449248269407}
-  _lifeBar: {fileID: 8123130478997300372}
-  _lifeBar2: {fileID: 8123130479111920580}
-  _spawnRect:
-    serializedVersion: 2
-    x: -16
-    y: -9
-    width: 32
-    height: 18
-  _lifeBar2DecreaseForce: 1
-  _spriteRenderer: {fileID: 2877641636377757650}
-  _HitHueChangeDuration: 1
-  _laserLineRenderer: {fileID: 3486647853974652943}
-  ChangePosOnFirstSpawn: 1
-  ChangePosOnRespawn: 0
-  SpecialFinisher: 1
---- !u!114 &8123130478997300372 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4443095568454281859, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 5553540602003197463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8123130479111920580 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4443095568432059859, guid: c515cd4f44f21a44abfc1008c7d7ca78, type: 3}
-  m_PrefabInstance: {fileID: 5553540602003197463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -494,10 +494,11 @@ MonoBehaviour:
   _lifeBar2DecreaseForce: 1
   _spriteRenderer: {fileID: 7709401779656952261}
   _HitHueChangeDuration: 1
+  _deathParticlePrefab: {fileID: 7280447856943530804, guid: df732192a464a2a469ef153c20ecfc10, type: 3}
   _laserLineRenderer: {fileID: 9039054309464311320}
   ChangePosOnFirstSpawn: 1
   ChangePosOnRespawn: 0
-  SpecialFinisher: 1
+  SpecialFinisher: 0
 --- !u!114 &6163524919453767985
 MonoBehaviour:
   m_ObjectHideFlags: 0

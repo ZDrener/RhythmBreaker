@@ -43,11 +43,13 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected float _lifeBar2DecreaseForce;
 	[SerializeField] protected SpriteRenderer _spriteRenderer;
 	[SerializeField] protected float _HitHueChangeDuration;
+	[SerializeField] protected GameObject _deathParticlePrefab;
 	protected Animator _animator;
 	protected const string _CHARGE_FLOAT = "Charge";
 	protected const string _HURT_TRIGGER = "Hurt";
 	protected const string _ATTACK_TRIGGER = "Attack";
 	protected const string _WEAKENED_BOOL = "Weak";
+	protected const string _DEATH_TRIGGER = "Death";
 	[Space]
 	[Header("PREDICTION")]
 	[SerializeField] protected LineRenderer _laserLineRenderer;
@@ -64,12 +66,13 @@ public class DemoDummy : EntityFollowingBeat
 	override protected void Awake()
 	{
 		base.Awake();
-		_animator = GetComponent<Animator>();
+		if (_attackPeriodically) BeatmapManager.ON_TriggerNote.RemoveListener(OnNotePlayed);
+        _animator = GetComponent<Animator>();
 		Player.PlayerDeathEvent += OnPlayerDeath;
-        BeatmapManager.SongStartEvent += OnSongStart;
+		BeatmapManager.SongStartEvent += OnSongStart;
 		BeatmapManager.SongStopEvent += OnSongStop;
 		_finisherManager.FinisherSuccess.AddListener(FinisherDefeat);
-    }
+	}
 
 	public void Start() {
 
@@ -113,26 +116,37 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected void Defeat()
 	{
+		print("defeated");
 		StopEnemy();
-        ResetPrediction();
-        Weakened = true;
+		ResetPrediction();
+		Weakened = true;
+	}
+
+	protected void Death()
+	{
+		_animator.SetTrigger(_DEATH_TRIGGER);
+	}
+
+	protected void PlayDeathParticles()
+	{
+		Instantiate(_deathParticlePrefab, transform.position, Quaternion.identity);
+	}
+
+	protected void DeathAnimationEnded()
+	{
+        Respawn();
     }
 
 	protected void FinisherStart()
 	{
-        _finisherManager.SetupFinisher();
+		_finisherManager.SetupFinisher();
 		Player.Instance.StartFinisher();
-    }
+	}
 
 	protected void FinisherDefeat()
 	{
-        Player.Instance.EndFinisher();
+		Player.Instance.EndFinisher();
 		Death();
-    }
-
-	protected void Death()
-	{
-		Respawn();
 	}
 
 	private void Respawn() {
@@ -165,7 +179,7 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected override void PlayBeatAction()
 	{
-		if (!_attackPeriodically && (_spriteRenderer.isVisible || _predictionCharge > 0))
+		if (!Weakened && !_attackPeriodically && (_spriteRenderer.isVisible || _predictionCharge > 0))
 		{
 			ResetPrediction();
 			base.PlayBeatAction();
@@ -179,16 +193,16 @@ public class DemoDummy : EntityFollowingBeat
 			return;
 
 		_predictionCharge = 0;
-        _enemyCoroutine = StartCoroutine(ManageEnemy());
+		_enemyCoroutine = StartCoroutine(ManageEnemy());
 	}
 
-    protected void StopEnemy()
-    {
-        StopCoroutine(_enemyCoroutine);
-        _enemyCoroutine = null;
-    }
+	protected void StopEnemy()
+	{
+		StopCoroutine(_enemyCoroutine);
+		_enemyCoroutine = null;
+	}
 
-    protected IEnumerator ManageEnemy()
+	protected IEnumerator ManageEnemy()
 	{
 		if (_attackPeriodically)
 		{
@@ -263,25 +277,25 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected virtual void ResetPredictionLaser()
 	{
-        _laserLineRenderer.SetPosition(0, transform.position);
-        _laserLineRenderer.SetPosition(1, transform.position);
+		_laserLineRenderer.SetPosition(0, transform.position);
+		_laserLineRenderer.SetPosition(1, transform.position);
 		_laserLineRenderer.startColor = new Color(_laserColor.r, _laserColor.g, _laserColor.b, 0f);
 	}
 
-    protected virtual void OnSongStart()
-    {
-        StartEnemy();
-    }
-
-    protected virtual void OnSongStop()
+	protected virtual void OnSongStart()
 	{
-        StopEnemy();
-    }
+		StartEnemy();
+	}
+
+	protected virtual void OnSongStop()
+	{
+		StopEnemy();
+	}
 
 	protected virtual void OnPlayerDeath()
 	{
 		StopEnemy();
-    }
+	}
 
 	private void OnTriggerEnter(Collider pCollision)
 	{
@@ -299,6 +313,6 @@ public class DemoDummy : EntityFollowingBeat
 		DummyList.Remove(this);
 		Player.PlayerDeathEvent -= OnPlayerDeath;
 		BeatmapManager.SongStartEvent -= OnSongStart;
-        BeatmapManager.SongStopEvent -= OnSongStop;
-    }
+		BeatmapManager.SongStopEvent -= OnSongStop;
+	}
 }

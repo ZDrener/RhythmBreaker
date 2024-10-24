@@ -25,6 +25,7 @@ public class PlayerHands : MonoBehaviour
 	[SerializeField] protected bool _ImmobileToShoot;
 
 	protected Weapon _lastUsedWeapon;
+	protected DemoDummy _lastTarget;
 
 	protected virtual void Start() {
 		_camera = Camera.main;
@@ -56,13 +57,11 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void AimAtCursor() {
-		// Calculate target
-		DemoDummy lTarget = DemoDummy.GetClosestDummy(transform.position);
+        // Calculate target
+        _lastTarget = DemoDummy.GetClosestDummy(transform.position);
 
-		if (lTarget == null) return;
-
-		if (lTarget) {
-			Vector3 lDirection = lTarget.transform.position - transform.position;
+		if (_lastTarget) {
+			Vector3 lDirection = _lastTarget.transform.position - transform.position;
 			float lAngle = Mathf.Atan2(lDirection.y, lDirection.x) * Mathf.Rad2Deg;
 			Quaternion lEndRotation = Quaternion.Euler(Vector3.forward * lAngle);
 
@@ -80,12 +79,12 @@ public class PlayerHands : MonoBehaviour
 
 	protected virtual void OrderFire(NoteType pType) {
 		// Archero
-		if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput) {
+		if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput || !_ImmobileToShoot) {
 			if ((pType == NoteType.Red)) FireMain();
 			else if ((pType == NoteType.Blue)) FireSecondary();
 		}
 		// Hold
-		else if (!PlayerInputManager.Instance.ArcheroGameplay && PlayerInputManager.AttackInput) {
+		else if (!PlayerInputManager.Instance.ArcheroGameplay && PlayerInputManager.AttackInput || !_ImmobileToShoot) {
 			if ((pType == NoteType.Red) && (PlayerInputManager.AttackType == NoteType.Red)) FireMain();
 			else if ((pType == NoteType.Blue) && (PlayerInputManager.AttackType == NoteType.Blue)) FireSecondary();
 		}
@@ -96,18 +95,20 @@ public class PlayerHands : MonoBehaviour
 		_mainWeapon.gameObject.SetActive(true);
 		_lastUsedWeapon = _mainWeapon;
 		_mainWeapon.sortingGroup.sortingOrder = 1;
-		if (_secondaryWeapon) _secondaryWeapon.sortingGroup.sortingOrder = 0;
 		AimAtCursor();
+		if (!_lastTarget) return;
+		if (_secondaryWeapon) _secondaryWeapon.sortingGroup.sortingOrder = 0;
 		_mainWeapon.Fire();
 	}
 
 	protected virtual void FireSecondary() {
-		if (!_secondaryWeapon) return;
+		if (!_secondaryWeapon || _lastTarget == null) return;
 		_secondaryWeapon.gameObject.SetActive(true);
 		_lastUsedWeapon = _secondaryWeapon;
 		_secondaryWeapon.sortingGroup.sortingOrder = 1;
-		if (_mainWeapon) _mainWeapon.sortingGroup.sortingOrder = 0;
 		AimAtCursor();
+		if (!_lastTarget) return;
+		if (_mainWeapon) _mainWeapon.sortingGroup.sortingOrder = 0;
 		_secondaryWeapon.Fire();
 	}
 }

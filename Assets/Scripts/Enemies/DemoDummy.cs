@@ -214,8 +214,11 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected void StopEnemy()
 	{
-		StopCoroutine(_enemyCoroutine);
-		_enemyCoroutine = null;
+		if (_enemyCoroutine != null)
+		{
+			StopCoroutine(_enemyCoroutine);
+			_enemyCoroutine = null;
+		}
 	}
 
 	protected IEnumerator ManageEnemy()

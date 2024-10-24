@@ -12,6 +12,8 @@ public class FinisherInput : MonoBehaviour
 	protected const string m_HIT_BOOL = "Hit";
 	protected DashDirection m_Direction;
 
+	public Color InputColor => m_Image.color;
+
 	[SerializeField] protected List<Color> m_ArrowColors;
 
     private void Awake()

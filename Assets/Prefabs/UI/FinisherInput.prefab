@@ -115,3 +115,4 @@ MonoBehaviour:
   - {r: 0.08675194, g: 1, b: 0, a: 0}
   - {r: 0, g: 0.6102464, b: 1, a: 0}
   - {r: 0.96933174, g: 0, b: 1, a: 0}
+  m_SuccessParticlesPrefab: {fileID: 0}

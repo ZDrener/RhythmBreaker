@@ -496,6 +496,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 7709401779656952261}
   _HitHueChangeDuration: 1
   _deathParticlePrefab: {fileID: 7280447856943530804, guid: df732192a464a2a469ef153c20ecfc10, type: 3}
+  _finisherSlashParticlePrefab: {fileID: 7280447856943530804, guid: 4b7cb2aa054c8874ab91de48ce0ead8d, type: 3}
   _laserLineRenderer: {fileID: 9039054309464311320}
   ChangePosOnFirstSpawn: 1
   ChangePosOnRespawn: 0
@@ -544,7 +545,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6472729383048585891
 Rigidbody:

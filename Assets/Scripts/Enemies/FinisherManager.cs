@@ -12,6 +12,7 @@ public class FinisherManager : MonoBehaviour
 
 	public UnityEvent ResetInputState;
 	public UnityEvent FinisherSuccess;
+	public UnityEvent<Color, int> FinisherSlash;
 
 	protected void OnPlayerDash(DashDirection pDirection)
 	{
@@ -19,7 +20,9 @@ public class FinisherManager : MonoBehaviour
 		if (m_FinisherInputs[m_CurrentInput].CheckInput(pDirection))
 		{
 			// Success!
-			m_CurrentInput++;
+
+			FinisherSlash?.Invoke(m_FinisherInputs[m_CurrentInput].InputColor, (int)pDirection);
+            m_CurrentInput++;
 
 			if (m_CurrentInput == m_FinisherInputs.Count)
 			{
@@ -27,6 +30,7 @@ public class FinisherManager : MonoBehaviour
 				PlayerMovement.ON_Dash.RemoveListener(OnPlayerDash);
                 ResetFinisherInputs();
             }
+
 		}
 		else
 		{

@@ -46,6 +46,7 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected SpriteRenderer _spriteRenderer;
 	[SerializeField] protected float _HitHueChangeDuration;
 	[SerializeField] protected GameObject _deathParticlePrefab;
+	[SerializeField] protected GameObject _finisherSlashParticlePrefab;
 	protected Animator _animator;
 	protected const string _CHARGE_FLOAT = "Charge";
 	protected const string _HURT_TRIGGER = "Hurt";
@@ -73,7 +74,8 @@ public class DemoDummy : EntityFollowingBeat
 		Player.PlayerDeathEvent += OnPlayerDeath;
 		BeatmapManager.SongStartEvent += OnSongStart;
 		BeatmapManager.SongStopEvent += OnSongStop;
-		_finisherManager.FinisherSuccess.AddListener(FinisherDefeat);
+		_finisherManager.FinisherSuccess.AddListener(OnFinisherDefeat);
+		_finisherManager.FinisherSlash.AddListener(OnFinisherSlash);
 		Player.PlayerFinisherStart.AddListener(OnPlayerFinisherStart);
 		Player.PlayerFinisherEnd.AddListener(OnPlayerFinisherEnd);
 	}
@@ -156,13 +158,31 @@ public class DemoDummy : EntityFollowingBeat
 		_collider.enabled = false;
     }
 
-	protected void FinisherDefeat()
+	protected void OnFinisherDefeat()
 	{
 		Player.Instance.EndFinisher();
 		Death();
 	}
 
-	private void Respawn() {
+	protected void OnFinisherSlash(Color pColor, int pDirection)
+	{
+		float lRotation;
+
+		if (pDirection == 0)
+			lRotation = -90f;
+		else if (pDirection == 1)
+			lRotation = 90f;
+		else if (pDirection == 2)
+			lRotation = 0;
+		else
+			lRotation = 180f;
+
+        Instantiate(_finisherSlashParticlePrefab, transform.position, Quaternion.AngleAxis(lRotation, Vector3.forward))
+			.GetComponent<ParticleRecolor>().InitRecolor(pColor);
+	}
+
+
+    private void Respawn() {
 		if (Weakened)
 		{
 			StartEnemy();

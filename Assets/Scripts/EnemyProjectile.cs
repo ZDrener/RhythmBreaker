@@ -15,32 +15,11 @@ public class EnemyProjectile : Projectile
 	protected GameObject m_Target;
 	protected Vector2 m_MovementDirection;
 
-	protected float m_SlowdownTransitionDuration = 0.3f;
 	protected float m_CurrentSlowdownFactor = 1f;
-	protected float m_SlowdownForce = 0.1f;
-	protected Coroutine m_SlowdownCoroutine;
-	protected bool m_PlayerInFinisher = false;
 
-	private void Awake()
+	protected virtual void Awake()
 	{
-		Player.PlayerFinisherStart.AddListener(OnPlayerFinisherStart);
-		Player.PlayerFinisherEnd.AddListener(OnPlayerFinisherEnd);
-	}
-
-	protected virtual void OnPlayerFinisherStart()
-	{
-		m_SlowdownCoroutine = StartCoroutine(ManageSlowdown(true));
-	}
-
-	protected virtual void OnPlayerFinisherEnd()
-	{
-		if (m_SlowdownCoroutine != null)
-		{
-			StopCoroutine(m_SlowdownCoroutine);
-			m_SlowdownCoroutine = null;
-		}
-
-		m_SlowdownCoroutine = StartCoroutine(ManageSlowdown(false));
+		BeatmapManager.SlowdownEffectEvent.AddListener(OnBeatSpeedChange);
 	}
 
 	public void InitAndStart(GameObject pTarget/*, float pSpeed = 5f, int pDamage = 1, float pLifetime = 2.5f*/)
@@ -85,20 +64,8 @@ public class EnemyProjectile : Projectile
 		Destroy(gameObject);
 	}
 
-	protected IEnumerator ManageSlowdown(bool pIsSlowInit)
+	protected void OnBeatSpeedChange(float pSpeedFactor, float pSlowRatio)
 	{
-		float lTime = 0;
-		float lStartFactor = pIsSlowInit ? 1f : m_SlowdownForce;
-		float lTargetFactor = pIsSlowInit ? m_SlowdownForce : 1f;
-
-		while (lTime < m_SlowdownTransitionDuration)
-		{
-			lTime += Time.deltaTime;
-			m_CurrentSlowdownFactor = Mathf.Lerp(lStartFactor, lTargetFactor, lTime/m_SlowdownTransitionDuration);
-			yield return null;
-		}
-
-		m_CurrentSlowdownFactor = lTargetFactor;
-		m_SlowdownCoroutine = null;
+		m_CurrentSlowdownFactor = pSpeedFactor;
 	}
 }

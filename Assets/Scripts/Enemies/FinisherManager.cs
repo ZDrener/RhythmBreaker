@@ -16,7 +16,6 @@ public class FinisherManager : MonoBehaviour
 
 	protected void OnPlayerDash(DashDirection pDirection)
 	{
-		print(pDirection.ToString());
 		if (m_FinisherInputs[m_CurrentInput].CheckInput(pDirection))
 		{
 			// Success!
@@ -40,7 +39,7 @@ public class FinisherManager : MonoBehaviour
 		}
 	}
 
-	public void SetupFinisher(int pInputCount = 4)
+	public void SetupFinisher(int pInputCount = 3)
 	{
 		if (m_FinisherInputs.Count != 0)
 			ResetFinisherInputs();

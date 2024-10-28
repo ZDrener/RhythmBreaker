@@ -69,10 +69,11 @@ public class Player : MonoBehaviour
         _isInvuln = false;
     }
 
-	public virtual void StartFinisher()
+	public virtual void StartFinisher(DemoDummy pEnemy)
 	{
 		IsFinishing = true;
 		PlayerFinisherStart?.Invoke();
+		transform.position = pEnemy.transform.position;
     }
 
 	public virtual void EndFinisher()

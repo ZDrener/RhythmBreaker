@@ -131,7 +131,6 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected void Defeat()
 	{
-		print("defeated");
 		StopEnemy();
 		ResetPrediction();
 		Weakened = true;
@@ -156,7 +155,7 @@ public class DemoDummy : EntityFollowingBeat
 	protected void FinisherStart()
 	{
 		_finisherManager.SetupFinisher();
-		Player.Instance.StartFinisher();
+		Player.Instance.StartFinisher(this);
 		_collider.enabled = false;
 		_finisherVirtualCamera.SetActive(true);
     }

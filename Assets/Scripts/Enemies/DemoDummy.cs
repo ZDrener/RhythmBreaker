@@ -40,6 +40,7 @@ public class DemoDummy : EntityFollowingBeat
 	[SerializeField] protected Image _lifeBar2;
 	[SerializeField] protected Rect _spawnRect;
 	[SerializeField] protected BoxCollider _collider;
+	[SerializeField] protected GameObject _finisherVirtualCamera;
 	[Space]
 	[Header("JUICE")]
 	[SerializeField] protected float _lifeBar2DecreaseForce;
@@ -139,7 +140,8 @@ public class DemoDummy : EntityFollowingBeat
 	protected void Death()
 	{
 		_animator.SetTrigger(_DEATH_TRIGGER);
-	}
+        _finisherVirtualCamera.SetActive(false);
+    }
 
 	protected void PlayDeathParticles()
 	{
@@ -156,6 +158,7 @@ public class DemoDummy : EntityFollowingBeat
 		_finisherManager.SetupFinisher();
 		Player.Instance.StartFinisher();
 		_collider.enabled = false;
+		_finisherVirtualCamera.SetActive(true);
     }
 
 	protected void OnFinisherDefeat()

@@ -8,13 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ProtoChoseScreen.unity
     guid: d963075218a8fb942b7906f26ab99784
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Proto_HOLD_Circles.unity
     guid: 2548a73f48be1064b84c1ec97f098711
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Proto_HOLD_Bars.unity
     guid: 750ccc8e1aa00224d822d8ef41a6c9cc
   - enabled: 1
-    path: Assets/Scenes/Proto_Archero.unity
+    path: Assets/Scenes/Proto_ARCHERO.unity
     guid: b8b340594dfc31249a2bbd259f62155c
+  - enabled: 1
+    path: Assets/LASERS.unity
+    guid: 2c7544267e6903e46a67ceaeef2cf95a
+  - enabled: 1
+    path: Assets/Proto_Labyrinth.unity
+    guid: 29fbc6ffcf1239047a34e28f85207b5a
   m_configObjects: {}

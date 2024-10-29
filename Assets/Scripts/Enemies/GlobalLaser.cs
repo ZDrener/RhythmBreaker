@@ -21,6 +21,7 @@ public class GlobalLaser : MonoBehaviour
 	private float _CreationOffset;
 	private Camera _camera;
 	private bool _isTriggered;
+	private Vector3 _laserOffsetFromPivot;
 
 	public void Init(float pCreationOffset, float ptriggerNoteOffset)
 	{
@@ -30,16 +31,38 @@ public class GlobalLaser : MonoBehaviour
 		_triggerNoteOffset = ptriggerNoteOffset;
 
 		int lRandom = UnityEngine.Random.Range(0, 3);
-		transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90) * lRandom);
-		Vector3 lPosition = (lRandom % 2 == 0) ? Vector3.right * 4 : Vector3.right * 9.5f;
+		switch (lRandom)
+		{
+			case 0:
+				_laserOffsetFromPivot = Vector3.right * 4;
+				_laserTransform.rotation = Quaternion.identity;
+				break;
+			case 1:
+				_laserOffsetFromPivot = Vector3.left * 4;
+				_laserTransform.rotation = Quaternion.identity;
+				break;
+			case 2:
+				_laserOffsetFromPivot = Vector3.up * 9.5f;
+				_laserTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+				break;
+			case 3:
+				_laserOffsetFromPivot = Vector3.down * 9.5f;
+				_laserTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+				break;
+		}
 		_preview.rotation = Quaternion.identity;
-		_laserTransform.localPosition = lPosition;
-		_preview.localPosition = lPosition;
+
+		transform.position = Player.Instance.transform.position;
+		Debug.LogWarning(_laserOffsetFromPivot);
+		_laserTransform.position = transform.position +_laserOffsetFromPivot;
+		_preview.position = transform.position + _laserOffsetFromPivot;
 	}
 	void Update()
 	{
+		transform.position = Player.Instance.transform.position;
+		_laserTransform.position = transform.position + _laserOffsetFromPivot;
+		_preview.position = transform.position + _laserOffsetFromPivot;
 		if (_isTriggered) return;
-		transform.position = _camera.transform.position;
 		_previewFill.fillAmount = (BeatmapManager.SampledTime - _CreationOffset) / (_triggerNoteOffset - _CreationOffset);
 		if (BeatmapManager.SampledTime >= _triggerNoteOffset) TriggerLaser();
 	}
@@ -57,8 +80,8 @@ public class GlobalLaser : MonoBehaviour
 		Vector3 lEndPos = _laserTransform.localPosition * -1;
 		while (lT < _movementDuration)
 		{
-			transform.position = _camera.transform.position;
-			_laserTransform.localPosition = Vector3.Lerp(lStartPos, lEndPos, _movementCurve.Evaluate(lT / _movementDuration));
+			_laserOffsetFromPivot = Vector3.Lerp(lStartPos, lEndPos, _movementCurve.Evaluate(lT / _movementDuration));
+			_laserTransform.position = transform.position + _laserOffsetFromPivot;
 			lT += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}

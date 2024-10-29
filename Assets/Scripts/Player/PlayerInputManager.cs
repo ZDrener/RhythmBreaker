@@ -27,6 +27,9 @@ public class PlayerInputManager : MonoBehaviour
 	private Vector2 _touchStartPos;
 	private float _touchStartTime;
 
+	protected float _minSwipeDistanceFinisherFactor = 0.05f;
+	protected bool _playerIsInFinisher = false;
+
 	// Singleton
 	public static PlayerInputManager Instance;
 
@@ -34,9 +37,23 @@ public class PlayerInputManager : MonoBehaviour
 		// Singleton Setup
 		if (Instance != null) throw new Exception("Two instances of a singleton exist at the same time. Go fix it dumbass.");
 		Instance = this;
+
+		Player.PlayerFinisherStart.AddListener(OnPlayerFinisherStart);
+		Player.PlayerFinisherEnd.AddListener(OnPlayerFinisherEnd);
 	}
 
-	protected virtual void Start() {
+	protected void OnPlayerFinisherStart()
+	{
+		_playerIsInFinisher = true;
+    }
+
+	protected void OnPlayerFinisherEnd()
+	{
+		_playerIsInFinisher = false;
+    }
+
+
+    protected virtual void Start() {
 		_mainCamera = Camera.main;
 	}
 
@@ -112,7 +129,7 @@ public class PlayerInputManager : MonoBehaviour
 					Vector3 currentPos = Utils.ScreenToWorld(_mainCamera, touch.position);
 					Vector3 startPos = _touchStartPos;
 
-					if (Vector3.Distance(startPos, currentPos) >= _minSwipeDistance && Time.time - _touchStartTime <= _maxSwipeTime) {
+					if (Vector3.Distance(startPos, currentPos) >= (!_playerIsInFinisher ? _minSwipeDistance : _minSwipeDistance * _minSwipeDistanceFinisherFactor) && Time.time - _touchStartTime <= _maxSwipeTime) {
 						ON_DashInput.Invoke((currentPos - startPos).normalized);
 						break; // Exit the loop since dash is triggered
 					}

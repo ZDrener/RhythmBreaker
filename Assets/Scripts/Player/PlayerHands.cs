@@ -27,7 +27,7 @@ public class PlayerHands : MonoBehaviour
 	protected Weapon _lastUsedWeapon;
 	protected DemoDummy _lastTarget;
 
-	protected virtual void Start() {
+    protected virtual void Start() {
 		_camera = Camera.main;
 
 		if (_mainWeapon) {
@@ -57,7 +57,8 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void AimAtCursor() {
-        // Calculate target
+		// Calculate target
+
         _lastTarget = DemoDummy.GetClosestDummy(transform.position);
 
 		if (_lastTarget) {
@@ -78,8 +79,10 @@ public class PlayerHands : MonoBehaviour
 	}
 
 	protected virtual void OrderFire(NoteType pType) {
-		// Archero
-		if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput || !_ImmobileToShoot) {
+        // Archero
+        if (Player.Instance.IsFinishing) return;
+
+        if (PlayerInputManager.Instance.ArcheroGameplay && pType != NoteType.Yellow && PlayerInputManager.AttackInput || !_ImmobileToShoot) {
 			if ((pType == NoteType.Red)) FireMain();
 			else if ((pType == NoteType.Blue)) FireSecondary();
 		}

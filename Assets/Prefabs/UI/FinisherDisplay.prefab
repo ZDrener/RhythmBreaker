@@ -163,3 +163,6 @@ MonoBehaviour:
   FinisherSuccess:
     m_PersistentCalls:
       m_Calls: []
+  FinisherSlash:
+    m_PersistentCalls:
+      m_Calls: []

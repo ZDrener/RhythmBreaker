@@ -29,9 +29,14 @@ public class Weapon : MonoBehaviour
 		set { _isSecondaryWeapon = value; }
 	}
 	protected bool _isSecondaryWeapon;
-	#endregion
+    #endregion
 
-	public virtual void SetWeaponColor(Color pColor) {
+    protected virtual void Awake()
+    {
+		BeatmapManager.AudioVolumeChangeEvent.AddListener(OnAudioVolumeChangeEvent);
+    }
+
+    public virtual void SetWeaponColor(Color pColor) {
 		_color = _weaponSprite.color = pColor;
 	}
 
@@ -58,7 +63,13 @@ public class Weapon : MonoBehaviour
 		_audioSource.PlayOneShot(_audioClips[UnityEngine.Random.Range(0, _audioClips.Length - 1)]);
 	}
 
-	private void OnDestroy() {
+	protected virtual void OnAudioVolumeChangeEvent(float pNewVolume)
+	{
+		_audioSource.volume = pNewVolume;
+	}
+
+
+    private void OnDestroy() {
 		// Remove this weapon from hands and stop listening at events
 		isMainWeapon = isSecondaryWeapon = false;
 	}

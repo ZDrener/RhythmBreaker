@@ -18,12 +18,30 @@ public class BeatmapManager : MonoBehaviour
 	[Header("SOURCES")]
 	[SerializeField] private AudioSource _hitSoundSource;
 	[SerializeField] private AudioSource _musicSource;
+	[SerializeField] private AudioSource _slowMotionSource;
+	public float AudioVolume
+	{
+		get { return _audioVolume; }
+		protected set
+		{
+			_audioVolume = value;
+			_hitSoundSource.volume = _audioVolume;
+			_musicSource.volume = _audioVolume;
+			AudioVolumeChangeEvent?.Invoke(_audioVolume);
+        }
+	}
+	protected float _audioVolume = 1.0f;
 	[SerializeField] private Metronome _metronome;
 	[Space]
 	[SerializeField] private int _preBeats = 3;
 	[Space]
 	[Header("INPUT BUFFER")]
 	public float InputBufferWindow = 0.2f; // Adjust this value as needed
+	[Space]
+	[Header("AUDIO CLIPS")]
+	[SerializeField] protected AudioClip _slowMotionStart;
+	[SerializeField] protected AudioClip _slowMotionEnd;
+	[Space]
 	[Header("STUFF")]
 	[SerializeField] protected GameObject _restartPrefab;
 	protected bool _songEnded = false;
@@ -33,9 +51,30 @@ public class BeatmapManager : MonoBehaviour
 	public static event SimpleEvent SongStopEvent;
 	public static event SimpleEvent TriggerNoteEndEvent;
 
+	public static UnityEvent<float, float> SlowdownEffectEvent = new UnityEvent<float, float>();
+	public static UnityEvent<float> AudioVolumeChangeEvent = new UnityEvent<float>();
+	protected float _slowdownTransitionDuration = 0.3f;
+	protected float CurrentSlowdownFactor
+	{
+		get { return _currentSlowdownFactor; }
+		set 
+		{
+			_currentSlowdownFactor = value;
+			SlowdownEffectEvent?.Invoke(_currentSlowdownFactor, 
+				1 - ((_currentSlowdownFactor - _slowdownForce) / (1f - _slowdownForce)));
+		}
+	}
+	protected float _currentSlowdownFactor = 1f;
+	protected float _slowdownForce = 0.1f;
+	protected Coroutine _slowdownCoroutine;
+	protected bool _playerInFinisher = false;
+	protected float _slowedVolume = 0.3f;
+
 	private void Awake()
 	{
 		Player.PlayerDeathEvent += StopSong;
+		Player.PlayerFinisherStart.AddListener(OnPlayerFinisherStart);
+		Player.PlayerFinisherEnd.AddListener(OnPlayerFinisherEnd);
 	}
 
 	void Start() {
@@ -56,9 +95,9 @@ public class BeatmapManager : MonoBehaviour
 	private void StopSong()
 	{
 		_songEnded = true;
-        _musicSource.Stop();
+		_musicSource.Stop();
 		SongStopEvent?.Invoke();
-        Instantiate(_restartPrefab);
+		Instantiate(_restartPrefab);
 	}
 
 	private IEnumerator WaitForLoad() {
@@ -127,6 +166,53 @@ public class BeatmapManager : MonoBehaviour
 		}
 	}
 
+	protected IEnumerator ManageSlowdownEffect(bool pIsSlowInit)
+	{
+		float lTime = 0;
+		float lStartFactor = pIsSlowInit ? _currentSlowdownFactor : _slowdownForce;
+		float lTargetFactor = pIsSlowInit ? _slowdownForce : 1f;
+		float lStartVolume = pIsSlowInit ? _musicSource.volume : _slowedVolume;
+		float lTargetVolume = pIsSlowInit ? _slowedVolume : 1f;
+
+		if (_slowMotionSource.isPlaying) _slowMotionSource.Stop();
+
+		_slowMotionSource.clip = pIsSlowInit ? _slowMotionStart : _slowMotionEnd;
+		_slowMotionSource.Play();
+
+		while (lTime < _slowdownTransitionDuration)
+		{
+			lTime += Time.deltaTime;
+			CurrentSlowdownFactor = Mathf.Lerp(lStartFactor, lTargetFactor, lTime / _slowdownTransitionDuration);
+			AudioVolume = Mathf.Lerp(lStartVolume, lTargetVolume, lTime / _slowdownTransitionDuration);
+            yield return null;
+		}
+
+		CurrentSlowdownFactor = lTargetFactor;
+		_musicSource.volume = lTargetVolume;
+		_slowdownCoroutine = null;
+
+
+		yield break;
+	}
+
+	protected virtual void OnPlayerFinisherStart()
+	{
+		_playerInFinisher = true;
+		_slowdownCoroutine = StartCoroutine(ManageSlowdownEffect(true));
+	}
+
+	protected virtual void OnPlayerFinisherEnd()
+	{
+		if (_slowdownCoroutine != null)
+		{
+			StopCoroutine(_slowdownCoroutine);
+			_slowdownCoroutine = null;
+		}
+
+		_slowdownCoroutine = StartCoroutine(ManageSlowdownEffect(false));
+		_playerInFinisher = false;
+	}
+
 	private void CheckForNote(float pSampledTime) {
 		// Stop if there are no more notes
 		if (Beatmap.AllNotes.Count == 0) {
@@ -143,13 +229,13 @@ public class BeatmapManager : MonoBehaviour
 			noteTime <= pSampledTime :
 			(noteTime <= pSampledTime) && (noteTime + InputBufferWindow >= pSampledTime);        
 
-        // Check if the note is within the buffer window and if the player pressed it
-        if (pCondition) {
+		// Check if the note is within the buffer window and if the player pressed it
+		if (pCondition) {
 
-            ON_TriggerNote.Invoke(lNote._noteType);
-            Beatmap.AllNotes.RemoveAt(0);
+			ON_TriggerNote.Invoke(lNote._noteType);
+			Beatmap.AllNotes.RemoveAt(0);
 			TriggerNoteEndEvent?.Invoke();
-        }
+		}
 		#region OLD WAY / FAIL
 		//// check if the note is within the buffer window and if the player pressed it
 		//if (pcondition/* && playerinputmanager.attackinput && lnote._notetype == playerinputmanager.attacktype*/) {
@@ -177,13 +263,13 @@ public class BeatmapManager : MonoBehaviour
 
 	public float GetNotePrediction(float pPpredictionTimeReach, NoteType pDesiredNoteType)
 	{
-        return Beatmap.GetNotePrediction(SampledTime, pPpredictionTimeReach, pDesiredNoteType);
+		return Beatmap.GetNotePrediction(SampledTime, pPpredictionTimeReach, pDesiredNoteType);
 	}
 
 	protected void SongEnd()
 	{
 		StopSong();
-    }
+	}
 
 	public void PlayHitSound(AudioClip hitClip) {
 		if (hitClip) _hitSoundSource.PlayOneShot(hitClip);

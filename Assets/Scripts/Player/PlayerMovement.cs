@@ -15,18 +15,22 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] protected float _dashDistance = 3;
 	[SerializeField] protected float _dashDuration = 0.15f;
 	[SerializeField] protected AnimationCurve _dashCurve;
+	protected Coroutine _dashCoroutine;
 	[Space]
 	[Header("MISC")]
 	[SerializeField] protected ParticleSystem _dashTrail;
 	[SerializeField] protected ParticleSystem _dashRings;
 
 	protected bool IsPlayerFinishing => Player.Instance.IsFinishing;
+	protected bool _playerFinished = false;
 
 	[HideInInspector] public Vector2 Direction { get; protected set; }
 
 	protected virtual void Awake()
 	{
         PlayerInputManager.ON_DashInput.AddListener(DashBegin);
+		Player.PlayerFinisherStart.AddListener(PlayerFinisherStart);
+		Player.PlayerFinisherEnd.AddListener(PlayerFinisherEnd);
     }
 
 	protected virtual void Update() {
@@ -34,19 +38,20 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	private void Move() {
-		transform.position += (IsPlayerFinishing ? _moveSpeed * 0.75f : _moveSpeed) * Time.deltaTime * PlayerInputManager.DirectionInput;
+		if (IsPlayerFinishing) return;
+		transform.position += _moveSpeed * Time.deltaTime * PlayerInputManager.DirectionInput;
 	}
 
 	protected virtual void DashBegin(Vector2 pDirection) {
 		// You can't start another dash when you're already dashing, dumbass <- meanie
-		if (!IsDashing) StartCoroutine(DashCoroutine(pDirection));
+		if (!IsDashing) _dashCoroutine = StartCoroutine(DashCoroutine(pDirection));
 	}
 
 	protected virtual IEnumerator DashCoroutine(Vector3 pDirection) {
 		float lT = 0;
 
 		Vector3 lStartPos = transform.position;
-		Vector3 lEndPos = lStartPos + pDirection.normalized * (IsPlayerFinishing ? _dashDistance * 0.2f : _dashDistance);
+		Vector3 lEndPos = lStartPos + pDirection.normalized * _dashDistance;
 		Vector3 lDashDirection = (lEndPos - lStartPos).normalized;
 
 		float lMaxDot = .7f;
@@ -65,10 +70,11 @@ public class PlayerMovement : MonoBehaviour
 			ON_Dash.Invoke(DashDirection.Right);
 		}
 
-		// Dash Start
-		IsDashing = true;
-		_dashTrail.Play();
-		_dashRings.Play();
+		if (IsPlayerFinishing) yield break;
+		if (_playerFinished) { _playerFinished = false; yield break; }
+
+        // Dash Start
+        SetDash(true);
 		_dashRings.transform.rotation = Quaternion.LookRotation(lDashDirection);
 
 		// Dash Loop
@@ -80,11 +86,42 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		// Dash End
-		IsDashing = false;
 		ON_Dash_Stop?.Invoke();
-        _dashTrail.Stop();
-		_dashRings.Stop();
+        SetDash(false);
+		_dashCoroutine = null;
+    }
+
+	protected void SetDash(bool pIsActive)
+	{
+		IsDashing = pIsActive;
+
+		if (pIsActive)
+		{
+            _dashTrail.Play();
+            _dashRings.Play();
+        }
+		else
+		{
+            _dashTrail.Stop();
+            _dashRings.Stop();
+        }
 	}
+
+	protected void PlayerFinisherStart()
+	{
+		if (_dashCoroutine != null)
+		{
+			StopCoroutine(_dashCoroutine);
+            _dashCoroutine = null;
+        }
+
+        SetDash(false);
+	}
+	
+    protected void PlayerFinisherEnd()
+	{
+		_playerFinished = true;
+    }
 }
 
 public enum DashDirection { Up, Down, Left, Right }

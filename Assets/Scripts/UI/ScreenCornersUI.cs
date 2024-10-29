@@ -16,7 +16,6 @@ public class ScreenCornersUI : MonoBehaviour
 
 	protected void OnSlowMotionUpdate(float pSlowMotionFactor, float pRatio)
 	{
-		print(pRatio);
 		m_Animator.SetFloat(m_SLOW_MOTION_FLOAT, pRatio);
 	}
 }

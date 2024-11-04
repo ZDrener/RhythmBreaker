@@ -9248,10 +9248,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScreenCornersEffect
       objectReference: {fileID: 0}
-    - target: {fileID: 6415096629161415644, guid: 48d9294c22e209a4ea75cf5d205e28ee, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: a9f1c82f81d925148b17d99c5d3dcee3, type: 3}
     - target: {fileID: 6415096629161415645, guid: 48d9294c22e209a4ea75cf5d205e28ee, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -67,6 +67,8 @@ public class DemoDummy : EntityFollowingBeat
 
 	protected Coroutine _enemyCoroutine;
 
+	public static UnityEvent EnemyDeathEvent = new UnityEvent();
+
 	override protected void Awake()
 	{
 		base.Awake();
@@ -140,6 +142,7 @@ public class DemoDummy : EntityFollowingBeat
 	{
 		_animator.SetTrigger(_DEATH_TRIGGER);
         _finisherVirtualCamera.SetActive(false);
+		EnemyDeathEvent?.Invoke();
     }
 
 	protected void PlayDeathParticles()

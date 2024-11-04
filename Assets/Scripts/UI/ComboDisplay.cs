@@ -11,8 +11,6 @@ public class ComboDisplay : MonoBehaviour
 
 	[Header("REFERENCE")]
 	[Space]
-	[SerializeField] Image m_BackgroundImage;
-	[SerializeField] Image m_OutlineImage;
 	[SerializeField] protected TextMeshProUGUI m_ComboText;
 
 	protected const string m_APPEAR_TRIGGER = "Appear";
@@ -29,8 +27,15 @@ public class ComboDisplay : MonoBehaviour
 		}
 	}
 	protected int m_CurrentCombo = 0;
+	protected float m_CurrentComboTimer = 0;
+	protected const float m_MAX_COMBO_KILL_INTERVAL = 0.5f;
 
-	protected void OnKill()
+    private void Awake()
+    {
+		DemoDummy.EnemyDeathEvent.AddListener(OnEnemyKill);
+    }
+
+    protected void OnEnemyKill()
 	{
 		CurrentCombo++;
 	}
@@ -41,9 +46,21 @@ public class ComboDisplay : MonoBehaviour
 		{
 			m_ComboText.text = m_CurrentCombo.ToString();
 			m_Animator.SetTrigger(m_APPEAR_TRIGGER);
-			//m_Animator.SetFloat(m_SHAKE_FLOAT, 69);
 		}
 
+	}
+
+	protected IEnumerator ManageComboInterval()
+	{
+		m_CurrentComboTimer = 0f;
+
+		while (m_CurrentComboTimer < m_MAX_COMBO_KILL_INTERVAL)
+		{
+			m_CurrentComboTimer += Time.deltaTime;
+			yield return null;
+		}
+
+		ResetCombo();
 	}
 
 	protected void ResetCombo()

@@ -22,10 +22,10 @@ public class DemoDummy : EntityFollowingBeat
 	protected float _currentAttackTimer;
 	[SerializeField] protected GameObject _projectilePrefab;
 	[SerializeField] protected FinisherManager _finisherManager;
-	protected bool Weakened
+	public bool Weakened
 	{
 		get { return _weakened; }
-		set 
+		protected set 
 		{ 
 			_weakened = value;
 			_animator.SetBool(_WEAKENED_BOOL, _weakened);

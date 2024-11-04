@@ -16,10 +16,17 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] protected float _dashDuration = 0.15f;
 	[SerializeField] protected AnimationCurve _dashCurve;
 	protected Coroutine _dashCoroutine;
+	protected float _coneAngle = 30f;
+	protected int _raysCount = 20;
+	[Space]
+	[Header("REFERENCES")]
+	[SerializeField] protected BoxCollider _collider;
+	[SerializeField] protected float _raycastSizeMultiplier = 2.5f;
 	[Space]
 	[Header("MISC")]
 	[SerializeField] protected ParticleSystem _dashTrail;
 	[SerializeField] protected ParticleSystem _dashRings;
+	[SerializeField] protected LayerMask _enemyLayerMask;
 
 	protected bool IsPlayerFinishing => Player.Instance.IsFinishing;
 	protected bool _playerFinished = false;
@@ -28,10 +35,10 @@ public class PlayerMovement : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-        PlayerInputManager.ON_DashInput.AddListener(DashBegin);
+		PlayerInputManager.ON_DashInput.AddListener(DashBegin);
 		Player.PlayerFinisherStart.AddListener(PlayerFinisherStart);
 		Player.PlayerFinisherEnd.AddListener(PlayerFinisherEnd);
-    }
+	}
 
 	protected virtual void Update() {
 		Move();
@@ -51,6 +58,13 @@ public class PlayerMovement : MonoBehaviour
 		float lT = 0;
 
 		Vector3 lStartPos = transform.position;
+		Transform lTargetTransform;
+
+		lTargetTransform = GetDashTargetLocation(pDirection, _dashDistance);
+
+		if (lTargetTransform != transform)
+			pDirection = lTargetTransform.position - transform.position;
+
 		Vector3 lEndPos = lStartPos + pDirection.normalized * _dashDistance;
 		Vector3 lDashDirection = (lEndPos - lStartPos).normalized;
 
@@ -73,8 +87,8 @@ public class PlayerMovement : MonoBehaviour
 		if (IsPlayerFinishing) yield break;
 		if (_playerFinished) { _playerFinished = false; yield break; }
 
-        // Dash Start
-        SetDash(true);
+		// Dash Start
+		SetDash(true);
 		_dashRings.transform.rotation = Quaternion.LookRotation(lDashDirection);
 
 		// Dash Loop
@@ -87,9 +101,9 @@ public class PlayerMovement : MonoBehaviour
 
 		// Dash End
 		ON_Dash_Stop?.Invoke();
-        SetDash(false);
+		SetDash(false);
 		_dashCoroutine = null;
-    }
+	}
 
 	protected void SetDash(bool pIsActive)
 	{
@@ -97,14 +111,40 @@ public class PlayerMovement : MonoBehaviour
 
 		if (pIsActive)
 		{
-            _dashTrail.Play();
-            _dashRings.Play();
-        }
+			_dashTrail.Play();
+			_dashRings.Play();
+		}
 		else
 		{
-            _dashTrail.Stop();
-            _dashRings.Stop();
-        }
+			_dashTrail.Stop();
+			_dashRings.Stop();
+		}
+	}
+	
+	protected Transform GetDashTargetLocation(Vector3 pDirection, float pLength)
+	{
+		RaycastHit[] lHits;
+		float lHalfAngleRad = _coneAngle * 0.5f * Mathf.Deg2Rad;
+		float lStep = 1f / (_raysCount - 1f);
+
+		//Debug.DrawLine(transform.position, transform.position + pDirection * 10f, Color.red, 2f);
+		for (int i = 0; i < _raysCount; i++)
+		{
+			lHits = Physics.SphereCastAll(transform.position + i * lStep * pLength * pDirection.normalized, CalculateSphereRadius(pLength * i * lStep, lHalfAngleRad), pDirection, 0.01f, _enemyLayerMask);
+			
+			foreach(RaycastHit lHit in lHits)
+			{
+				if (lHit.transform.GetComponentInChildren<DemoDummy>().Weakened)
+					return lHit.transform;
+			}
+		}
+
+		return transform;
+	}
+
+	protected float CalculateSphereRadius(float pDistance, float lHalfAngleRad)
+	{
+		return pDistance * Mathf.Tan(lHalfAngleRad);
 	}
 
 	protected void PlayerFinisherStart()
@@ -112,16 +152,16 @@ public class PlayerMovement : MonoBehaviour
 		if (_dashCoroutine != null)
 		{
 			StopCoroutine(_dashCoroutine);
-            _dashCoroutine = null;
-        }
+			_dashCoroutine = null;
+		}
 
-        SetDash(false);
+		SetDash(false);
 	}
 	
-    protected void PlayerFinisherEnd()
+	protected void PlayerFinisherEnd()
 	{
 		_playerFinished = true;
-    }
+	}
 }
 
 public enum DashDirection { Up, Down, Left, Right }

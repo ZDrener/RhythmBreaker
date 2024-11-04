@@ -87,8 +87,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _collider: {fileID: 6298072289206404031}
+  _raycastSizeMultiplier: 2.5
   _dashTrail: {fileID: 3610065023162026386}
   _dashRings: {fileID: 8819541475547843671}
+  _enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &8178828990486857830
 MonoBehaviour:
   m_ObjectHideFlags: 0
